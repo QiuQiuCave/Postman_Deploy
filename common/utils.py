@@ -17,6 +17,7 @@ class FSMStateName(Enum):
     SKILL_KungFu2 = 9
     SKILL_BEYOND_MIMIC = 10
     SKILL_GAE = 11
+    SKILL_BOX_TRANSPORT = 12
    
 
 @unique
@@ -30,6 +31,7 @@ class FSMCommand(Enum):
     SKILL_3 = 7
     SKILL_4 = 8
     SKILL_GAE = 11
+    BOX_TRANSPORT = 12
     
     
     

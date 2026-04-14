@@ -7,7 +7,7 @@
 #    - Default expected filename: walk1_subject2.npz (or update motion_path below)
 
 onnx_path: "gae_policy.onnx"
-motion_path: "lafan1/dance1_subject2.npz"
+motion_path: "lafan1/walk1_subject2.npz"
 mj_joint_names: ['left_hip_pitch_joint', 'left_hip_roll_joint', 'left_hip_yaw_joint',
                 'left_knee_joint', 
                 'left_ankle_pitch_joint', 'left_ankle_roll_joint', 

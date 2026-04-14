@@ -70,6 +70,8 @@ if __name__ == "__main__":
                     state_cmd.skill_cmd = FSMCommand.SKILL_4
                 if joystick.is_button_released(JoystickButton.B) and joystick.is_button_pressed(JoystickButton.L1):
                     state_cmd.skill_cmd = FSMCommand.SKILL_GAE
+                if joystick.is_button_released(JoystickButton.A) and joystick.is_button_pressed(JoystickButton.L1):
+                    state_cmd.skill_cmd = FSMCommand.BOX_TRANSPORT
                 
                 state_cmd.vel_cmd[0] = -joystick.get_axis_value(1)
                 state_cmd.vel_cmd[1] = -joystick.get_axis_value(0)

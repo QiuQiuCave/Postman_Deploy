@@ -42,6 +42,7 @@ class TerminalController:
         print("  b+r1        - Skill 3 (Kick)")
         print("  y+l1        - Skill 4 (BeyondMimic)")
         print("  b+l1        - Skill GAE (GAE_Mimic)")
+        print("  a+l1        - Box Transport Velocity")
         print("  vel x y z   - Set velocity (e.g., 'vel 0.5 0 0.2')")
         print("  exit        - Exit program")
         print("===========================\n")
@@ -131,6 +132,9 @@ if __name__ == "__main__":
                 elif cmd == "b+l1":
                     state_cmd.skill_cmd = FSMCommand.SKILL_GAE
                     print("Skill GAE (GAE_Mimic)")
+                elif cmd == "a+l1":
+                    state_cmd.skill_cmd = FSMCommand.BOX_TRANSPORT
+                    print("Box Transport Velocity")
                 elif cmd.startswith("vel "):
                     try:
                         parts = cmd.split()

@@ -14,6 +14,7 @@ class StateAndCmd:
         self.tau_est = np.zeros(num_joints, dtype=np.float32)
         self.gravity_ori = np.array([0., 0., 1.])
         self.ang_vel = np.zeros(3)
+        self.base_lin_vel = np.zeros(3, dtype=np.float32)
         # joy cmd
         self.vel_cmd = np.zeros(3)
         self.skill_cmd = FSMCommand.INVALID

@@ -1,0 +1,79 @@
+policy_path: "policy_loco_new.pt"
+
+# Kp/Kd in POLICY ORDER (Isaac 29-DoF); reordered to motor order in enter().
+# Sourced from upper_lower 2026-04-19_16-24-28_cliped_with_lin/params/env.yaml actuators.
+kps: [40.18, 40.18, 40.18,
+      99.10, 99.10, 28.50,
+      40.18, 40.18, 28.50,
+      99.10, 99.10,    14.25, 14.25,
+      28.50, 28.50,    14.25, 14.25,
+      28.50, 28.50,    14.25, 14.25,
+                       14.25, 14.25,
+                       14.25, 14.25,
+                       16.78, 16.78,
+                       16.78, 16.78]
+
+kds: [2.558, 2.558, 2.558,
+      6.309, 6.309, 1.814,
+      2.558, 2.558, 1.814,
+      6.309, 6.309,    0.907, 0.907,
+      1.814, 1.814,    0.907, 0.907,
+      1.814, 1.814,    0.907, 0.907,
+                       0.907, 0.907,
+                       0.907, 0.907,
+                       1.068, 1.068,
+                       1.068, 1.068]
+
+# Reused verbatim from LocoMode.yaml; unused at runtime, kept for parity.
+tau_limit: [88, 88, 88, 139, 50, 50,
+            88, 88, 88, 139, 50, 50,
+            88, 50, 50,
+            25, 25, 25, 25, 5, 5, 5,
+            25, 25, 25, 25, 5, 5, 5]
+
+# Training default joint positions, POLICY ORDER (Isaac 29-DoF).
+default_angles: [-0.312, -0.312, 0.0,
+                  0.0,    0.0,   0.0,
+                  0.0,    0.0,   0.0,
+                  0.669,  0.669,      0.2,   0.2,
+                 -0.363, -0.363,      0.2,  -0.2,
+                  0.0,    0.0,        0.0,   0.0,
+                                      0.6,   0.6,
+                                      0.0,   0.0,
+                                      0.0,   0.0,
+                                      0.0,   0.0]
+
+# Same Isaac 29-DoF ordering as LocoMode.yaml — verified spot-checks:
+#   idx 0 (left_hip_pitch)=motor 0, idx 2 (waist_yaw)=motor 12,
+#   idx 11 (left_shoulder_pitch)=motor 15.
+joint2motor_idx: [0, 6, 12,
+                  1, 7, 13,
+                  2, 8, 14,
+                  3, 9,      15, 22,
+                  4, 10,     16, 23,
+                  5, 11,     17, 24,
+                             18, 25,
+                             19, 26,
+                             20, 27,
+                             21, 28]
+
+# Per-term obs scales & clips (training obs_group in velocity_env_cfg.py).
+base_lin_vel_scale: 1.0
+ang_vel_scale: 0.2
+gravity_scale: 1.0
+cmd_scale: [1.0, 1.0, 1.0]
+dof_pos_scale: 1.0
+dof_vel_scale: 0.05
+action_scale: 0.25
+obs_clip_default: 100.0
+last_action_clip: 12.0
+
+# Deployment command ranges (UniformLevelVelocityCommandCfg.limit_ranges).
+cmd_init: [0, 0, 0]
+cmd_range:
+  lin_vel_x: [-0.5, 1.0]
+  lin_vel_y: [-0.3, 0.3]
+  ang_vel_z: [-0.2, 0.2]
+
+num_actions: 29
+num_obs: 99

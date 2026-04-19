@@ -3,6 +3,7 @@ from common.path_config import PROJECT_ROOT
 from policy.passive.PassiveMode import PassiveMode
 from policy.fixedpose.FixedPose import FixedPose
 from policy.loco_mode.LocoMode import LocoMode
+from policy.loco_new.LocoNew import LocoNew
 from policy.kungfu.KungFu import KungFu
 from policy.dance.Dance import Dance
 from policy.skill_cooldown.SkillCooldown import SkillCooldown
@@ -34,6 +35,7 @@ class FSM:
         self.passive_mode = PassiveMode(state_cmd, policy_output)
         self.fixed_pose_1 = FixedPose(state_cmd, policy_output)
         self.loco_policy = LocoMode(state_cmd, policy_output)
+        self.loco_new_policy = LocoNew(state_cmd, policy_output)
         self.kungfu_policy = KungFu(state_cmd, policy_output)
         self.dance_policy = Dance(state_cmd, policy_output)
         self.skill_cooldown_policy = SkillCooldown(state_cmd, policy_output)
@@ -89,6 +91,8 @@ class FSM:
             self.cur_policy = self.fixed_pose_1
         elif((policy_name == FSMStateName.LOCOMODE)):
             self.cur_policy = self.loco_policy
+        elif((policy_name == FSMStateName.LOCO_NEW)):
+            self.cur_policy = self.loco_new_policy
         elif((policy_name == FSMStateName.SKILL_KungFu)):
             self.cur_policy = self.kungfu_policy
         elif((policy_name == FSMStateName.SKILL_Dance)):

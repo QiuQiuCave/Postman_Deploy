@@ -18,7 +18,8 @@ class FSMStateName(Enum):
     SKILL_BEYOND_MIMIC = 10
     SKILL_GAE = 11
     SKILL_BOX_TRANSPORT = 12
-   
+    LOCO_NEW = 13
+
 
 @unique
 class FSMCommand(Enum):
@@ -32,6 +33,7 @@ class FSMCommand(Enum):
     SKILL_4 = 8
     SKILL_GAE = 11
     BOX_TRANSPORT = 12
+    LOCO_NEW = 13
     
     
     

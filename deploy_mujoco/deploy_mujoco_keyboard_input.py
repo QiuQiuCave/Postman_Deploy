@@ -43,6 +43,7 @@ class TerminalController:
         print("  y+l1        - Skill 4 (BeyondMimic)")
         print("  b+l1        - Skill GAE (GAE_Mimic)")
         print("  a+l1        - Box Transport Velocity")
+        print("  x+l1        - Locomotion NEW (sim2sim)")
         print("  vel x y z   - Set velocity (e.g., 'vel 0.5 0 0.2')")
         print("  exit        - Exit program")
         print("===========================\n")
@@ -135,6 +136,9 @@ if __name__ == "__main__":
                 elif cmd == "a+l1":
                     state_cmd.skill_cmd = FSMCommand.BOX_TRANSPORT
                     print("Box Transport Velocity")
+                elif cmd == "x+l1":
+                    state_cmd.skill_cmd = FSMCommand.LOCO_NEW
+                    print("Locomotion mode (new, 99-dim sim2sim)")
                 elif cmd.startswith("vel "):
                     try:
                         parts = cmd.split()
@@ -160,14 +164,21 @@ if __name__ == "__main__":
                 dqj = d.qvel[6:]
                 quat = d.qpos[3:7]
                 
-                omega = d.qvel[3:6] 
+                omega = d.qvel[3:6]
                 gravity_orientation = get_gravity_orientation(quat)
-                
+
+                # body-frame linear velocity of the base (body index 1 in G1 model).
+                # mj_objectVelocity returns [angular; linear] in local frame when flg_local=1.
+                cvel = np.zeros(6)
+                mujoco.mj_objectVelocity(m, d, mujoco.mjtObj.mjOBJ_BODY, 1, cvel, 1)
+                base_lin_vel_body = cvel[3:6].astype(np.float32)
+
                 state_cmd.q = qj.copy()
                 state_cmd.dq = dqj.copy()
                 state_cmd.gravity_ori = gravity_orientation.copy()
                 state_cmd.base_quat = quat.copy()
                 state_cmd.ang_vel = omega.copy()
+                state_cmd.base_lin_vel = base_lin_vel_body
                 
                 FSM_controller.run()
                 policy_output_action = policy_output.actions.copy()

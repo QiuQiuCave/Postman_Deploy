@@ -61,4 +61,4 @@ Python 3.8, PyTorch 2.3.1, numpy 1.20.0, `onnx` + `onnxruntime`, `mujoco`, `unit
 
 ## Safety
 
-Test every change in MuJoCo before touching a real robot. Only `LocoMode`, `FixedPose`, `PassiveMode`, and `Dance` are considered stable on hardware; other skills are sim-only or experimental.
+Test every change in MuJoCo before touching a real robot. Only `LocoMode`, `FixedPose`, `PassiveMode`, and `Dance` are considered stable on hardware; other skills are sim-only or experimental. `LocoNew` (99-dim obs incl. `base_lin_vel`, bound to `x+l1`) is sim2sim-only — `deploy_real.py` passes a zeroed `base_lin_vel` since the IMU doesn't provide body-frame linear velocity directly.

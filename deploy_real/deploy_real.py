@@ -136,6 +136,8 @@ class Controller:
             self.state_cmd.gravity_ori = gravity_orientation.copy()
             self.state_cmd.ang_vel = ang_vel.copy()
             self.state_cmd.base_quat = quat
+            # TODO: body-frame velocity estimator; LOCO_NEW is sim-only on hardware.
+            self.state_cmd.base_lin_vel = np.zeros(3, dtype=np.float32)
             
             self.FSM_controller.run()
             policy_output_action = self.policy_output.actions.copy()

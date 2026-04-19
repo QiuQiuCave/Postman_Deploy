@@ -113,24 +113,18 @@ class LocoMode(FSMState):
         if(self.state_cmd.skill_cmd == FSMCommand.SKILL_1):
             self.state_cmd.skill_cmd = FSMCommand.INVALID
             return FSMStateName.SKILL_Dance
-        elif(self.state_cmd.skill_cmd == FSMCommand.SKILL_2):
-            self.state_cmd.skill_cmd = FSMCommand.INVALID
-            return FSMStateName.SKILL_KungFu
-        elif(self.state_cmd.skill_cmd == FSMCommand.SKILL_3):
-            self.state_cmd.skill_cmd = FSMCommand.INVALID
-            return FSMStateName.SKILL_KICK
         elif(self.state_cmd.skill_cmd == FSMCommand.SKILL_4):
             self.state_cmd.skill_cmd = FSMCommand.INVALID
             return FSMStateName.SKILL_BEYOND_MIMIC
-        elif(self.state_cmd.skill_cmd == FSMCommand.SKILL_GAE):
-            self.state_cmd.skill_cmd = FSMCommand.INVALID
-            return FSMStateName.SKILL_GAE
         elif(self.state_cmd.skill_cmd == FSMCommand.BOX_TRANSPORT):
             self.state_cmd.skill_cmd = FSMCommand.INVALID
             return FSMStateName.SKILL_BOX_TRANSPORT
         elif(self.state_cmd.skill_cmd == FSMCommand.LOCO_NEW):
             self.state_cmd.skill_cmd = FSMCommand.INVALID
             return FSMStateName.LOCO_NEW
+        elif(self.state_cmd.skill_cmd == FSMCommand.LOCO_NEW_ONNX):
+            self.state_cmd.skill_cmd = FSMCommand.INVALID
+            return FSMStateName.LOCO_NEW_ONNX
         elif(self.state_cmd.skill_cmd == FSMCommand.PASSIVE):
             self.state_cmd.skill_cmd = FSMCommand.INVALID
             return FSMStateName.PASSIVE

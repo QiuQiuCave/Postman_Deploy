@@ -37,7 +37,6 @@ class SkillCast(FSMState):
             self.action_scale = config["action_scale"]
             self.total_time = config["total_time"]
             self.upper_target_angles_skill_1 = np.array(config["upper_target_angles_skill_1"], dtype=np.float32)
-            self.upper_target_angles_skill_2 = np.array(config["upper_target_angles_skill_2"], dtype=np.float32)
             self.upper_target_angles_skill_4 = np.array(config["upper_target_angles_skill_4"], dtype=np.float32)
             
             self.qj_obs = np.zeros(self.num_actions, dtype=np.float32)
@@ -100,8 +99,6 @@ class SkillCast(FSMState):
         ###########################################################
         if(self.state_cmd.skill_cmd == FSMCommand.SKILL_1):
             self.upper_dof_target = self.upper_target_angles_skill_1
-        elif(self.state_cmd.skill_cmd == FSMCommand.SKILL_2):
-            self.upper_dof_target = self.upper_target_angles_skill_2
         elif(self.state_cmd.skill_cmd == FSMCommand.SKILL_4):
             self.upper_dof_target = self.upper_target_angles_skill_4
         else:
@@ -123,9 +120,6 @@ class SkillCast(FSMState):
         if(self.cur_step >= self.num_step and self.state_cmd.skill_cmd == FSMCommand.SKILL_1):
             self.state_cmd.skill_cmd = FSMCommand.INVALID
             return FSMStateName.SKILL_Dance
-        elif(self.cur_step >= self.num_step and self.state_cmd.skill_cmd == FSMCommand.SKILL_2):
-            self.state_cmd.skill_cmd = FSMCommand.INVALID
-            return FSMStateName.SKILL_KungFu
         elif(self.cur_step >= self.num_step and self.state_cmd.skill_cmd == FSMCommand.SKILL_4):
             self.state_cmd.skill_cmd = FSMCommand.INVALID
             return FSMStateName.SKILL_KungFu2

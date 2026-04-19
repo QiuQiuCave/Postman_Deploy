@@ -62,18 +62,14 @@ if __name__ == "__main__":
                     state_cmd.skill_cmd = FSMCommand.LOCO
                 if joystick.is_button_released(JoystickButton.X) and joystick.is_button_pressed(JoystickButton.R1):
                     state_cmd.skill_cmd = FSMCommand.SKILL_1
-                if joystick.is_button_released(JoystickButton.Y) and joystick.is_button_pressed(JoystickButton.R1):
-                    state_cmd.skill_cmd = FSMCommand.SKILL_2
-                if joystick.is_button_released(JoystickButton.B) and joystick.is_button_pressed(JoystickButton.R1):
-                    state_cmd.skill_cmd = FSMCommand.SKILL_3
                 if joystick.is_button_released(JoystickButton.Y) and joystick.is_button_pressed(JoystickButton.L1):
                     state_cmd.skill_cmd = FSMCommand.SKILL_4
-                if joystick.is_button_released(JoystickButton.B) and joystick.is_button_pressed(JoystickButton.L1):
-                    state_cmd.skill_cmd = FSMCommand.SKILL_GAE
                 if joystick.is_button_released(JoystickButton.A) and joystick.is_button_pressed(JoystickButton.L1):
                     state_cmd.skill_cmd = FSMCommand.BOX_TRANSPORT
                 if joystick.is_button_released(JoystickButton.X) and joystick.is_button_pressed(JoystickButton.L1):
                     state_cmd.skill_cmd = FSMCommand.LOCO_NEW
+                if joystick.is_button_released(JoystickButton.Y) and joystick.is_button_pressed(JoystickButton.R1):
+                    state_cmd.skill_cmd = FSMCommand.LOCO_NEW_ONNX
                 
                 state_cmd.vel_cmd[0] = -joystick.get_axis_value(1)
                 state_cmd.vel_cmd[1] = -joystick.get_axis_value(0)

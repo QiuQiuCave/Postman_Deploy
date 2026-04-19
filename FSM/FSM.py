@@ -4,14 +4,12 @@ from policy.passive.PassiveMode import PassiveMode
 from policy.fixedpose.FixedPose import FixedPose
 from policy.loco_mode.LocoMode import LocoMode
 from policy.loco_new.LocoNew import LocoNew
-from policy.kungfu.KungFu import KungFu
+from policy.loco_new_onnx.LocoNewOnnx import LocoNewOnnx
 from policy.dance.Dance import Dance
 from policy.skill_cooldown.SkillCooldown import SkillCooldown
 from policy.skill_cast.SkillCast import SkillCast
-from policy.kick.Kick import Kick
 from policy.kungfu2.KungFu2 import KungFu2
 from policy.beyond_mimic.BeyondMimic import BeyondMimic
-from policy.gae_mimic.gae_mimic import GAE_Mimic
 from policy.box_transport.BoxTransport import BoxTransport
 from FSM.FSMState import *
 import time
@@ -36,14 +34,12 @@ class FSM:
         self.fixed_pose_1 = FixedPose(state_cmd, policy_output)
         self.loco_policy = LocoMode(state_cmd, policy_output)
         self.loco_new_policy = LocoNew(state_cmd, policy_output)
-        self.kungfu_policy = KungFu(state_cmd, policy_output)
+        self.loco_new_onnx_policy = LocoNewOnnx(state_cmd, policy_output)
         self.dance_policy = Dance(state_cmd, policy_output)
         self.skill_cooldown_policy = SkillCooldown(state_cmd, policy_output)
         self.skill_cast_policy = SkillCast(state_cmd, policy_output)
-        self.kick_policy = Kick(state_cmd, policy_output)
         self.kungfu2_policy = KungFu2(state_cmd, policy_output)
         self.beyond_mimic_policy = BeyondMimic(state_cmd, policy_output)
-        self.gae_mimic_policy = GAE_Mimic(state_cmd, policy_output)
         self.box_transport_policy = BoxTransport(state_cmd, policy_output)
         
         print("initalized all policies!!!")
@@ -93,22 +89,18 @@ class FSM:
             self.cur_policy = self.loco_policy
         elif((policy_name == FSMStateName.LOCO_NEW)):
             self.cur_policy = self.loco_new_policy
-        elif((policy_name == FSMStateName.SKILL_KungFu)):
-            self.cur_policy = self.kungfu_policy
+        elif((policy_name == FSMStateName.LOCO_NEW_ONNX)):
+            self.cur_policy = self.loco_new_onnx_policy
         elif((policy_name == FSMStateName.SKILL_Dance)):
             self.cur_policy = self.dance_policy
         elif((policy_name == FSMStateName.SKILL_COOLDOWN)):
             self.cur_policy = self.skill_cooldown_policy
         elif((policy_name == FSMStateName.SKILL_CAST)):
             self.cur_policy = self.skill_cast_policy
-        elif((policy_name == FSMStateName.SKILL_KICK)):
-            self.cur_policy = self.kick_policy
         elif((policy_name == FSMStateName.SKILL_KungFu2)):
             self.cur_policy = self.kungfu2_policy
         elif((policy_name == FSMStateName.SKILL_BEYOND_MIMIC)):
             self.cur_policy = self.beyond_mimic_policy
-        elif((policy_name == FSMStateName.SKILL_GAE)):
-            self.cur_policy = self.gae_mimic_policy
         elif((policy_name == FSMStateName.SKILL_BOX_TRANSPORT)):
             self.cur_policy = self.box_transport_policy
         else:

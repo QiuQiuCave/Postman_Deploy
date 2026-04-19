@@ -14,9 +14,9 @@ class FSMStateName(Enum):
     SKILL_Dance = 7
     SKILL_KungFu2 = 9
     SKILL_BEYOND_MIMIC = 10
-    SKILL_BOX_TRANSPORT = 12
     LOCO_NEW = 13
     LOCO_NEW_ONNX = 14
+    SKILL_BOX_TRANSPORT_V = 15
 
 
 @unique
@@ -27,9 +27,9 @@ class FSMCommand(Enum):
     PASSIVE = 4
     SKILL_1 = 5
     SKILL_4 = 8
-    BOX_TRANSPORT = 12
     LOCO_NEW = 13
     LOCO_NEW_ONNX = 14
+    SKILL_BOX_TRANSPORT_V = 15
     
     
     

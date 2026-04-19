@@ -39,9 +39,9 @@ class TerminalController:
         print("  a+r1        - Locomotion mode")
         print("  x+r1        - Skill 1 (Dance)")
         print("  y+l1        - Skill 4 (BeyondMimic)")
-        print("  a+l1        - Box Transport Velocity")
         print("  x+l1        - Locomotion NEW (sim2sim, .pt)")
         print("  y+r1        - Locomotion NEW (sim2sim, .onnx)")
+        print("  b+r1        - Box Transport Velocity (sim2sim, .onnx)")
         print("  vel x y z   - Set velocity (e.g., 'vel 0.5 0 0.2')")
         print("  exit        - Exit program")
         print("===========================\n")
@@ -122,15 +122,15 @@ if __name__ == "__main__":
                 elif cmd == "y+l1":
                     state_cmd.skill_cmd = FSMCommand.SKILL_4
                     print("Skill 4 (BeyondMimic)")
-                elif cmd == "a+l1":
-                    state_cmd.skill_cmd = FSMCommand.BOX_TRANSPORT
-                    print("Box Transport Velocity")
                 elif cmd == "x+l1":
                     state_cmd.skill_cmd = FSMCommand.LOCO_NEW
                     print("Locomotion mode (new, 99-dim sim2sim, TorchScript)")
                 elif cmd == "y+r1":
                     state_cmd.skill_cmd = FSMCommand.LOCO_NEW_ONNX
                     print("Locomotion mode (new, 99-dim sim2sim, ONNX)")
+                elif cmd == "b+r1":
+                    state_cmd.skill_cmd = FSMCommand.SKILL_BOX_TRANSPORT_V
+                    print("Box Transport Velocity (sim2sim, ONNX)")
                 elif cmd.startswith("vel "):
                     try:
                         parts = cmd.split()

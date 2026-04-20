@@ -51,7 +51,11 @@ if __name__ == "__main__":
     box_qvel_adr    = m.jnt_dofadr[box_jnt_idx]
     box_park_pos    = np.array([100.0, 100.0, 0.15], dtype=np.float64)
     box_offset_base = np.array([0.32, 0.0, 0.26], dtype=np.float64)
+    box_hold_dur    = 1.0
     box_active      = False
+    box_hold_until  = 0.0
+    box_hold_pos    = np.zeros(3, dtype=np.float64)
+    box_hold_quat   = np.array([1.0, 0.0, 0.0, 0.0], dtype=np.float64)
 
     joystick = JoyStick()
     Running = True
@@ -92,6 +96,18 @@ if __name__ == "__main__":
                 d.ctrl[:] = tau
                 mujoco.mj_step(m, d)
                 sim_counter += 1
+
+                # 硬 pin:悬吊期内每个 sim step 把箱子 qpos/qvel 钉死,
+                # 物理上等价于理想刚性绳,防 contact 冲击漂移。
+                if box_hold_until > 0.0:
+                    if time.time() < box_hold_until:
+                        d.qpos[box_qpos_adr:box_qpos_adr+3]   = box_hold_pos
+                        d.qpos[box_qpos_adr+3:box_qpos_adr+7] = box_hold_quat
+                        d.qvel[box_qvel_adr:box_qvel_adr+6]   = 0.0
+                    else:
+                        box_hold_until = 0.0
+                        print("BoxTransport: released gravity hold.")
+
                 if sim_counter % control_decimation == 0:
 
                     qj = d.qpos[7:7+num_joints]
@@ -126,16 +142,20 @@ if __name__ == "__main__":
                         pelvis_quat = d.qpos[3:7].copy()
                         offset_world = np.zeros(3, dtype=np.float64)
                         mujoco.mju_rotVecQuat(offset_world, box_offset_base, pelvis_quat)
-                        d.qpos[box_qpos_adr:box_qpos_adr+3]   = pelvis_pos + offset_world
-                        d.qpos[box_qpos_adr+3:box_qpos_adr+7] = pelvis_quat
+                        box_hold_pos[:]  = pelvis_pos + offset_world
+                        box_hold_quat[:] = pelvis_quat
+                        d.qpos[box_qpos_adr:box_qpos_adr+3]   = box_hold_pos
+                        d.qpos[box_qpos_adr+3:box_qpos_adr+7] = box_hold_quat
                         d.qvel[box_qvel_adr:box_qvel_adr+6]   = 0.0
+                        box_hold_until = time.time() + box_hold_dur
                         mujoco.mj_forward(m, d)
                         box_active = True
-                        print("BoxTransport: spawned box between wrists.")
+                        print(f"BoxTransport: spawned box, pinned for {box_hold_dur:.1f}s.")
                     elif (not is_box) and box_active:
                         d.qpos[box_qpos_adr:box_qpos_adr+3]   = box_park_pos
                         d.qpos[box_qpos_adr+3:box_qpos_adr+7] = [1.0, 0.0, 0.0, 0.0]
                         d.qvel[box_qvel_adr:box_qvel_adr+6]   = 0.0
+                        box_hold_until = 0.0
                         mujoco.mj_forward(m, d)
                         box_active = False
                         print("BoxTransport: parked box.")

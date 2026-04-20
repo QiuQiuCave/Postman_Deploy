@@ -11,6 +11,7 @@ from policy.skill_cast.SkillCast import SkillCast
 from policy.kungfu2.KungFu2 import KungFu2
 from policy.beyond_mimic.BeyondMimic import BeyondMimic
 from policy.box_transport_velocity.BoxTransportVelocity import BoxTransportVelocity
+from policy.dual_agent_velocity.DualAgentVelocity import DualAgentVelocity
 from FSM.FSMState import *
 import time
 from common.ctrlcomp import *
@@ -41,6 +42,7 @@ class FSM:
         self.kungfu2_policy = KungFu2(state_cmd, policy_output)
         self.beyond_mimic_policy = BeyondMimic(state_cmd, policy_output)
         self.box_transport_velocity_policy = BoxTransportVelocity(state_cmd, policy_output)
+        self.dual_agent_velocity_policy = DualAgentVelocity(state_cmd, policy_output)
 
         print("initalized all policies!!!")
         
@@ -103,6 +105,8 @@ class FSM:
             self.cur_policy = self.beyond_mimic_policy
         elif((policy_name == FSMStateName.SKILL_BOX_TRANSPORT_V)):
             self.cur_policy = self.box_transport_velocity_policy
+        elif((policy_name == FSMStateName.DUAL_AGENT_VEL)):
+            self.cur_policy = self.dual_agent_velocity_policy
         else:
             pass
             

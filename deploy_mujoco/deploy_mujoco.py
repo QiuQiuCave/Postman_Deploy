@@ -50,7 +50,7 @@ if __name__ == "__main__":
     box_qpos_adr    = m.jnt_qposadr[box_jnt_idx]
     box_qvel_adr    = m.jnt_dofadr[box_jnt_idx]
     box_park_pos    = np.array([100.0, 100.0, 0.15], dtype=np.float64)
-    box_offset_base = np.array([0.32, 0.0, 0.26], dtype=np.float64)
+    box_offset_base = np.array([0.32, 0.0, 0.31], dtype=np.float64)
     box_hold_dur    = 1.0
     box_active      = False
     box_hold_until  = 0.0
@@ -83,7 +83,9 @@ if __name__ == "__main__":
                     state_cmd.skill_cmd = FSMCommand.LOCO_NEW_ONNX
                 if joystick.is_button_released(JoystickButton.B) and joystick.is_button_pressed(JoystickButton.R1):
                     state_cmd.skill_cmd = FSMCommand.SKILL_BOX_TRANSPORT_V
-                
+                if joystick.is_button_released(JoystickButton.A) and joystick.is_button_pressed(JoystickButton.L1):
+                    state_cmd.skill_cmd = FSMCommand.DUAL_AGENT_VEL
+
                 state_cmd.vel_cmd[0] = -joystick.get_axis_value(1)
                 state_cmd.vel_cmd[1] = -joystick.get_axis_value(0)
                 state_cmd.vel_cmd[2] = -joystick.get_axis_value(3)
@@ -135,7 +137,9 @@ if __name__ == "__main__":
                     kds = policy_output.kds.copy()
 
                     cur = FSM_controller.cur_policy
-                    is_box = (cur.name == FSMStateName.SKILL_BOX_TRANSPORT_V)
+                    # `needs_transport_box` is declared on policy classes that
+                    # want the box in their grasp region (BoxTransport, DualAgent).
+                    is_box = getattr(cur, "needs_transport_box", False)
                     ramp_complete = (not getattr(cur, "ramping", True))
                     if is_box and ramp_complete and not box_active:
                         pelvis_pos  = d.qpos[0:3].copy()

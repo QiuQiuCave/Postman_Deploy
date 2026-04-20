@@ -42,6 +42,7 @@ class TerminalController:
         print("  x+l1        - Locomotion NEW (sim2sim, .pt)")
         print("  y+r1        - Locomotion NEW (sim2sim, .onnx)")
         print("  b+r1        - Box Transport Velocity (sim2sim, .onnx)")
+        print("  a+l1        - Dual Agent Velocity (upper+lower, sim2sim, .onnx)")
         print("  vel x y z   - Set velocity (e.g., 'vel 0.5 0 0.2')")
         print("  exit        - Exit program")
         print("===========================\n")
@@ -94,13 +95,14 @@ if __name__ == "__main__":
     # Transport box handles (body lives in scene.xml, parked off-scene).
     # Teleported between the robot's wrists when BoxTransportVelocity ramp
     # completes, parked back on exit. Offset derived from training:
-    # world (0.32, 0, 1.05) minus pelvis rest z ~0.79 → pelvis-frame (0.32, 0, 0.26).
+    # world (0.32, 0, 1.05) minus pelvis rest z ~0.79 → pelvis-frame (0.32, 0, 0.26);
+    # +5cm 微调,训练的 pelvis 休止高度与 MuJoCo 实际略有差异,实测 0.31 贴手心。
     box_id          = mujoco.mj_name2id(m, mujoco.mjtObj.mjOBJ_BODY, "transport_box")
     box_jnt_idx     = m.body_jntadr[box_id]
     box_qpos_adr    = m.jnt_qposadr[box_jnt_idx]
     box_qvel_adr    = m.jnt_dofadr[box_jnt_idx]
     box_park_pos    = np.array([100.0, 100.0, 0.15], dtype=np.float64)
-    box_offset_base = np.array([0.32, 0.0, 0.26], dtype=np.float64)
+    box_offset_base = np.array([0.32, 0.0, 0.31], dtype=np.float64)
     box_hold_dur    = 1.0   # 秒。生成后"绳子"吊着的时长,给手合拢的机会
     box_active      = False
     box_hold_until  = 0.0   # time.time() 戳,>0 表示正在硬 pin
@@ -147,6 +149,9 @@ if __name__ == "__main__":
                 elif cmd == "b+r1":
                     state_cmd.skill_cmd = FSMCommand.SKILL_BOX_TRANSPORT_V
                     print("Box Transport Velocity (sim2sim, ONNX)")
+                elif cmd == "a+l1":
+                    state_cmd.skill_cmd = FSMCommand.DUAL_AGENT_VEL
+                    print("Dual Agent Velocity (upper+lower, sim2sim, ONNX)")
                 elif cmd.startswith("vel "):
                     try:
                         parts = cmd.split()
@@ -211,7 +216,9 @@ if __name__ == "__main__":
                 # (when ramping flips False); despawn fires on the tick we
                 # leave BoxTransport.
                 cur = FSM_controller.cur_policy
-                is_box = (cur.name == FSMStateName.SKILL_BOX_TRANSPORT_V)
+                # `needs_transport_box` is declared on policy classes that
+                # want the box in their grasp region (BoxTransport, DualAgent).
+                is_box = getattr(cur, "needs_transport_box", False)
                 ramp_complete = (not getattr(cur, "ramping", True))
                 if is_box and ramp_complete and not box_active:
                     pelvis_pos  = d.qpos[0:3].copy()

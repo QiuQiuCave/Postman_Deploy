@@ -19,6 +19,8 @@ class BoxTransportVelocity(FSMState):
        joint_pos_rel (29) | joint_vel_rel (29) | last_action (29)] = 96
     """
 
+    needs_transport_box = True
+
     def __init__(self, state_cmd: StateAndCmd, policy_output: PolicyOutput):
         super().__init__()
         self.state_cmd = state_cmd

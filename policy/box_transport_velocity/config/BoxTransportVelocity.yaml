@@ -80,12 +80,16 @@ history_length: 1
 num_actions: 29
 num_obs: 96    # single frame: 3 + 3 + 3 + 29 + 29 + 29 = 96
 
-# Pose ramp-in before policy inference starts. Linearly interpolates from the
-# previous policy's last motor pose to default_angles using box_transport's PD,
-# avoiding the OOD joint_pos_rel that an instant switch would feed the policy
-# (training had position_range=(1.0,1.0), i.e. zero joint reset randomization).
+# Ramp-in effectively disabled (ramp_time = one control tick, no PD stiffening).
+# The retrained policy has enough domain randomization (offset joint reset,
+# actuator gain ±20%, stronger pushes) to tolerate an instant switch, so we
+# fall through to inference on tick 2 with only a single PD-hold tick at the
+# target default pose. Restore ramp_time / ramp_kp_scale if a future policy
+# regresses on OOD robustness.
 control_dt: 0.02
-ramp_time: 2.0
+ramp_time: 0.02
+ramp_kp_scale: 1.0
+ramp_kd_scale: 1.0
 
 # Deployment command ranges (UniformVelocityCommandCfg.limit_ranges).
 cmd_init: [0, 0, 0]

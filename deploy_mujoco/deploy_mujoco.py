@@ -43,7 +43,16 @@ if __name__ == "__main__":
     state_cmd = StateAndCmd(num_joints)
     policy_output = PolicyOutput(num_joints)
     FSM_controller = FSM(state_cmd, policy_output)
-    
+
+    # Transport box handles — see deploy_mujoco_keyboard_input.py for rationale.
+    box_id          = mujoco.mj_name2id(m, mujoco.mjtObj.mjOBJ_BODY, "transport_box")
+    box_jnt_idx     = m.body_jntadr[box_id]
+    box_qpos_adr    = m.jnt_qposadr[box_jnt_idx]
+    box_qvel_adr    = m.jnt_dofadr[box_jnt_idx]
+    box_park_pos    = np.array([100.0, 100.0, 0.15], dtype=np.float64)
+    box_offset_base = np.array([0.32, 0.0, 0.26], dtype=np.float64)
+    box_active      = False
+
     joystick = JoyStick()
     Running = True
     with mujoco.viewer.launch_passive(m, d) as viewer:
@@ -77,14 +86,16 @@ if __name__ == "__main__":
                 
                 step_start = time.time()
                 
-                tau = pd_control(policy_output_action, d.qpos[7:], kps, np.zeros_like(kps), d.qvel[6:], kds)
+                tau = pd_control(policy_output_action,
+                                 d.qpos[7:7+num_joints], kps, np.zeros_like(kps),
+                                 d.qvel[6:6+num_joints], kds)
                 d.ctrl[:] = tau
                 mujoco.mj_step(m, d)
                 sim_counter += 1
                 if sim_counter % control_decimation == 0:
-                    
-                    qj = d.qpos[7:]
-                    dqj = d.qvel[6:]
+
+                    qj = d.qpos[7:7+num_joints]
+                    dqj = d.qvel[6:6+num_joints]
                     quat = d.qpos[3:7]
                     
                     omega = d.qvel[3:6]
@@ -106,6 +117,28 @@ if __name__ == "__main__":
                     policy_output_action = policy_output.actions.copy()
                     kps = policy_output.kps.copy()
                     kds = policy_output.kds.copy()
+
+                    cur = FSM_controller.cur_policy
+                    is_box = (cur.name == FSMStateName.SKILL_BOX_TRANSPORT_V)
+                    ramp_complete = (not getattr(cur, "ramping", True))
+                    if is_box and ramp_complete and not box_active:
+                        pelvis_pos  = d.qpos[0:3].copy()
+                        pelvis_quat = d.qpos[3:7].copy()
+                        offset_world = np.zeros(3, dtype=np.float64)
+                        mujoco.mju_rotVecQuat(offset_world, box_offset_base, pelvis_quat)
+                        d.qpos[box_qpos_adr:box_qpos_adr+3]   = pelvis_pos + offset_world
+                        d.qpos[box_qpos_adr+3:box_qpos_adr+7] = pelvis_quat
+                        d.qvel[box_qvel_adr:box_qvel_adr+6]   = 0.0
+                        mujoco.mj_forward(m, d)
+                        box_active = True
+                        print("BoxTransport: spawned box between wrists.")
+                    elif (not is_box) and box_active:
+                        d.qpos[box_qpos_adr:box_qpos_adr+3]   = box_park_pos
+                        d.qpos[box_qpos_adr+3:box_qpos_adr+7] = [1.0, 0.0, 0.0, 0.0]
+                        d.qvel[box_qvel_adr:box_qvel_adr+6]   = 0.0
+                        mujoco.mj_forward(m, d)
+                        box_active = False
+                        print("BoxTransport: parked box.")
             except ValueError as e:
                 print(str(e))
             

@@ -51,6 +51,8 @@ class BoxTransportVelocity(FSMState):
         self.control_dt       = config["control_dt"]
         self.ramp_time        = config["ramp_time"]
         self.ramp_num_step    = max(1, int(self.ramp_time / self.control_dt))
+        self.ramp_kp_scale    = config.get("ramp_kp_scale", 1.0)
+        self.ramp_kd_scale    = config.get("ramp_kd_scale", 1.0)
 
         cmd_range = config["cmd_range"]
         self.range_velx = np.array(cmd_range["lin_vel_x"], dtype=np.float32)
@@ -90,6 +92,11 @@ class BoxTransportVelocity(FSMState):
             self.kds_reorder[motor_idx]            = self.kds[i]
             self.default_angles_reorder[motor_idx] = self.default_angles[i]
 
+        # Stiffer gains during ramp to hold balance through the arm-spread CoM shift;
+        # restored to trained values on the first inference tick.
+        self.ramp_kps = (self.kps_reorder * self.ramp_kp_scale).astype(np.float32)
+        self.ramp_kds = (self.kds_reorder * self.ramp_kd_scale).astype(np.float32)
+
         self.action.fill(0.0)
 
         # Snapshot the previous policy's last motor pose; ramp linearly toward
@@ -110,8 +117,8 @@ class BoxTransportVelocity(FSMState):
             target = (self.ramp_init_motor_pos * (1.0 - alpha)
                       + self.default_angles_reorder * alpha).astype(np.float32)
             self.policy_output.actions = target
-            self.policy_output.kps     = self.kps_reorder.copy()
-            self.policy_output.kds     = self.kds_reorder.copy()
+            self.policy_output.kps     = self.ramp_kps.copy()
+            self.policy_output.kds     = self.ramp_kds.copy()
             if alpha >= 1.0:
                 self.ramping = False
                 print("BoxTransportVelocity: ramp complete, starting policy inference.")

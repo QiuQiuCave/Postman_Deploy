@@ -13,20 +13,10 @@ class BoxTransportVelocity(FSMState):
     """
     ONNX sim2sim runtime for the g1_box_transport_velocity policy.
 
-    Obs contract (matches IsaacLab ObservationManager with history_length=5,
-    flatten_history_dim=true, concatenate_terms=true, per-term concatenation
-    in yaml order, oldest -> newest within each term's window):
+    Single-frame obs (history_length=0 on the training policy group):
 
-      [base_ang_vel_hist (3*5=15) |
-       projected_gravity_hist (3*5=15) |
-       velocity_commands_hist (3*5=15) |
-       joint_pos_rel_hist (29*5=145) |
-       joint_vel_rel_hist (29*5=145) |
-       last_action_hist (29*5=145)]
-      = 480
-
-    Per-term scaling is applied BEFORE the value is pushed into its history
-    window (matches IsaacLab term-level scale).
+      [base_ang_vel (3) | projected_gravity (3) | velocity_commands (3) |
+       joint_pos_rel (29) | joint_vel_rel (29) | last_action (29)] = 96
     """
 
     def __init__(self, state_cmd: StateAndCmd, policy_output: PolicyOutput):
@@ -70,16 +60,7 @@ class BoxTransportVelocity(FSMState):
         self.qj_obs  = np.zeros(self.num_actions, dtype=np.float32)
         self.dqj_obs = np.zeros(self.num_actions, dtype=np.float32)
         self.action  = np.zeros(self.num_actions, dtype=np.float32)  # raw, pre-scale
-
-        # Per-term history windows: shape (H, dim), oldest at index 0.
-        H = self.history_length
-        self.hist_ang_vel = np.zeros((H, 3),                 dtype=np.float32)
-        self.hist_gravity = np.zeros((H, 3),                 dtype=np.float32)
-        self.hist_cmd     = np.zeros((H, 3),                 dtype=np.float32)
-        self.hist_qpos    = np.zeros((H, self.num_actions),  dtype=np.float32)
-        self.hist_qvel    = np.zeros((H, self.num_actions),  dtype=np.float32)
-        self.hist_action  = np.zeros((H, self.num_actions),  dtype=np.float32)
-        self._history_primed = False
+        self.obs     = np.zeros(self.num_obs,     dtype=np.float32)
 
         self.sess = ort.InferenceSession(
             self.policy_path, providers=["CPUExecutionProvider"])
@@ -109,16 +90,7 @@ class BoxTransportVelocity(FSMState):
             self.kds_reorder[motor_idx]            = self.kds[i]
             self.default_angles_reorder[motor_idx] = self.default_angles[i]
 
-        # Fresh history on re-entry; _history_primed=False means next run() fills
-        # all H slots with the current frame.
-        self.hist_ang_vel.fill(0.0)
-        self.hist_gravity.fill(0.0)
-        self.hist_cmd.fill(0.0)
-        self.hist_qpos.fill(0.0)
-        self.hist_qvel.fill(0.0)
-        self.hist_action.fill(0.0)
         self.action.fill(0.0)
-        self._history_primed = False
 
         # Snapshot the previous policy's last motor pose; ramp linearly toward
         # default_angles (motor order) over ramp_time seconds before inference.
@@ -127,15 +99,6 @@ class BoxTransportVelocity(FSMState):
         self.ramping = True
         print(f"BoxTransportVelocity: ramping to default pose over {self.ramp_time:.2f}s "
               f"({self.ramp_num_step} ticks) before policy inference starts.")
-
-    def _push(self, buf, new_row):
-        """Roll oldest out, append newest at the end (buf[-1])."""
-        buf[:-1] = buf[1:]
-        buf[-1]  = new_row
-
-    def _prime(self, buf, new_row):
-        """Fill every slot with new_row (first-frame init, mirrors CircularBuffer)."""
-        buf[:] = new_row
 
     def run(self):
         # 0. ramp-in phase: hold the box-transport PD and interpolate from the
@@ -178,40 +141,20 @@ class BoxTransportVelocity(FSMState):
         last_action_s  = np.clip(self.action, -self.last_action_clip,
                                  self.last_action_clip).astype(np.float32)
 
-        # 4. update per-term history windows
-        if not self._history_primed:
-            self._prime(self.hist_ang_vel, ang_vel_s)
-            self._prime(self.hist_gravity, gravity_s)
-            self._prime(self.hist_cmd,     cmd_s)
-            self._prime(self.hist_qpos,    joint_pos_rel)
-            self._prime(self.hist_qvel,    joint_vel_s)
-            self._prime(self.hist_action,  last_action_s)
-            self._history_primed = True
-        else:
-            self._push(self.hist_ang_vel, ang_vel_s)
-            self._push(self.hist_gravity, gravity_s)
-            self._push(self.hist_cmd,     cmd_s)
-            self._push(self.hist_qpos,    joint_pos_rel)
-            self._push(self.hist_qvel,    joint_vel_s)
-            self._push(self.hist_action,  last_action_s)
+        # 4. assemble single-frame obs in training term order
+        self.obs[0:3]   = ang_vel_s
+        self.obs[3:6]   = gravity_s
+        self.obs[6:9]   = cmd_s
+        self.obs[9:38]  = joint_pos_rel
+        self.obs[38:67] = joint_vel_s
+        self.obs[67:96] = last_action_s
 
-        # 5. assemble flattened obs: per-term history (oldest->newest) concatenated
-        obs = np.concatenate([
-            self.hist_ang_vel.reshape(-1),
-            self.hist_gravity.reshape(-1),
-            self.hist_cmd.reshape(-1),
-            self.hist_qpos.reshape(-1),
-            self.hist_qvel.reshape(-1),
-            self.hist_action.reshape(-1),
-        ]).astype(np.float32)
-        assert obs.shape[0] == self.num_obs
-
-        # 6. inference (outer clip = safety belt)
-        x = np.clip(obs.reshape(1, -1), -100.0, 100.0)
+        # 5. inference (outer clip = safety belt)
+        x = np.clip(self.obs.reshape(1, -1), -100.0, 100.0)
         raw = self.sess.run([self.onnx_out], {self.onnx_in: x})[0]
         self.action = np.clip(raw, -100.0, 100.0).squeeze().astype(np.float32)
 
-        # 7. action -> q_cmd (policy order, per-joint scale + default offset) -> motor order
+        # 6. action -> q_cmd (policy order, per-joint scale + default offset) -> motor order
         q_cmd_policy = self.action * self.action_scale + self.default_angles
         action_motor = q_cmd_policy.copy()
         for i in range(len(self.joint2motor_idx)):

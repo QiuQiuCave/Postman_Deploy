@@ -121,8 +121,9 @@ class DualAgentTracking(FSMState):
     the raw action to feed last_action back into the next obs.
     """
 
-    # No shared box in this task — training scene has no box.
-    needs_transport_box = False
+    # Align with other box-carrying policies: teleport the shared transport_box
+    # into the grasp region on entry so the upper actor has something to hold.
+    needs_transport_box = True
 
     def __init__(self, state_cmd: StateAndCmd, policy_output: PolicyOutput):
         super().__init__()

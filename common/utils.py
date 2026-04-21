@@ -17,7 +17,7 @@ class FSMStateName(Enum):
     LOCO_NEW = 13
     LOCO_NEW_ONNX = 14
     SKILL_BOX_TRANSPORT_V = 15
-    DUAL_AGENT_VEL = 16
+    DUAL_AGENT_BOX_TRANS_VEL = 16
     DUAL_AGENT_TRACK = 17
 
 
@@ -32,7 +32,7 @@ class FSMCommand(Enum):
     LOCO_NEW = 13
     LOCO_NEW_ONNX = 14
     SKILL_BOX_TRANSPORT_V = 15
-    DUAL_AGENT_VEL = 16
+    DUAL_AGENT_BOX_TRANS_VEL = 16
     DUAL_AGENT_TRACK = 17
     
     

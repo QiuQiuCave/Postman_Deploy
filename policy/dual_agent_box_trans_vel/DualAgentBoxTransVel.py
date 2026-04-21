@@ -9,9 +9,12 @@ import os
 import onnxruntime as ort
 
 
-class DualAgentVelocity(FSMState):
+class DualAgentBoxTransVel(FSMState):
     """
-    ONNX sim2sim runtime for the dual-agent velocity policy (upper + lower).
+    ONNX sim2sim runtime for the dual-agent box-transport velocity policy
+    (upper + lower). Renamed from DualAgentVelocity to reflect that the
+    policy is trained to carry a box while tracking velocity commands — the
+    transport_box body is spawned in the grasp region on entry.
 
     Model: single ONNX file (dual_agent_combined.onnx) with two inputs.
       upper_obs: float32[1, 480]   per-term 5-frame history
@@ -30,27 +33,25 @@ class DualAgentVelocity(FSMState):
       last_action(29)
     base_lin_vel has no scale in the training cfg (pass-through).
 
-    Action handling differs from BoxTransportVelocity: the CombinedActor in
-    dual_agent_export_onnx.py reorders the combined action to MuJoCo order
-    before exiting the graph, so `policy_output.actions` is written directly
-    from the ONNX output — no scatter via joint2motor_idx needed. The stored
-    `self.action_isaac` is used only to feed last_action back into the next
-    obs (training recorded last_action in Isaac order, pre-reorder).
+    Action handling: the CombinedActor in dual_agent_export_onnx.py reorders
+    the combined action to MuJoCo order before exiting the graph, so
+    `policy_output.actions` is written directly from the ONNX output — no
+    scatter via joint2motor_idx needed. The stored `self.action_isaac` is
+    used only to feed last_action back into the next obs (training recorded
+    last_action in Isaac order, pre-reorder).
     """
 
-    # Upper / lower share the full 29-dim last_action (the "combined" action
-    # before the output reorder, in Isaac order).
     needs_transport_box = True
 
     def __init__(self, state_cmd: StateAndCmd, policy_output: PolicyOutput):
         super().__init__()
         self.state_cmd = state_cmd
         self.policy_output = policy_output
-        self.name = FSMStateName.DUAL_AGENT_VEL
-        self.name_str = "dual_agent_velocity_mode"
+        self.name = FSMStateName.DUAL_AGENT_BOX_TRANS_VEL
+        self.name_str = "dual_agent_box_trans_vel_mode"
 
         current_dir = os.path.dirname(os.path.abspath(__file__))
-        config_path = os.path.join(current_dir, "config", "DualAgentVelocity.yaml")
+        config_path = os.path.join(current_dir, "config", "DualAgentBoxTransVel.yaml")
         with open(config_path, "r") as f:
             config = yaml.load(f, Loader=yaml.FullLoader)
 
@@ -86,14 +87,12 @@ class DualAgentVelocity(FSMState):
         self.range_vely = np.array(cmd_range["lin_vel_y"], dtype=np.float32)
         self.range_velz = np.array(cmd_range["ang_vel_z"], dtype=np.float32)
 
-        # Scratch buffers (Isaac order for obs, MuJoCo order for control).
         self.qj_obs         = np.zeros(self.num_actions, dtype=np.float32)
         self.dqj_obs        = np.zeros(self.num_actions, dtype=np.float32)
-        self.action_isaac   = np.zeros(self.num_actions, dtype=np.float32)  # raw, Isaac order, feeds next last_action
+        self.action_isaac   = np.zeros(self.num_actions, dtype=np.float32)
         self.upper_obs_flat = np.zeros(self.num_obs_upper, dtype=np.float32)
         self.lower_obs_flat = np.zeros(self.num_obs_lower, dtype=np.float32)
 
-        # Upper per-term history rings, shape (H, dim). Oldest at index 0.
         H = self.history_length_upper
         self.hist_ang_vel = np.zeros((H, 3),                dtype=np.float32)
         self.hist_gravity = np.zeros((H, 3),                dtype=np.float32)
@@ -103,7 +102,6 @@ class DualAgentVelocity(FSMState):
         self.hist_action  = np.zeros((H, self.num_actions), dtype=np.float32)
         self._history_primed = False
 
-        # ONNX session.
         self.sess = ort.InferenceSession(
             self.policy_path, providers=["CPUExecutionProvider"])
         in_names  = [i.name for i in self.sess.get_inputs()]
@@ -113,24 +111,20 @@ class DualAgentVelocity(FSMState):
         assert "actions" in out_names, \
             f"ONNX output must include 'actions', got {out_names}"
 
-        # Dim sanity.
         dims = {i.name: i.shape[-1] for i in self.sess.get_inputs()}
         assert dims["upper_obs"] == self.num_obs_upper, \
             f"upper_obs dim {dims['upper_obs']} != {self.num_obs_upper}"
         assert dims["lower_obs"] == self.num_obs_lower, \
             f"lower_obs dim {dims['lower_obs']} != {self.num_obs_lower}"
 
-        # Warm-up.
         warm_u = np.zeros((1, self.num_obs_upper), dtype=np.float32)
         warm_l = np.zeros((1, self.num_obs_lower), dtype=np.float32)
         for _ in range(5):
             self.sess.run(["actions"], {"upper_obs": warm_u, "lower_obs": warm_l})
 
-        print("DualAgentVelocity policy initializing (backend=onnx, dual-input) ...")
+        print("DualAgentBoxTransVel policy initializing (backend=onnx, dual-input) ...")
 
     def enter(self):
-        # Reorder per-joint constants from Isaac order (yaml) to MuJoCo order.
-        # ONNX output is MuJoCo order, so q_cmd is computed directly in MuJoCo.
         self.kps_reorder            = np.zeros_like(self.kps)
         self.kds_reorder            = np.zeros_like(self.kds)
         self.default_angles_reorder = np.zeros_like(self.default_angles)
@@ -145,7 +139,6 @@ class DualAgentVelocity(FSMState):
         self.ramp_kps = (self.kps_reorder * self.ramp_kp_scale).astype(np.float32)
         self.ramp_kds = (self.kds_reorder * self.ramp_kd_scale).astype(np.float32)
 
-        # Reset history + last-action memory.
         self.hist_ang_vel.fill(0.0)
         self.hist_gravity.fill(0.0)
         self.hist_cmd.fill(0.0)
@@ -155,13 +148,10 @@ class DualAgentVelocity(FSMState):
         self._history_primed = False
         self.action_isaac.fill(0.0)
 
-        # Ramp from entry pose to default (MuJoCo order). Both arm ±1 rad pose
-        # and the fact that lower obs sees these joints make a hard switch
-        # risky from LocoMode — keep ramp_time configurable.
         self.ramp_init_motor_pos = self.state_cmd.q.copy().astype(np.float32)
         self.ramp_cur_step = 0
         self.ramping = True
-        print(f"DualAgentVelocity: ramping to default pose over {self.ramp_time:.2f}s "
+        print(f"DualAgentBoxTransVel: ramping to default pose over {self.ramp_time:.2f}s "
               f"({self.ramp_num_step} ticks) before policy inference starts.")
 
     @staticmethod
@@ -174,7 +164,6 @@ class DualAgentVelocity(FSMState):
         buf[:] = new_row
 
     def run(self):
-        # Ramp-in: PD-hold while interpolating to default_angles (MuJoCo order).
         if self.ramping:
             self.ramp_cur_step += 1
             alpha  = min(self.ramp_cur_step / self.ramp_num_step, 1.0)
@@ -185,10 +174,9 @@ class DualAgentVelocity(FSMState):
             self.policy_output.kds     = self.ramp_kds.copy()
             if alpha >= 1.0:
                 self.ramping = False
-                print("DualAgentVelocity: ramp complete, starting policy inference.")
+                print("DualAgentBoxTransVel: ramp complete, starting policy inference.")
             return
 
-        # 1. robot state (MuJoCo order from bus).
         gravity    = self.state_cmd.gravity_ori.copy()
         ang_vel    = self.state_cmd.ang_vel.copy()
         lin_vel_b  = self.state_cmd.base_lin_vel.copy().astype(np.float32)
@@ -197,12 +185,10 @@ class DualAgentVelocity(FSMState):
         joycmd     = self.state_cmd.vel_cmd.copy()
         cmd        = scale_values(joycmd, [self.range_velx, self.range_vely, self.range_velz])
 
-        # 2. gather motor-order → Isaac order for joint state.
         for i in range(len(self.joint2motor_idx)):
             self.qj_obs[i]  = qj_motor[self.joint2motor_idx[i]]
             self.dqj_obs[i] = dqj_motor[self.joint2motor_idx[i]]
 
-        # 3. per-term scale + clip (matches training ObsManager).
         C = self.obs_clip_default
         ang_vel_s     = np.clip(ang_vel * self.ang_vel_scale, -C, C).astype(np.float32)
         lin_vel_s     = np.clip(lin_vel_b * self.lin_vel_scale, -C, C).astype(np.float32)
@@ -214,7 +200,6 @@ class DualAgentVelocity(FSMState):
         last_action_s = np.clip(self.action_isaac, -self.last_action_clip,
                                 self.last_action_clip).astype(np.float32)
 
-        # 4. upper per-term history update (same 6 terms as per-frame upper obs).
         if not self._history_primed:
             self._prime(self.hist_ang_vel, ang_vel_s)
             self._prime(self.hist_gravity, gravity_s)
@@ -231,7 +216,6 @@ class DualAgentVelocity(FSMState):
             self._push(self.hist_qvel,    joint_vel_s)
             self._push(self.hist_action,  last_action_s)
 
-        # 5. assemble upper (per-term history concat) and lower (single frame).
         self.upper_obs_flat = np.concatenate([
             self.hist_ang_vel.reshape(-1),
             self.hist_gravity.reshape(-1),
@@ -250,7 +234,6 @@ class DualAgentVelocity(FSMState):
         self.lower_obs_flat[41:70]  = joint_vel_s
         self.lower_obs_flat[70:99]  = last_action_s
 
-        # 6. inference.
         u_in = np.clip(self.upper_obs_flat.reshape(1, -1), -100.0, 100.0)
         l_in = np.clip(self.lower_obs_flat.reshape(1, -1), -100.0, 100.0)
         raw_mujoco = self.sess.run(
@@ -259,11 +242,9 @@ class DualAgentVelocity(FSMState):
         )[0]
         action_mujoco = np.clip(raw_mujoco, -100.0, 100.0).squeeze().astype(np.float32)
 
-        # 7. Store Isaac-order raw action for next-tick last_action obs.
         for i in range(len(self.joint2motor_idx)):
             self.action_isaac[i] = action_mujoco[self.joint2motor_idx[i]]
 
-        # 8. q_cmd in MuJoCo order (action is already MuJoCo-ordered).
         q_cmd_motor = action_mujoco * self.action_scale_reorder + self.default_angles_reorder
         self.policy_output.actions = q_cmd_motor.astype(np.float32)
         self.policy_output.kps     = self.kps_reorder.copy()
@@ -289,4 +270,4 @@ class DualAgentVelocity(FSMState):
             self.state_cmd.skill_cmd = FSMCommand.INVALID
             return FSMStateName.SKILL_BOX_TRANSPORT_V
         else:
-            return FSMStateName.DUAL_AGENT_VEL
+            return FSMStateName.DUAL_AGENT_BOX_TRANS_VEL

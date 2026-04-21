@@ -100,7 +100,7 @@ class DualAgentTracking(FSMState):
       lower_obs: float32[1, 121]   single frame, tracking-specific
       → actions: float32[1,  29]   already in MuJoCo motor order
 
-    Upper obs per-frame (96): identical to DualAgentVelocity upper branch
+    Upper obs per-frame (96): identical to DualAgentBoxTransVel upper branch
       base_ang_vel(3) | projected_gravity(3) | velocity_commands(3) |
       joint_pos_rel(29) | joint_vel_rel(29) | last_action(29)
 
@@ -405,8 +405,8 @@ class DualAgentTracking(FSMState):
         elif self.state_cmd.skill_cmd == FSMCommand.SKILL_BOX_TRANSPORT_V:
             self.state_cmd.skill_cmd = FSMCommand.INVALID
             return FSMStateName.SKILL_BOX_TRANSPORT_V
-        elif self.state_cmd.skill_cmd == FSMCommand.DUAL_AGENT_VEL:
+        elif self.state_cmd.skill_cmd == FSMCommand.DUAL_AGENT_BOX_TRANS_VEL:
             self.state_cmd.skill_cmd = FSMCommand.INVALID
-            return FSMStateName.DUAL_AGENT_VEL
+            return FSMStateName.DUAL_AGENT_BOX_TRANS_VEL
         else:
             return FSMStateName.DUAL_AGENT_TRACK

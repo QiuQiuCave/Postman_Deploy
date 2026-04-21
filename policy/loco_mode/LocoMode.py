@@ -125,9 +125,9 @@ class LocoMode(FSMState):
         elif(self.state_cmd.skill_cmd == FSMCommand.SKILL_BOX_TRANSPORT_V):
             self.state_cmd.skill_cmd = FSMCommand.INVALID
             return FSMStateName.SKILL_BOX_TRANSPORT_V
-        elif(self.state_cmd.skill_cmd == FSMCommand.DUAL_AGENT_VEL):
+        elif(self.state_cmd.skill_cmd == FSMCommand.DUAL_AGENT_BOX_TRANS_VEL):
             self.state_cmd.skill_cmd = FSMCommand.INVALID
-            return FSMStateName.DUAL_AGENT_VEL
+            return FSMStateName.DUAL_AGENT_BOX_TRANS_VEL
         elif(self.state_cmd.skill_cmd == FSMCommand.DUAL_AGENT_TRACK):
             self.state_cmd.skill_cmd = FSMCommand.INVALID
             return FSMStateName.DUAL_AGENT_TRACK

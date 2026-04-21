@@ -74,20 +74,18 @@ if __name__ == "__main__":
                     state_cmd.skill_cmd = FSMCommand.PASSIVE
                 if joystick.is_button_released(JoystickButton.START):
                     state_cmd.skill_cmd = FSMCommand.POS_RESET
+                # R1 group: locomotion / box-transport / mimic family.
                 if joystick.is_button_released(JoystickButton.A) and joystick.is_button_pressed(JoystickButton.R1):
                     state_cmd.skill_cmd = FSMCommand.LOCO
-                if joystick.is_button_released(JoystickButton.X) and joystick.is_button_pressed(JoystickButton.R1):
-                    state_cmd.skill_cmd = FSMCommand.SKILL_1
-                if joystick.is_button_released(JoystickButton.Y) and joystick.is_button_pressed(JoystickButton.L1):
-                    state_cmd.skill_cmd = FSMCommand.SKILL_4
-                if joystick.is_button_released(JoystickButton.X) and joystick.is_button_pressed(JoystickButton.L1):
-                    state_cmd.skill_cmd = FSMCommand.LOCO_NEW
-                if joystick.is_button_released(JoystickButton.Y) and joystick.is_button_pressed(JoystickButton.R1):
-                    state_cmd.skill_cmd = FSMCommand.LOCO_NEW_ONNX
                 if joystick.is_button_released(JoystickButton.B) and joystick.is_button_pressed(JoystickButton.R1):
                     state_cmd.skill_cmd = FSMCommand.SKILL_BOX_TRANSPORT_V
+                if joystick.is_button_released(JoystickButton.X) and joystick.is_button_pressed(JoystickButton.R1):
+                    state_cmd.skill_cmd = FSMCommand.DUAL_AGENT_BOX_TRANS_VEL
+                if joystick.is_button_released(JoystickButton.Y) and joystick.is_button_pressed(JoystickButton.R1):
+                    state_cmd.skill_cmd = FSMCommand.SKILL_4
+                # L1 group: motion-tracking demos. b/x/y+l1 reserved for future demos.
                 if joystick.is_button_released(JoystickButton.A) and joystick.is_button_pressed(JoystickButton.L1):
-                    state_cmd.skill_cmd = FSMCommand.DUAL_AGENT_VEL
+                    state_cmd.skill_cmd = FSMCommand.DUAL_AGENT_TRACK
 
                 state_cmd.vel_cmd[0] = -joystick.get_axis_value(1)
                 state_cmd.vel_cmd[1] = -joystick.get_axis_value(0)

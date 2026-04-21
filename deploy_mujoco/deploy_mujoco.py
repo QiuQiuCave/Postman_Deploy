@@ -44,6 +44,9 @@ if __name__ == "__main__":
     policy_output = PolicyOutput(num_joints)
     FSM_controller = FSM(state_cmd, policy_output)
 
+    # Anchor body (torso_link) id — DualAgentTracking reads its world pose.
+    anchor_body_id = mujoco.mj_name2id(m, mujoco.mjtObj.mjOBJ_BODY, "torso_link")
+
     # Transport box handles — see deploy_mujoco_keyboard_input.py for rationale.
     box_id          = mujoco.mj_name2id(m, mujoco.mjtObj.mjOBJ_BODY, "transport_box")
     box_jnt_idx     = m.body_jntadr[box_id]
@@ -130,7 +133,9 @@ if __name__ == "__main__":
                     state_cmd.base_quat = quat.copy()
                     state_cmd.ang_vel = omega.copy()
                     state_cmd.base_lin_vel = base_lin_vel_body
-                    
+                    state_cmd.anchor_pos_w  = d.xpos[anchor_body_id].copy().astype(np.float32)
+                    state_cmd.anchor_quat_w = d.xquat[anchor_body_id].copy().astype(np.float32)
+
                     FSM_controller.run()
                     policy_output_action = policy_output.actions.copy()
                     kps = policy_output.kps.copy()

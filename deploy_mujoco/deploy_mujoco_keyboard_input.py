@@ -43,6 +43,7 @@ class TerminalController:
         print("  y+r1        - Locomotion NEW (sim2sim, .onnx)")
         print("  b+r1        - Box Transport Velocity (sim2sim, .onnx)")
         print("  a+l1        - Dual Agent Velocity (upper+lower, sim2sim, .onnx)")
+        print("  c+l1        - Dual Agent Tracking (motion walk ref, sim2sim, .onnx)")
         print("  vel x y z   - Set velocity (e.g., 'vel 0.5 0 0.2')")
         print("  exit        - Exit program")
         print("===========================\n")
@@ -97,6 +98,11 @@ if __name__ == "__main__":
     # completes, parked back on exit. Offset derived from training:
     # world (0.32, 0, 1.05) minus pelvis rest z ~0.79 → pelvis-frame (0.32, 0, 0.26);
     # +5cm 微调,训练的 pelvis 休止高度与 MuJoCo 实际略有差异,实测 0.31 贴手心。
+    # Anchor body (torso_link) id — DualAgentTracking consumes world-frame
+    # torso pose from mj_data.xpos/xquat to build motion_anchor_pos_b/ori_b.
+    # Attribute is set unconditionally each tick so the policy can read it.
+    anchor_body_id = mujoco.mj_name2id(m, mujoco.mjtObj.mjOBJ_BODY, "torso_link")
+
     box_id          = mujoco.mj_name2id(m, mujoco.mjtObj.mjOBJ_BODY, "transport_box")
     box_jnt_idx     = m.body_jntadr[box_id]
     box_qpos_adr    = m.jnt_qposadr[box_jnt_idx]
@@ -152,6 +158,9 @@ if __name__ == "__main__":
                 elif cmd == "a+l1":
                     state_cmd.skill_cmd = FSMCommand.DUAL_AGENT_VEL
                     print("Dual Agent Velocity (upper+lower, sim2sim, ONNX)")
+                elif cmd == "c+l1":
+                    state_cmd.skill_cmd = FSMCommand.DUAL_AGENT_TRACK
+                    print("Dual Agent Tracking (motion walk reference, sim2sim, ONNX)")
                 elif cmd.startswith("vel "):
                     try:
                         parts = cmd.split()
@@ -206,6 +215,8 @@ if __name__ == "__main__":
                 state_cmd.base_quat = quat.copy()
                 state_cmd.ang_vel = omega.copy()
                 state_cmd.base_lin_vel = base_lin_vel_body
+                state_cmd.anchor_pos_w  = d.xpos[anchor_body_id].copy().astype(np.float32)
+                state_cmd.anchor_quat_w = d.xquat[anchor_body_id].copy().astype(np.float32)
                 
                 FSM_controller.run()
                 policy_output_action = policy_output.actions.copy()

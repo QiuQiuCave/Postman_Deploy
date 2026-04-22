@@ -100,16 +100,35 @@ class Controller:
             
             loop_start_time = time.time()
             
+            # --- Safety / reset ---
             if self.remote_controller.is_button_pressed(KeyMap.F1):
-                self.state_cmd.skill_cmd = FSMCommand.PASSIVE
+                self.state_cmd.skill_cmd = FSMCommand.PASSIVE      # E-stop (damping)
             if self.remote_controller.is_button_pressed(KeyMap.start):
-                self.state_cmd.skill_cmd = FSMCommand.POS_RESET
-            if self.remote_controller.is_button_pressed(KeyMap.A) and self.remote_controller.is_button_pressed(KeyMap.R1):
-                self.state_cmd.skill_cmd = FSMCommand.LOCO
-            if self.remote_controller.is_button_pressed(KeyMap.X) and self.remote_controller.is_button_pressed(KeyMap.R1):
-                self.state_cmd.skill_cmd = FSMCommand.SKILL_1
-            # if self.remote_controller.is_button_pressed(KeyMap.Y) and self.remote_controller.is_button_pressed(KeyMap.L1):
-            #     self.state_cmd.skill_cmd = FSMCommand.SKILL_4
+                self.state_cmd.skill_cmd = FSMCommand.POS_RESET    # FixedPose 缓降
+
+            # --- R1 group: hardware-capable locomotion / stable skills ---
+            if self.remote_controller.is_button_pressed(KeyMap.A) and \
+               self.remote_controller.is_button_pressed(KeyMap.R1):
+                self.state_cmd.skill_cmd = FSMCommand.LOCO         # a+r1 → LocoMode
+            if self.remote_controller.is_button_pressed(KeyMap.X) and \
+               self.remote_controller.is_button_pressed(KeyMap.R1):
+                self.state_cmd.skill_cmd = FSMCommand.SKILL_1      # x+r1 → Dance
+
+            # --- L1 group: motion-tracking family ---
+            # a+l1 → DualAgentTracking. Obs-slim (96/109) iter-15000 policy is
+            # real-deployable because anchor/base_lin_vel moved to critic at
+            # train time; the actor only needs IMU + encoders + motion phase.
+            # Box has to be handed to the robot manually (no teleport on real
+            # hardware). Full flow in refer/DualAgentTracking-Deploy-Real.md.
+            if self.remote_controller.is_button_pressed(KeyMap.A) and \
+               self.remote_controller.is_button_pressed(KeyMap.L1):
+                self.state_cmd.skill_cmd = FSMCommand.DUAL_AGENT_TRACK
+
+            # b+l1 / x+l1 / y+l1 reserved for future tracking demos — each
+            # paired with its own ONNX + motion npz. Do NOT bind sim-only
+            # policies here (BoxTransport, DualAgentBoxTransVel, BeyondMimic,
+            # LocoNew) — their actor obs include body-frame base_lin_vel
+            # which the real IMU can't provide.
 
             self.state_cmd.vel_cmd[0] =  self.remote_controller.ly
             self.state_cmd.vel_cmd[1] =  self.remote_controller.lx * -1

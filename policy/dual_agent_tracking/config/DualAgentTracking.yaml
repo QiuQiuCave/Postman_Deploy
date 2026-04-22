@@ -77,15 +77,20 @@ obs_clip_default: 100.0
 last_action_clip: 12.0
 
 # Lower-body has NO per-term scales / clips in tracking cfg (unlike velocity).
-# joint_pos_rel, joint_vel_rel, base_lin_vel, base_ang_vel, gravity: raw.
+# joint_pos_rel, joint_vel_rel, base_ang_vel, gravity: raw.
+# NOTE: motion_anchor_pos_b/ori_b and base_lin_vel were removed from the
+# policy observation (kept only in critic as privileged signals). The deploy
+# loop no longer needs to provide anchor_pos_w / anchor_quat_w / base_lin_vel
+# to this policy, though it can still set them — they're just unused.
 
 num_actions: 29
-history_length_upper: 5
-num_obs_upper: 480   # (3 + 3 + 3 + 29 + 29 + 29) × 5
-num_obs_lower: 121   # 30 (lower_body_command pos+vel) + 3 + 6 + 3 + 3 + 3 + 29 + 29 + 15
+history_length_upper: 1
+num_obs_upper: 96    # single frame: 3 + 3 + 3 + 29 + 29 + 29
+num_obs_lower: 109   # 30 (lower_body_command) + 3 + 3 + 29 + 29 + 15
 
-# MuJoCo body name for the tracking anchor — must match training's
-# anchor_body_name="torso_link". Used to compute motion_anchor_pos_b/ori_b.
+# Retained for reference / compatibility even though anchor obs is not used
+# by the current policy. Keep in sync with training's anchor_body_name in
+# dual_agent_train_env_cfg.py (torso_link).
 anchor_body_name: torso_link
 
 control_dt: 0.02

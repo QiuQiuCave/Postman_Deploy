@@ -10,66 +10,15 @@ import onnxruntime as ort
 
 
 # -----------------------------------------------------------------------------
-# Small numpy quaternion utilities (wxyz convention, matches MuJoCo & Isaac).
-# -----------------------------------------------------------------------------
-def quat_conjugate(q):
-    return np.array([q[0], -q[1], -q[2], -q[3]], dtype=np.float32)
-
-
-def quat_mul(a, b):
-    w1, x1, y1, z1 = a
-    w2, x2, y2, z2 = b
-    return np.array([
-        w1 * w2 - x1 * x2 - y1 * y2 - z1 * z2,
-        w1 * x2 + x1 * w2 + y1 * z2 - z1 * y2,
-        w1 * y2 - x1 * z2 + y1 * w2 + z1 * x2,
-        w1 * z2 + x1 * y2 - y1 * x2 + z1 * w2,
-    ], dtype=np.float32)
-
-
-def quat_rotate_inverse(q, v):
-    """Rotate vector v from world to body frame, given body quat q (wxyz)."""
-    w, x, y, z = q
-    # r = q^-1 * [0, v] * q  → equivalent to this closed form
-    qv = np.array([x, y, z], dtype=np.float32)
-    t = 2.0 * np.cross(qv, v)
-    return v - w * t + np.cross(qv, t)
-
-
-def quat_to_mat(q):
-    """wxyz quaternion → 3×3 rotation matrix."""
-    w, x, y, z = q
-    return np.array([
-        [1 - 2 * (y * y + z * z), 2 * (x * y - z * w),     2 * (x * z + y * w)],
-        [2 * (x * y + z * w),     1 - 2 * (x * x + z * z), 2 * (y * z - x * w)],
-        [2 * (x * z - y * w),     2 * (y * z + x * w),     1 - 2 * (x * x + y * y)],
-    ], dtype=np.float32)
-
-
-def subtract_frame_transforms_b(robot_pos, robot_quat, target_pos, target_quat):
-    """
-    Express (target_pos, target_quat) in robot's body frame.
-    Matches beyondMimic.mdp.observations.subtract_frame_transforms.
-
-    Returns:
-        pos_b: (3,) target pos in robot body frame
-        quat_b: (4,) target quat in robot body frame (wxyz)
-    """
-    pos_b = quat_rotate_inverse(robot_quat, target_pos - robot_pos)
-    quat_b = quat_mul(quat_conjugate(robot_quat), target_quat)
-    return pos_b.astype(np.float32), quat_b.astype(np.float32)
-
-
-# -----------------------------------------------------------------------------
 # Motion buffer: advances one frame per control tick, wraps on end.
+# Only reads the lower-body joint trajectory — anchor pose is no longer
+# needed by the policy (see class docstring for why).
 # -----------------------------------------------------------------------------
 class MotionBuffer:
     def __init__(self, motion_path: str):
         data = np.load(motion_path)
         self.lower_joint_pos = data["lower_joint_pos"].astype(np.float32)   # (T, 15)
         self.lower_joint_vel = data["lower_joint_vel"].astype(np.float32)   # (T, 15)
-        self.torso_pos_w     = data["torso_pos_w"].astype(np.float32)       # (T, 3)
-        self.torso_quat_w    = data["torso_quat_w"].astype(np.float32)      # (T, 4) wxyz
         self.fps             = int(data["fps"].item() if hasattr(data["fps"], "item")
                                    else data["fps"][0])
         self.total_frames    = self.lower_joint_pos.shape[0]
@@ -80,12 +29,7 @@ class MotionBuffer:
 
     def read(self):
         i = self.frame_idx
-        return (
-            self.lower_joint_pos[i],
-            self.lower_joint_vel[i],
-            self.torso_pos_w[i],
-            self.torso_quat_w[i],
-        )
+        return self.lower_joint_pos[i], self.lower_joint_vel[i]
 
     def advance(self):
         self.frame_idx = (self.frame_idx + 1) % self.total_frames
@@ -96,24 +40,30 @@ class DualAgentTracking(FSMState):
     ONNX sim2sim runtime for the dual-agent *tracking* policy (upper + lower).
 
     Model: single ONNX file (dual_agent_combined.onnx) with two inputs.
-      upper_obs: float32[1, 480]   per-term 5-frame history (same as velocity)
-      lower_obs: float32[1, 121]   single frame, tracking-specific
+      upper_obs: float32[1,  96]   single frame
+      lower_obs: float32[1, 109]   single frame, tracking-specific
       → actions: float32[1,  29]   already in MuJoCo motor order
 
-    Upper obs per-frame (96): identical to DualAgentBoxTransVel upper branch
+    Upper obs (96): identical to LocoMode layout — single frame.
       base_ang_vel(3) | projected_gravity(3) | velocity_commands(3) |
       joint_pos_rel(29) | joint_vel_rel(29) | last_action(29)
 
-    Lower obs (121) — order from dual_agent_train_env_cfg.LowerBodyPolicyCfg:
+    Lower obs (109) — order from dual_agent_train_env_cfg.LowerBodyPolicyCfg:
       lower_body_command(30)    # 15 joint_pos + 15 joint_vel from motion npz
-      motion_anchor_pos_b(3)    # motion torso pos in robot torso frame
-      motion_anchor_ori_b(6)    # first 2 columns of R_{robot_torso → motion_torso}
       projected_gravity(3)
-      base_lin_vel(3)           # raw, no scale
-      base_ang_vel(3)           # raw, no scale (differs from velocity variant!)
-      joint_pos(29)             # raw joint_pos_rel, no scale (differs!)
-      joint_vel(29)             # raw joint_vel_rel, no scale (differs!)
+      base_ang_vel(3)           # raw, no scale
+      joint_pos(29)             # raw joint_pos_rel, no scale
+      joint_vel(29)             # raw joint_vel_rel, no scale
       actions(15)               # last lower action, Isaac slots 0..14, no clip
+
+    Removed vs. the earlier 121-dim variant:
+      - motion_anchor_pos_b(3), motion_anchor_ori_b(6): required world-frame
+        torso pose (anchor_pos_w / quat_w) which real hardware can't provide.
+      - base_lin_vel(3): not observable from IMU alone on hardware.
+    All three are kept as privileged signals in the critic only (asymmetric
+    actor-critic); the policy learns to infer them implicitly from remaining
+    body-frame obs. Validated at iter 15000 of
+    2026-04-21_20-01-44_joint_train.
 
     The CombinedActor (dual_agent_export_onnx.CombinedActor) reorders the
     combined 29-dim action to MuJoCo order inside the graph, so q_cmd is
@@ -153,11 +103,9 @@ class DualAgentTracking(FSMState):
         self.obs_clip_default = config["obs_clip_default"]
         self.last_action_clip = config["last_action_clip"]
 
-        self.num_actions          = config["num_actions"]
-        self.history_length_upper = config["history_length_upper"]
-        self.num_obs_upper        = config["num_obs_upper"]
-        self.num_obs_lower        = config["num_obs_lower"]
-        self.anchor_body_name     = config["anchor_body_name"]
+        self.num_actions   = config["num_actions"]
+        self.num_obs_upper = config["num_obs_upper"]
+        self.num_obs_lower = config["num_obs_lower"]
 
         self.control_dt    = config["control_dt"]
         self.ramp_time     = config["ramp_time"]
@@ -178,15 +126,6 @@ class DualAgentTracking(FSMState):
         self.action_isaac   = np.zeros(self.num_actions, dtype=np.float32)
         self.upper_obs_flat = np.zeros(self.num_obs_upper, dtype=np.float32)
         self.lower_obs_flat = np.zeros(self.num_obs_lower, dtype=np.float32)
-
-        H = self.history_length_upper
-        self.hist_ang_vel = np.zeros((H, 3),                dtype=np.float32)
-        self.hist_gravity = np.zeros((H, 3),                dtype=np.float32)
-        self.hist_cmd     = np.zeros((H, 3),                dtype=np.float32)
-        self.hist_qpos    = np.zeros((H, self.num_actions), dtype=np.float32)
-        self.hist_qvel    = np.zeros((H, self.num_actions), dtype=np.float32)
-        self.hist_action  = np.zeros((H, self.num_actions), dtype=np.float32)
-        self._history_primed = False
 
         # Motion reference buffer.
         self.motion = MotionBuffer(self.motion_path)
@@ -212,9 +151,6 @@ class DualAgentTracking(FSMState):
         for _ in range(5):
             self.sess.run(["actions"], {"upper_obs": warm_u, "lower_obs": warm_l})
 
-        # anchor_body_id filled lazily from state bus on enter() — see enter().
-        self.anchor_body_id = None
-
         print(
             f"DualAgentTracking policy initializing (backend=onnx, dual-input) "
             f"| motion frames={self.motion.total_frames} @ {self.motion.fps}Hz "
@@ -237,13 +173,6 @@ class DualAgentTracking(FSMState):
         self.ramp_kps = (self.kps_reorder * self.ramp_kp_scale).astype(np.float32)
         self.ramp_kds = (self.kds_reorder * self.ramp_kd_scale).astype(np.float32)
 
-        self.hist_ang_vel.fill(0.0)
-        self.hist_gravity.fill(0.0)
-        self.hist_cmd.fill(0.0)
-        self.hist_qpos.fill(0.0)
-        self.hist_qvel.fill(0.0)
-        self.hist_action.fill(0.0)
-        self._history_primed = False
         self.action_isaac.fill(0.0)
 
         self.motion.reset()
@@ -253,15 +182,6 @@ class DualAgentTracking(FSMState):
         self.ramping = True
         print(f"DualAgentTracking: ramping to default pose over {self.ramp_time:.2f}s "
               f"({self.ramp_num_step} ticks) before policy inference starts.")
-
-    @staticmethod
-    def _push(buf, new_row):
-        buf[:-1] = buf[1:]
-        buf[-1] = new_row
-
-    @staticmethod
-    def _prime(buf, new_row):
-        buf[:] = new_row
 
     def run(self):
         # Ramp-in: PD-hold to default_angles (MuJoCo order). Motion clock stays
@@ -282,23 +202,17 @@ class DualAgentTracking(FSMState):
         # 1. robot state (MuJoCo order from bus).
         gravity    = self.state_cmd.gravity_ori.copy()
         ang_vel    = self.state_cmd.ang_vel.copy()
-        lin_vel_b  = self.state_cmd.base_lin_vel.copy().astype(np.float32)
         qj_motor   = self.state_cmd.q.copy()
         dqj_motor  = self.state_cmd.dq.copy()
         joycmd     = self.state_cmd.vel_cmd.copy()
         cmd        = scale_values(joycmd, [self.range_velx, self.range_vely, self.range_velz])
-
-        # Anchor (torso_link) world pose — injected each tick via state_cmd
-        # (set by deploy_mujoco before FSM.run()). wxyz quat.
-        robot_anchor_pos  = self.state_cmd.anchor_pos_w.copy().astype(np.float32)
-        robot_anchor_quat = self.state_cmd.anchor_quat_w.copy().astype(np.float32)
 
         # 2. motor-order → Isaac order for joint state.
         for i in range(len(self.joint2motor_idx)):
             self.qj_obs[i]  = qj_motor[self.joint2motor_idx[i]]
             self.dqj_obs[i] = dqj_motor[self.joint2motor_idx[i]]
 
-        # 3. UPPER per-term scaling + clip (matches velocity variant).
+        # 3. UPPER obs — single frame, per-term scale + clip (matches LocoMode layout).
         C = self.obs_clip_default
         ang_vel_s_u      = np.clip(ang_vel * self.ang_vel_scale, -C, C).astype(np.float32)
         gravity_s_u      = (gravity * self.gravity_scale).astype(np.float32)
@@ -309,63 +223,35 @@ class DualAgentTracking(FSMState):
         last_action_s_u  = np.clip(self.action_isaac, -self.last_action_clip,
                                    self.last_action_clip).astype(np.float32)
 
-        # 4. upper history ring update.
-        if not self._history_primed:
-            self._prime(self.hist_ang_vel, ang_vel_s_u)
-            self._prime(self.hist_gravity, gravity_s_u)
-            self._prime(self.hist_cmd,     cmd_s)
-            self._prime(self.hist_qpos,    joint_pos_rel_u)
-            self._prime(self.hist_qvel,    joint_vel_s_u)
-            self._prime(self.hist_action,  last_action_s_u)
-            self._history_primed = True
-        else:
-            self._push(self.hist_ang_vel, ang_vel_s_u)
-            self._push(self.hist_gravity, gravity_s_u)
-            self._push(self.hist_cmd,     cmd_s)
-            self._push(self.hist_qpos,    joint_pos_rel_u)
-            self._push(self.hist_qvel,    joint_vel_s_u)
-            self._push(self.hist_action,  last_action_s_u)
-
         self.upper_obs_flat = np.concatenate([
-            self.hist_ang_vel.reshape(-1),
-            self.hist_gravity.reshape(-1),
-            self.hist_cmd.reshape(-1),
-            self.hist_qpos.reshape(-1),
-            self.hist_qvel.reshape(-1),
-            self.hist_action.reshape(-1),
+            ang_vel_s_u,
+            gravity_s_u,
+            cmd_s,
+            joint_pos_rel_u,
+            joint_vel_s_u,
+            last_action_s_u,
         ]).astype(np.float32)
 
-        # 5. LOWER obs (tracking): raw values, no scales/clips on dynamics.
-        lower_cmd_pos, lower_cmd_vel, motion_pos, motion_quat = self.motion.read()
+        # 4. LOWER obs (tracking): raw values, no scales/clips on dynamics.
+        lower_cmd_pos, lower_cmd_vel = self.motion.read()
 
-        pos_b, quat_b = subtract_frame_transforms_b(
-            robot_anchor_pos, robot_anchor_quat, motion_pos, motion_quat)
-        # ori_b = first 2 columns of rotation matrix, flattened row-major → 6-dim.
-        mat_b = quat_to_mat(quat_b)
-        ori_b = mat_b[:, :2].reshape(-1).astype(np.float32)   # (3,2) → (6,) row-major
-
-        # Lower joint_pos / joint_vel observations are RAW in this cfg
-        # (no dof_*_scale, no clip, no noise — training had noise but inference doesn't).
-        joint_pos_rel_l = (self.qj_obs - self.default_angles).astype(np.float32)
-        joint_vel_l     = self.dqj_obs.astype(np.float32)
-        gravity_s_l     = gravity.astype(np.float32)
-        ang_vel_s_l     = ang_vel.astype(np.float32)
-        lin_vel_s_l     = lin_vel_b.astype(np.float32)
+        # Lower joint_pos / joint_vel observations are RAW (no dof_*_scale, no clip).
+        joint_pos_rel_l   = (self.qj_obs - self.default_angles).astype(np.float32)
+        joint_vel_l       = self.dqj_obs.astype(np.float32)
+        gravity_s_l       = gravity.astype(np.float32)
+        ang_vel_s_l       = ang_vel.astype(np.float32)
         last_action_lower = self.action_isaac[:15].astype(np.float32)
 
         o = self.lower_obs_flat
-        o[0:15]    = lower_cmd_pos
-        o[15:30]   = lower_cmd_vel
-        o[30:33]   = pos_b
-        o[33:39]   = ori_b
-        o[39:42]   = gravity_s_l
-        o[42:45]   = lin_vel_s_l
-        o[45:48]   = ang_vel_s_l
-        o[48:77]   = joint_pos_rel_l
-        o[77:106]  = joint_vel_l
-        o[106:121] = last_action_lower
+        o[0:15]   = lower_cmd_pos
+        o[15:30]  = lower_cmd_vel
+        o[30:33]  = gravity_s_l
+        o[33:36]  = ang_vel_s_l
+        o[36:65]  = joint_pos_rel_l
+        o[65:94]  = joint_vel_l
+        o[94:109] = last_action_lower
 
-        # 6. inference.
+        # 5. inference.
         u_in = np.clip(self.upper_obs_flat.reshape(1, -1), -100.0, 100.0)
         l_in = np.clip(self.lower_obs_flat.reshape(1, -1), -100.0, 100.0)
         raw_mujoco = self.sess.run(
@@ -374,14 +260,14 @@ class DualAgentTracking(FSMState):
         )[0]
         action_mujoco = np.clip(raw_mujoco, -100.0, 100.0).squeeze().astype(np.float32)
 
-        # 7. Isaac-order copy of the raw action (for next-tick last_action obs).
+        # 6. Isaac-order copy of the raw action (for next-tick last_action obs).
         for i in range(len(self.joint2motor_idx)):
             self.action_isaac[i] = action_mujoco[self.joint2motor_idx[i]]
 
-        # 8. advance motion clock AFTER reading this frame, so next tick reads next.
+        # 7. advance motion clock AFTER reading this frame, so next tick reads next.
         self.motion.advance()
 
-        # 9. q_cmd in MuJoCo order.
+        # 8. q_cmd in MuJoCo order.
         q_cmd_motor = action_mujoco * self.action_scale_reorder + self.default_angles_reorder
         self.policy_output.actions = q_cmd_motor.astype(np.float32)
         self.policy_output.kps     = self.kps_reorder.copy()

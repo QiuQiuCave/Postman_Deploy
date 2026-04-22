@@ -15,17 +15,46 @@
 
 ## 1. 一次性系统依赖(Ubuntu)
 
-只有两样是系统级别的,uv 不能管:
+### 1.1 apt 包
 
 ```bash
-# mujoco viewer 依赖
+# mujoco viewer 依赖(纯跑 deploy_real 可跳过)
 sudo apt install -y libglfw3 libglew2.2 libegl1
 
 # OpenCV 从 unitree_sdk2py 带进来的运行时依赖
 sudo apt install -y libgl1 libglib2.0-0
+
+# build cyclonedds 需要
+sudo apt install -y cmake build-essential git
 ```
 
-如果**不开 MuJoCo 窗口**(比如纯跑真机 `deploy_real.py`),`libglfw3`/`libglew2.2`/`libegl1` 不装也能跑。
+### 1.2 cyclonedds native 库(必装,uv sync 前)
+
+`unitree_sdk2py` 依赖 `cyclonedds==0.10.2` Python binding,这个 Python 包
+在装的时候要找 C++ 库 `libddsc.so`。PyPI 上**没有预编译 wheel**,必须本地
+build + install 后再 `uv sync`,否则 uv 会在 `Failed to build cyclonedds==0.10.2
+— Could not locate cyclonedds. Try to set CYCLONEDDS_HOME or CMAKE_PREFIX_PATH`
+处挂掉。
+
+```bash
+cd ~
+git clone --depth 1 --branch releases/0.10.x \
+  https://github.com/eclipse-cyclonedds/cyclonedds.git
+cd cyclonedds
+mkdir -p build install && cd build
+cmake .. -DCMAKE_INSTALL_PREFIX="$HOME/cyclonedds/install" -DBUILD_EXAMPLES=OFF
+cmake --build . --target install --parallel $(nproc)
+
+# 持久化到 shell:build 时读 CYCLONEDDS_HOME,运行时读 LD_LIBRARY_PATH
+echo 'export CYCLONEDDS_HOME="$HOME/cyclonedds/install"' >> ~/.bashrc
+echo 'export LD_LIBRARY_PATH="$CYCLONEDDS_HOME/lib:${LD_LIBRARY_PATH:-}"' >> ~/.bashrc
+source ~/.bashrc
+```
+
+Build ~3~5 分钟。装到 `$HOME/cyclonedds/install/` 不需要 sudo。
+
+> **能不能装 /usr/local 拿 sudo 省事?** 可以,但那台机以后别装别的版本
+> cyclonedds,否则冲突。用户目录 + CYCLONEDDS_HOME 更干净。
 
 ---
 
@@ -152,10 +181,18 @@ DualAgentTracking 真机流程单独见 `refer/DualAgentTracking-Sim2Real-Guide.
 
 ## 8. 排坑
 
+- **`Failed to build cyclonedds==0.10.2 — Could not locate cyclonedds`**
+  → §1.2 没做,native 库没 build。按 §1.2 从源码 build cyclonedds 并
+  `export CYCLONEDDS_HOME`,再重跑 `uv sync`。
+
 - **`ImportError: cannot import name 'b2' from ... unitree_sdk2py`**
   → `external/unitree_sdk2_python/` 没 clone,或 clone 了但 `uv sync`
   没跑。检查 `ls external/unitree_sdk2_python/unitree_sdk2py/b2/` 应该看到
   `__init__.py` 等文件;再 `uv sync` 重新装。
+
+- **运行时 `OSError: libddsc.so.0: cannot open shared object file`**
+  → `LD_LIBRARY_PATH` 没包含 `$CYCLONEDDS_HOME/lib`。检查 §1.2 最后两行
+  是否都加到 `~/.bashrc`,然后 `source ~/.bashrc`。
 
 - **`mujoco` import 报 GLFW / OpenGL 错**
   → §1 的系统库没装。纯 headless 推理如果也报,那是 egl 没装,补

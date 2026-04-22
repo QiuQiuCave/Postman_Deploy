@@ -1,0 +1,57 @@
+[project]
+name = "fsmdeploy-g1"
+version = "0.1.0"
+description = "FSM-based multi-policy deployment runtime for Unitree G1 (MuJoCo sim2sim + real)."
+requires-python = ">=3.10,<3.12"
+# Pins are the versions that actually worked in the sim2sim env used to
+# validate the DualAgentTracking iter-15000 policy on 2026-04-22. Loosen
+# with care — mujoco/onnxruntime ABI churn has burned us before.
+dependencies = [
+    "mujoco==3.3.7",
+    "onnx==1.19.1",
+    "onnxruntime==1.23.2",
+    "numpy>=1.26,<2.0",
+    "pyyaml==6.0.3",
+    "pygame==2.6.1",
+    # TorchScript .pt loader for LocoMode/Dance/BeyondMimic/KungFu2/SkillCast/
+    # LocoNew/SkillCooldown. CPU-only — deploy inference never touches CUDA.
+    # Override source in [tool.uv.sources] below.
+    "torch==2.7.0",
+    # Unitree SDK — Python bindings for DDS low-level control. Installed
+    # from source; brings cyclonedds / opencv-python transitively.
+    "unitree-sdk2py",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+# The repo is a runtime, not a library. No packages to build — but hatchling
+# still needs this key to be satisfied. Point it at common/ as a no-op.
+packages = ["common"]
+
+[tool.uv]
+# Single env, no dev/test split — deploy machines don't need it.
+package = false
+
+[tool.uv.sources]
+# CPU-only torch wheel via PyTorch's index. Avoids pulling ~3 GB of CUDA libs
+# which the deploy machine never uses (onnxruntime handles policy inference;
+# torch only loads .pt TorchScript files on CPU).
+torch = { index = "pytorch-cpu" }
+# Unitree SDK via editable path install from ./external/.
+# Rationale: upstream setup.py uses `find_packages()` but its b2/g1/h1/comm
+# subdirs are missing __init__.py, so a regular (non-editable) install
+# silently drops them — then `from unitree_sdk2py import b2` at import time
+# raises a misleading "circular import" ImportError. Editable install works
+# because it exposes the source tree directly.
+# Layout expectation (deploy machine):
+#   FSMDeploy_G1/external/unitree_sdk2_python/   <- clone here, gitignored
+# See refer/UV-Deploy-Setup.md for the clone + sync commands.
+unitree-sdk2py = { path = "external/unitree_sdk2_python", editable = true }
+
+[[tool.uv.index]]
+name = "pytorch-cpu"
+url = "https://download.pytorch.org/whl/cpu"
+explicit = true

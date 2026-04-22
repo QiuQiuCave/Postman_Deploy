@@ -172,7 +172,29 @@ RoboMimic_Deploy/
 
 ## 🔧 Installation
 
-### Quick Start
+### Recommended: uv (新)
+
+部署环境由 `pyproject.toml` + `uv.lock` 管理,一条命令装齐(Python 3.10 + CPU torch + mujoco + onnxruntime + Unitree SDK)。完整步骤(含系统 apt 依赖、Unitree SDK editable 路径 patch 的原因)见
+**[refer/UV-Deploy-Setup.md](refer/UV-Deploy-Setup.md)**。最短路径:
+
+```bash
+# 1) 装 uv (一次性,无需 sudo)
+curl -LsSf https://astral.sh/uv/install.sh | sh
+
+# 2) 拉仓库 + Unitree SDK (必须放 external/ 走 editable,见文档解释)
+git clone <this-repo-url> FSMDeploy_G1 && cd FSMDeploy_G1
+mkdir -p external && git clone https://github.com/unitreerobotics/unitree_sdk2_python.git external/unitree_sdk2_python
+
+# 3) 同步环境 (uv 自己拉 Python 3.10 + 全部 pinned 包)
+uv sync
+
+# 4) 拷贝策略 artifact(.onnx / .pt / .npz)到 policy/*/model/ 和 policy/*/motion/
+
+# 5) 运行:所有 `python xxx` 换成 `uv run python xxx`
+uv run python deploy_mujoco/deploy_mujoco_keyboard_input.py
+```
+
+### Legacy: conda (老流程,保留作参考)
 
 ```bash
 # Create virtual environment

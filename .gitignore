@@ -90,3 +90,9 @@ Desktop.ini
 *.bak_*
 *.old_*.onnx
 *.old_*.pt
+
+# ==============================
+# uv / venv / external SDK clones
+# ==============================
+.venv/
+external/

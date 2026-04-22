@@ -11,6 +11,10 @@ dependencies = [
     "onnx==1.19.1",
     "onnxruntime==1.23.2",
     "numpy>=1.26,<2.0",
+    # Used by common/rotation_helper.py (IMU quat → gravity orientation /
+    # transform on real hardware). Only imported from deploy_real.py, but
+    # without it `python deploy_real/deploy_real.py` fails at import time.
+    "scipy>=1.10,<2.0",
     "pyyaml==6.0.3",
     "pygame==2.6.1",
     # TorchScript .pt loader for LocoMode/Dance/BeyondMimic/KungFu2/SkillCast/

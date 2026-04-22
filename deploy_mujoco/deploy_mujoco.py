@@ -53,7 +53,7 @@ if __name__ == "__main__":
     box_qpos_adr    = m.jnt_qposadr[box_jnt_idx]
     box_qvel_adr    = m.jnt_dofadr[box_jnt_idx]
     box_park_pos    = np.array([100.0, 100.0, 0.15], dtype=np.float64)
-    box_offset_base = np.array([0.32, 0.0, 0.26], dtype=np.float64)
+    box_offset_base = np.array([0.32, 0.0, 0.14], dtype=np.float64)
     box_hold_dur    = 1.0
     box_active      = False
     box_hold_until  = 0.0

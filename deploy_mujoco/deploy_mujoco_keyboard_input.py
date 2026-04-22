@@ -95,7 +95,9 @@ if __name__ == "__main__":
     # Transport box handles (body lives in scene.xml, parked off-scene).
     # Teleported between the robot's wrists when BoxTransportVelocity ramp
     # completes, parked back on exit. Offset derived from training:
-    # world (0.32, 0, 1.05) minus pelvis rest z ~0.79 → pelvis-frame (0.32, 0, 0.26).
+    # Training-derived offset is pelvis-frame (0.32, 0, 0.26)
+    # (world 1.05 - pelvis rest 0.79). Lowered by 12 cm to 0.14 so the box
+    # sits deeper in the grasp region — less drop impact on hand close.
     # Anchor body (torso_link) id — DualAgentTracking consumes world-frame
     # torso pose from mj_data.xpos/xquat to build motion_anchor_pos_b/ori_b.
     # Attribute is set unconditionally each tick so the policy can read it.
@@ -106,7 +108,7 @@ if __name__ == "__main__":
     box_qpos_adr    = m.jnt_qposadr[box_jnt_idx]
     box_qvel_adr    = m.jnt_dofadr[box_jnt_idx]
     box_park_pos    = np.array([100.0, 100.0, 0.15], dtype=np.float64)
-    box_offset_base = np.array([0.32, 0.0, 0.26], dtype=np.float64)
+    box_offset_base = np.array([0.32, 0.0, 0.14], dtype=np.float64)
     box_hold_dur    = 1.0   # 秒。生成后"绳子"吊着的时长,给手合拢的机会
     box_active      = False
     box_hold_until  = 0.0   # time.time() 戳,>0 表示正在硬 pin

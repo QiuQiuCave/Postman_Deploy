@@ -20,4 +20,4 @@ The run policy is currently sim2sim-only. Do not bind it in `deploy_real.py`
 without a separate hardware validation ladder.
 
 MuJoCo box spawn uses the policy-specific pelvis-frame offset
-`(0.32, 0.0, 0.18)`, which is 4 cm higher than the default walk/box offset.
+`(0.32, 0.0, 0.22)`, which is 8 cm higher than the default walk/box offset.

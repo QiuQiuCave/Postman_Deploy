@@ -74,7 +74,7 @@ class DualAgentRunTracking(FSMState):
     # Align with other box-carrying policies: teleport the shared transport_box
     # into the grasp region on entry so the upper actor has something to hold.
     needs_transport_box = True
-    transport_box_offset_base = (0.32, 0.0, 0.18)
+    transport_box_offset_base = (0.32, 0.0, 0.22)
 
     def __init__(self, state_cmd: StateAndCmd, policy_output: PolicyOutput):
         super().__init__()

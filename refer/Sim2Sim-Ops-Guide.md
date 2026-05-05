@@ -64,7 +64,7 @@ Artifact:
 - Source ckpt: `upper_lower/logs/rsl_rl/g1_dual_agent/2026-05-05_02-02-39_run1_subject2_resume2500/{upper,lower}_model_13000.pt`
 - Source motion: `/home/qiuziyu/datasets/gae_mimic_dataset/extend_datasets/lafan1_dataset/g1/train/run1_subject2.npz`
 - Motion stats: 11890 frames, 50 Hz, 237.80 s
-- Box spawn offset: pelvis-frame `(0.32, 0.0, 0.18)`,比默认 walk/box policy 高 4 cm
+- Box spawn offset: pelvis-frame `(0.32, 0.0, 0.22)`,比默认 walk/box policy 高 8 cm
 
 生成命令:
 

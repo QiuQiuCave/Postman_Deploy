@@ -65,24 +65,27 @@ print('action shape / norm:', out.shape, np.linalg.norm(out))
 
 ---
 
-## 2. 在 deploy_real.py 里绑 a+l1
+## 2. 在 deploy_real.py 里绑 L1 tracking 组
 
-`deploy_real.py` 里目前只绑了 `LocoMode`(`a+r1`)、`SKILL_1`(`x+r1`)、
-`PASSIVE`(`F1`)、`POS_RESET`(`start`)。需要加 **L1 组**给 tracking。
+`deploy_real.py` 的 L1 tracking 组现在和 MuJoCo 键位对齐:`a+l1` 是 walk,
+`b+l1` 是 run。两者都使用 96/109 slim obs actor。
 
 ### 2.1 编辑 `deploy_real/deploy_real.py`
 
-在 L107~113 的按键扫描段后面加:
+按键扫描段里应包含:
 
 ```python
 # L1 group: tracking-family policies
 if self.remote_controller.is_button_pressed(KeyMap.A) and \
    self.remote_controller.is_button_pressed(KeyMap.L1):
     self.state_cmd.skill_cmd = FSMCommand.DUAL_AGENT_TRACK
+if self.remote_controller.is_button_pressed(KeyMap.B) and \
+   self.remote_controller.is_button_pressed(KeyMap.L1):
+    self.state_cmd.skill_cmd = FSMCommand.DUAL_AGENT_RUN_TRACK
 ```
 
 注意:`is_button_pressed` 不是 edge-trigger 而是 level-trigger,所以**轻按
-一次**A+L1 会持续触发若干 tick。`FSMState.checkChange` 内部会把
+一次**A+L1 或 B+L1 会持续触发若干 tick。`FSMState.checkChange` 内部会把
 `skill_cmd` 重置成 `INVALID`,所以这是无害的,但操作上仍然按一下就放开,
 不要长按。
 
@@ -235,10 +238,11 @@ iter-15000 在 IsaacLab 里收敛得很干净,但 `dual_agent_play.py --num_envs
 ## 8. 后续工作(可选)
 
 - **多 motion 切换**:每个新 tracking demo 一份独立 ONNX + npz + state 类,
-  `b+l1` 已接入 run tracking 但目前只做 MuJoCo sim2sim。L1 组还剩
-  `x+l1 / y+l1` 两个预留键位。新 state 类的克隆步骤见
-  `Sim2Sim-Ops-Guide.md` §3;真机接入前需要单独补 safety ladder,再在
-  `deploy_real.py` 里绑按键和 checkChange 分支。
+  `b+l1` 已接入 run tracking 的 sim2sim 和 deploy_real 入口,但硬件仍需按
+  本文 §5 的 safety ladder 单独验证。L1 组还剩 `x+l1 / y+l1` 两个预留
+  键位。新 state 类的克隆步骤见 `Sim2Sim-Ops-Guide.md` §3;真机接入前
+  需要单独补 safety ladder,再在 `deploy_real.py` 里绑按键和 checkChange
+  分支。
 - **加 `base_lin_vel` 估计器**:如果将来要部署回老的 121-dim 策略或者新
   策略需要这个 obs,真机要么外挂 VIO,要么从 IMU 加速度积分(漂)+ 接触
   state 修正。当前 tracking 用不到。

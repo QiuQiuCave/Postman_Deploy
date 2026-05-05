@@ -115,19 +115,20 @@ class Controller:
                 self.state_cmd.skill_cmd = FSMCommand.SKILL_1      # x+r1 → Dance
 
             # --- L1 group: motion-tracking family ---
-            # a+l1 → DualAgentTracking. Obs-slim (96/109) iter-15000 policy is
-            # real-deployable because anchor/base_lin_vel moved to critic at
-            # train time; the actor only needs IMU + encoders + motion phase.
-            # Box has to be handed to the robot manually (no teleport on real
-            # hardware). Full flow in refer/DualAgentTracking-Deploy-Real.md.
+            # Tracking actors use the slim 96/109 obs contract: no
+            # anchor/base_lin_vel actor inputs, only IMU + encoders + motion
+            # phase. The box has to be handed to the robot manually on real
+            # hardware. Full flow in refer/DualAgentTracking-Deploy-Real.md.
             if self.remote_controller.is_button_pressed(KeyMap.A) and \
                self.remote_controller.is_button_pressed(KeyMap.L1):
                 self.state_cmd.skill_cmd = FSMCommand.DUAL_AGENT_TRACK
+            if self.remote_controller.is_button_pressed(KeyMap.B) and \
+               self.remote_controller.is_button_pressed(KeyMap.L1):
+                self.state_cmd.skill_cmd = FSMCommand.DUAL_AGENT_RUN_TRACK
 
-            # b+l1 run tracking is intentionally sim2sim-only for now. x+l1 /
-            # y+l1 remain reserved for future tracking demos. Do NOT bind
-            # sim-only policies here without a separate real-robot validation
-            # ladder.
+            # x+l1 / y+l1 remain reserved for future tracking demos. Do NOT
+            # bind sim-only policies here without a separate real-robot
+            # validation ladder.
 
             self.state_cmd.vel_cmd[0] =  self.remote_controller.ly
             self.state_cmd.vel_cmd[1] =  self.remote_controller.lx * -1

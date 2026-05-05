@@ -1,7 +1,7 @@
 # deploy_real.py 真机使用手册
 
-**目的**:从零把 Unitree G1 开机,到完整走完一遍 DualAgentTracking(walk demo
-抱箱行走)。配套的安全梯子与 abort 触发条件见
+**目的**:从零把 Unitree G1 开机,到完整走完一遍 DualAgentTracking walk
+或 DualAgentRunTracking run 抱箱行走。配套的安全梯子与 abort 触发条件见
 `refer/DualAgentTracking-Sim2Real-Guide.md`;本文聚焦"按什么键、出什么现象"。
 
 ---
@@ -31,6 +31,8 @@
 - [ ] `policy/dual_agent_tracking/model/dual_agent_combined.onnx` 和
   `policy/dual_agent_tracking/motion/walk_tracking_ref.npz` 都在(`git pull`
   应该带下来了)
+- [ ] 如果要跑 run demo,确认 `policy/dual_agent_run_tracking/model/dual_agent_combined.onnx`
+  和 `policy/dual_agent_run_tracking/motion/run_tracking_ref.npz` 也在
 - [ ] 电量 ≥60%(双 actor + 行走比 LocoMode 耗电高)
 
 ---
@@ -46,6 +48,7 @@
 | **A + R1** | 行走模式 | `LocoMode` |
 | **X + R1** | 舞蹈(SKILL_1) | `Dance` — 真机上稳定,hardware-verified |
 | **A + L1** | 抱箱跟踪(walk demo) | `DualAgentTracking` ⭐ |
+| **B + L1** | 抱箱跟踪(run demo) | `DualAgentRunTracking` — 已接入口,需单独安全梯子验证 |
 | **Select** | 退出程序(不是 E-stop,只退 Python) | - |
 
 **摇杆**(任何 loco-family state 生效):
@@ -64,7 +67,6 @@
 - `b+r1 / x+r1 / y+r1`(BoxTransport / DualAgentBoxTransVel / BeyondMimic
   的 sim2sim 版)—— 这几个 policy 的 lower actor obs 有 `base_lin_vel`,
   真机 IMU 没有 body-frame 线速度估计器
-- `b+l1`:run tracking 目前只接 MuJoCo sim2sim,真机未做 safety ladder
 - `x+l1 / y+l1`:预留给未来的 tracking demo,每条 demo 一份 ONNX + 一份
   motion npz
 
@@ -85,6 +87,7 @@ Locomotion policy initializing ...
 loco_new_mode policy initializing (backend=pt) ...
 ...  (FSM 构造所有策略,约 3~5 秒)
 DualAgentTracking policy initializing (backend=onnx, dual-input) | motion frames=8195 @ 50Hz | duration=163.90s
+DualAgentRunTracking policy initializing (backend=onnx, dual-input) | motion frames=11890 @ 50Hz | duration=237.80s
 initalized all policies!!!
 current policy is  passive_mode
 Enter zero torque state.
@@ -109,18 +112,19 @@ A + R1       → "current policy is  loco_mode"
                这一步操作员**还没递箱子**。
 ```
 
-### 3.2 切到 DualAgentTracking,操作员递箱子
+### 3.2 切到 tracking demo,操作员递箱子
 
 **关键配合**:ramp 完成的瞬间必须把箱子递到手心里。
 
 ```
-A + L1       → "current policy is  dual_agent_tracking_mode"
+A + L1       → walk: "current policy is  dual_agent_tracking_mode"
+B + L1       → run:  "current policy is  dual_agent_run_tracking_mode"
                终端连续打出:
-                 "DualAgentTracking: ramping to default pose over 0.50s
+                 "DualAgentTracking: ramping ..." 或
+                 "DualAgentRunTracking: ramping ..."
                   (25 ticks) before policy inference starts."
                0.5 秒后:
-                 "DualAgentTracking: ramp complete, starting policy
-                  inference."
+                 "... ramp complete, starting policy inference."
                ★ 看到这行立刻递箱子 ★
                机器人手型已经是抱箱姿,两手间距刚好 0.3 m。把箱子平举
                塞进两手之间,操作员松手,policy 的合拢力把箱子稳住。
@@ -144,9 +148,10 @@ reference,但 yaml 里 `cmd_range` 留着给人为遥控调节):
 右摇杆 X   → 原地偏航
 ```
 
-Walk demo motion 是 8195 帧 / 163.9 s 循环的,走完一轮 motion clock wrap
-回头继续。行走时终端不打日志(避免刷屏);想看 motion frame 可以在代码
-里给 `DualAgentTracking.run()` 加 print。
+Walk demo motion 是 8195 帧 / 163.9 s 循环的;run demo motion 是
+11890 帧 / 237.8 s 循环的。走完一轮 motion clock wrap 回头继续。行走时
+终端不打日志(避免刷屏);想看 motion frame 可以在对应 tracking state 的
+`run()` 里加 print。
 
 ### 3.4 切回 / 退出
 
@@ -159,7 +164,7 @@ Select       → 退出 python 程序(之前必须已经 F1 或物理把机器�
                 否则脚本退出瞬间失去控制)
 ```
 
-**重进**:同一次运行里可以反复 `a+l1 → a+r1 → a+l1`,每次 re-entry 都会
+**重进**:同一次运行里可以反复 `a+l1/b+l1 → a+r1 → a+l1/b+l1`,每次 re-entry 都会
 重新 ramp + 重置 motion clock(`MotionBuffer.reset()`),箱子要人再递一次。
 
 ---
@@ -175,7 +180,7 @@ Select       → 退出 python 程序(之前必须已经 F1 或物理把机器�
 | **5.2 架空递箱子** | 吊起,递箱子,跑 5~10 s | 不掉箱子,关节温度正常 |
 | **5.3 落地原地** | 脚着地但绳子轻拉,递箱子,5 s 后切回 LocoMode | 能站能切 |
 | **5.4 解绳短距离** | 人手扶,递箱子,走 1~2 m,`a+r1` | 不偏不倒 |
-| **5.5 完整 demo** | 5.4 过 3 次以上才做 | walk demo 整段跑完 |
+| **5.5 完整 demo** | 5.4 过 3 次以上才做 | 当前选中的 walk/run demo 整段跑完 |
 
 每阶段完了再上下一阶段。出事回退两级。
 

@@ -2,7 +2,7 @@
 
 `DualAgentRunTracking` is the run demo counterpart to `DualAgentTracking`.
 It keeps walk on `a+l1` and binds this run policy to `b+l1` for MuJoCo
-sim2sim A/B testing.
+sim2sim A/B testing and to `B+L1` in `deploy_real.py`.
 
 ## ONNX checkpoints (`model/`)
 
@@ -16,8 +16,9 @@ sim2sim A/B testing.
 |---|---|---|---|
 | `run_tracking_ref.npz` | `/home/qiuziyu/datasets/gae_mimic_dataset/extend_datasets/lafan1_dataset/g1/train/run1_subject2.npz` (50 fps, 11890 frames, ~237.8 s) | 2026-05-05 | **active** — preprocessed by `upper_lower/scripts/factoryIsaac/dual_agent_tracking_preprocess_motion.py`. |
 
-The run policy is currently sim2sim-only. Do not bind it in `deploy_real.py`
-without a separate hardware validation ladder.
+The run policy is wired into both MuJoCo sim2sim (`b+l1`) and deploy_real
+(`B+L1`). Treat the real-robot path as an experimental entry until it clears a
+separate hardware validation ladder.
 
 MuJoCo box spawn uses the policy-specific pelvis-frame offset
 `(0.32, 0.0, 0.22)`, which is 8 cm higher than the default walk/box offset.

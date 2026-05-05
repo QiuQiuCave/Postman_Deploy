@@ -92,8 +92,8 @@ python deploy_mujoco/deploy_mujoco_keyboard_input.py
 # 命令序列: start → a+r1 → b+l1(→ 箱子 spawn → 跟踪 run)
 ```
 
-`DualAgentRunTracking` 目前只绑定 MuJoCo sim2sim。真机入口 `deploy_real.py`
-没有绑定 `b+l1`;跑步上真机前需要单独做 safety ladder。
+`DualAgentRunTracking` 已绑定 MuJoCo sim2sim 的 `b+l1` 和真机入口
+`deploy_real.py` 的 `B+L1`。跑步上真机前仍要单独走 safety ladder。
 
 ---
 
@@ -196,7 +196,7 @@ ls policy/dual_agent_jump_tracking/motion/jump_tracking_ref.npz
   ```
   并同步更新键盘入口顶部的帮助列表(`print("  -- L1 group ...")`)。
 
-- **`CLAUDE.md` 的 Safety 段**:把新键位加进 L1 列表,标注 sim2sim-only。
+- **`CLAUDE.md` 的 Safety 段**:把新键位加进 L1 列表,标注当前验证状态。
 
 ### Step 3: smoke test
 

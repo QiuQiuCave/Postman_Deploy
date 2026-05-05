@@ -235,9 +235,10 @@ iter-15000 在 IsaacLab 里收敛得很干净,但 `dual_agent_play.py --num_envs
 ## 8. 后续工作(可选)
 
 - **多 motion 切换**:每个新 tracking demo 一份独立 ONNX + npz + state 类,
-  L1 组还有 `b+l1 / x+l1 / y+l1` 三个键位。新 state 类的克隆步骤见
-  `Sim2Sim-Ops-Guide.md` §2,对真机的额外动作只是"在 deploy_real.py 里再
-  绑一组按键 + checkChange 加分支"。
+  `b+l1` 已接入 run tracking 但目前只做 MuJoCo sim2sim。L1 组还剩
+  `x+l1 / y+l1` 两个预留键位。新 state 类的克隆步骤见
+  `Sim2Sim-Ops-Guide.md` §3;真机接入前需要单独补 safety ladder,再在
+  `deploy_real.py` 里绑按键和 checkChange 分支。
 - **加 `base_lin_vel` 估计器**:如果将来要部署回老的 121-dim 策略或者新
   策略需要这个 obs,真机要么外挂 VIO,要么从 IMU 加速度积分(漂)+ 接触
   state 修正。当前 tracking 用不到。

@@ -83,9 +83,11 @@ if __name__ == "__main__":
                     state_cmd.skill_cmd = FSMCommand.DUAL_AGENT_BOX_TRANS_VEL
                 if joystick.is_button_released(JoystickButton.Y) and joystick.is_button_pressed(JoystickButton.R1):
                     state_cmd.skill_cmd = FSMCommand.SKILL_4
-                # L1 group: motion-tracking demos. b/x/y+l1 reserved for future demos.
+                # L1 group: motion-tracking demos. x/y+l1 reserved for future demos.
                 if joystick.is_button_released(JoystickButton.A) and joystick.is_button_pressed(JoystickButton.L1):
                     state_cmd.skill_cmd = FSMCommand.DUAL_AGENT_TRACK
+                if joystick.is_button_released(JoystickButton.B) and joystick.is_button_pressed(JoystickButton.L1):
+                    state_cmd.skill_cmd = FSMCommand.DUAL_AGENT_RUN_TRACK
 
                 state_cmd.vel_cmd[0] = -joystick.get_axis_value(1)
                 state_cmd.vel_cmd[1] = -joystick.get_axis_value(0)
@@ -147,8 +149,12 @@ if __name__ == "__main__":
                     if is_box and ramp_complete and not box_active:
                         pelvis_pos  = d.qpos[0:3].copy()
                         pelvis_quat = d.qpos[3:7].copy()
+                        box_offset = np.asarray(
+                            getattr(cur, "transport_box_offset_base", None) or box_offset_base,
+                            dtype=np.float64,
+                        )
                         offset_world = np.zeros(3, dtype=np.float64)
-                        mujoco.mju_rotVecQuat(offset_world, box_offset_base, pelvis_quat)
+                        mujoco.mju_rotVecQuat(offset_world, box_offset, pelvis_quat)
                         box_hold_pos[:]  = pelvis_pos + offset_world
                         box_hold_quat[:] = pelvis_quat
                         d.qpos[box_qpos_adr:box_qpos_adr+3]   = box_hold_pos

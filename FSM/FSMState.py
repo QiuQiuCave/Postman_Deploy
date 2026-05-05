@@ -7,6 +7,7 @@ class FSMState:
     # teleported into the grasp region on entry. Deploy loops read this flag
     # so box-handling logic doesn't need to enumerate every such policy.
     needs_transport_box = False
+    transport_box_offset_base = None
 
     def __init__(self):
         self.name = FSMStateName.INVALID

@@ -2,8 +2,9 @@
 
 这份文档汇总部署侧两类常见运维操作:
 
-1. **重训/新训了 DualAgentTracking 策略,如何搬到部署这边**(§1、§2)
-2. **调 MuJoCo 里的运输箱**(几何、位置、质量、在手心的生成偏移、悬吊时长、停放位)(§3)
+1. **重训/新训了 DualAgentTracking 策略,如何搬到部署这边**(§1、§3)
+2. **当前已接入的跑步 tracking demo**(§2)
+3. **调 MuJoCo 里的运输箱**(几何、位置、质量、在手心的生成偏移、悬吊时长、停放位)
 
 设计说明和代码路径另见 `refer/DualAgentTracking-Sim2Sim-Integration.md`
 (tracking)和 `refer/DualAgentVelocity-Sim2Sim-Integration.md`(box-trans-vel)。
@@ -52,10 +53,54 @@ python deploy_mujoco/deploy_mujoco_keyboard_input.py
 
 ---
 
-## 2. 训了一个**新的 tracking 任务**(不同 motion,不同动作)
+## 2. 已接入的 run1_subject2 跑步 tracking demo
+
+当前跑步 sim2sim 作为独立 skill 挂在 `b+l1`,不覆盖 walk 的 `a+l1`。
+
+Artifact:
+
+- Policy: `policy/dual_agent_run_tracking/model/dual_agent_combined.onnx`
+- Motion: `policy/dual_agent_run_tracking/motion/run_tracking_ref.npz`
+- Source ckpt: `upper_lower/logs/rsl_rl/g1_dual_agent/2026-05-05_02-02-39_run1_subject2_resume2500/{upper,lower}_model_13000.pt`
+- Source motion: `/home/qiuziyu/datasets/gae_mimic_dataset/extend_datasets/lafan1_dataset/g1/train/run1_subject2.npz`
+- Motion stats: 11890 frames, 50 Hz, 237.80 s
+- Box spawn offset: pelvis-frame `(0.32, 0.0, 0.18)`,比默认 walk/box policy 高 4 cm
+
+生成命令:
+
+```bash
+cd /home/qiuziyu/code/postman/upper_lower
+conda activate unitree_isaaclab
+
+python scripts/factoryIsaac/dual_agent_export_onnx.py \
+  --upper_policy logs/rsl_rl/g1_dual_agent/2026-05-05_02-02-39_run1_subject2_resume2500/upper_model_13000.pt \
+  --lower_policy logs/rsl_rl/g1_dual_agent/2026-05-05_02-02-39_run1_subject2_resume2500/lower_model_13000.pt \
+  --task tracking \
+  --output_dir /home/qiuziyu/code/postman/FSMDeploy_G1/policy/dual_agent_run_tracking/model \
+  --rldevice cpu
+
+python scripts/factoryIsaac/dual_agent_tracking_preprocess_motion.py \
+  --motion_file /home/qiuziyu/datasets/gae_mimic_dataset/extend_datasets/lafan1_dataset/g1/train/run1_subject2.npz \
+  --output /home/qiuziyu/code/postman/FSMDeploy_G1/policy/dual_agent_run_tracking/motion/run_tracking_ref.npz
+```
+
+验证:
+
+```bash
+cd /home/qiuziyu/code/postman/FSMDeploy_G1
+python deploy_mujoco/deploy_mujoco_keyboard_input.py
+# 命令序列: start → a+r1 → b+l1(→ 箱子 spawn → 跟踪 run)
+```
+
+`DualAgentRunTracking` 目前只绑定 MuJoCo sim2sim。真机入口 `deploy_real.py`
+没有绑定 `b+l1`;跑步上真机前需要单独做 safety ladder。
+
+---
+
+## 3. 训了一个**新的 tracking 任务**(不同 motion,不同动作)
 
 每个新 tracking 任务 = 一份独立 ONNX + 一份独立 motion npz + 一个独立的
-state 类 + 一个键位(目前 `b+l1` / `x+l1` / `y+l1` 预留)。最省心的做法是
+state 类 + 一个键位(目前 `x+l1` / `y+l1` 预留;`b+l1` 已给 run tracking)。最省心的做法是
 直接克隆 `DualAgentTracking` 再改几处符号。
 
 ### Step 1: 训练侧导出 artifact
@@ -124,8 +169,8 @@ ls policy/dual_agent_jump_tracking/motion/jump_tracking_ref.npz
   - `motion_file: "jump_tracking_ref.npz"`
 
 - **`common/utils.py`**
-  - `FSMStateName.DUAL_AGENT_JUMP_TRACK = 18`
-  - `FSMCommand.DUAL_AGENT_JUMP_TRACK = 18`
+  - `FSMStateName.DUAL_AGENT_JUMP_TRACK = 19`
+  - `FSMCommand.DUAL_AGENT_JUMP_TRACK = 19`
 
 - **`FSM/FSM.py`**
   - `from policy.dual_agent_jump_tracking.DualAgentJumpTracking import DualAgentJumpTracking`
@@ -137,15 +182,15 @@ ls policy/dual_agent_jump_tracking/motion/jump_tracking_ref.npz
   一般只有从 `LocoMode` 切进来是真实用得到的路径。
 
 - **`deploy_mujoco/deploy_mujoco_keyboard_input.py`** 和
-  **`deploy_mujoco/deploy_mujoco.py`**:在 L1 组里占一个未用键(`b+l1`、
-  `x+l1`、`y+l1` 任选):
+  **`deploy_mujoco/deploy_mujoco.py`**:在 L1 组里占一个未用键(`x+l1`、
+  `y+l1` 任选):
   ```python
   # keyboard
-  elif cmd == "b+l1":
+  elif cmd == "x+l1":
       state_cmd.skill_cmd = FSMCommand.DUAL_AGENT_JUMP_TRACK
 
   # joystick(和 a+l1 DualAgentTracking 对称,换键位)
-  if joystick.is_button_released(JoystickButton.B) and \
+  if joystick.is_button_released(JoystickButton.X) and \
      joystick.is_button_pressed(JoystickButton.L1):
       state_cmd.skill_cmd = FSMCommand.DUAL_AGENT_JUMP_TRACK
   ```

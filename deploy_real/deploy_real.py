@@ -124,11 +124,10 @@ class Controller:
                self.remote_controller.is_button_pressed(KeyMap.L1):
                 self.state_cmd.skill_cmd = FSMCommand.DUAL_AGENT_TRACK
 
-            # b+l1 / x+l1 / y+l1 reserved for future tracking demos — each
-            # paired with its own ONNX + motion npz. Do NOT bind sim-only
-            # policies here (BoxTransport, DualAgentBoxTransVel, BeyondMimic,
-            # LocoNew) — their actor obs include body-frame base_lin_vel
-            # which the real IMU can't provide.
+            # b+l1 run tracking is intentionally sim2sim-only for now. x+l1 /
+            # y+l1 remain reserved for future tracking demos. Do NOT bind
+            # sim-only policies here without a separate real-robot validation
+            # ladder.
 
             self.state_cmd.vel_cmd[0] =  self.remote_controller.ly
             self.state_cmd.vel_cmd[1] =  self.remote_controller.lx * -1

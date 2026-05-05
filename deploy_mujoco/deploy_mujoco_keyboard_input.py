@@ -43,6 +43,7 @@ class TerminalController:
         print("  y+r1        - BeyondMimic")
         print("  -- L1 group (motion tracking demos) --")
         print("  a+l1        - Dual Agent Tracking: walk (sim2sim, .onnx)")
+        print("  b+l1        - Dual Agent Tracking: run (sim2sim, .onnx)")
         print("  vel x y z   - Set velocity (e.g., 'vel 0.5 0 0.2')")
         print("  exit        - Exit program")
         print("===========================\n")
@@ -152,6 +153,9 @@ if __name__ == "__main__":
                 elif cmd == "a+l1":
                     state_cmd.skill_cmd = FSMCommand.DUAL_AGENT_TRACK
                     print("Dual Agent Tracking: walk (sim2sim, ONNX)")
+                elif cmd == "b+l1":
+                    state_cmd.skill_cmd = FSMCommand.DUAL_AGENT_RUN_TRACK
+                    print("Dual Agent Tracking: run (sim2sim, ONNX)")
                 elif cmd.startswith("vel "):
                     try:
                         parts = cmd.split()
@@ -225,8 +229,12 @@ if __name__ == "__main__":
                 if is_box and ramp_complete and not box_active:
                     pelvis_pos  = d.qpos[0:3].copy()
                     pelvis_quat = d.qpos[3:7].copy()
+                    box_offset = np.asarray(
+                        getattr(cur, "transport_box_offset_base", None) or box_offset_base,
+                        dtype=np.float64,
+                    )
                     offset_world = np.zeros(3, dtype=np.float64)
-                    mujoco.mju_rotVecQuat(offset_world, box_offset_base, pelvis_quat)
+                    mujoco.mju_rotVecQuat(offset_world, box_offset, pelvis_quat)
                     box_hold_pos[:]  = pelvis_pos + offset_world
                     box_hold_quat[:] = pelvis_quat
                     d.qpos[box_qpos_adr:box_qpos_adr+3]   = box_hold_pos

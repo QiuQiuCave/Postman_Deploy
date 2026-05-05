@@ -19,6 +19,7 @@ class FSMStateName(Enum):
     SKILL_BOX_TRANSPORT_V = 15
     DUAL_AGENT_BOX_TRANS_VEL = 16
     DUAL_AGENT_TRACK = 17
+    DUAL_AGENT_RUN_TRACK = 18
 
 
 @unique
@@ -34,6 +35,7 @@ class FSMCommand(Enum):
     SKILL_BOX_TRANSPORT_V = 15
     DUAL_AGENT_BOX_TRANS_VEL = 16
     DUAL_AGENT_TRACK = 17
+    DUAL_AGENT_RUN_TRACK = 18
     
     
     
@@ -58,5 +60,4 @@ def scale_values(values, target_ranges):
         scaled_val = (val + 1) * (new_max - new_min) / 2 + new_min
         scaled.append(scaled_val)
     return np.array(scaled)
-
 

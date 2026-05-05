@@ -64,8 +64,9 @@
 - `b+r1 / x+r1 / y+r1`(BoxTransport / DualAgentBoxTransVel / BeyondMimic
   的 sim2sim 版)—— 这几个 policy 的 lower actor obs 有 `base_lin_vel`,
   真机 IMU 没有 body-frame 线速度估计器
-- `b+l1 / x+l1 / y+l1`:预留给未来的 tracking demo,每条 demo 一份
-  ONNX + 一份 motion npz
+- `b+l1`:run tracking 目前只接 MuJoCo sim2sim,真机未做 safety ladder
+- `x+l1 / y+l1`:预留给未来的 tracking demo,每条 demo 一份 ONNX + 一份
+  motion npz
 
 ---
 

@@ -35,7 +35,7 @@ class MotionBuffer:
         self.frame_idx = (self.frame_idx + 1) % self.total_frames
 
 
-class DualAgentTracking(FSMState):
+class DualAgentRunTracking(FSMState):
     """
     ONNX sim2sim runtime for the dual-agent *tracking* policy (upper + lower).
 
@@ -62,8 +62,8 @@ class DualAgentTracking(FSMState):
       - base_lin_vel(3): not observable from IMU alone on hardware.
     All three are kept as privileged signals in the critic only (asymmetric
     actor-critic); the policy learns to infer them implicitly from remaining
-    body-frame obs. Validated at iter 15000 of
-    2026-04-21_20-01-44_joint_train.
+    body-frame obs. The active run artifact provenance is tracked in
+    policy/dual_agent_run_tracking/POLICIES.md.
 
     The CombinedActor (dual_agent_export_onnx.CombinedActor) reorders the
     combined 29-dim action to MuJoCo order inside the graph, so q_cmd is
@@ -74,16 +74,17 @@ class DualAgentTracking(FSMState):
     # Align with other box-carrying policies: teleport the shared transport_box
     # into the grasp region on entry so the upper actor has something to hold.
     needs_transport_box = True
+    transport_box_offset_base = (0.32, 0.0, 0.18)
 
     def __init__(self, state_cmd: StateAndCmd, policy_output: PolicyOutput):
         super().__init__()
         self.state_cmd = state_cmd
         self.policy_output = policy_output
-        self.name = FSMStateName.DUAL_AGENT_TRACK
-        self.name_str = "dual_agent_tracking_mode"
+        self.name = FSMStateName.DUAL_AGENT_RUN_TRACK
+        self.name_str = "dual_agent_run_tracking_mode"
 
         current_dir = os.path.dirname(os.path.abspath(__file__))
-        config_path = os.path.join(current_dir, "config", "DualAgentTracking.yaml")
+        config_path = os.path.join(current_dir, "config", "DualAgentRunTracking.yaml")
         with open(config_path, "r") as f:
             config = yaml.load(f, Loader=yaml.FullLoader)
 
@@ -152,7 +153,7 @@ class DualAgentTracking(FSMState):
             self.sess.run(["actions"], {"upper_obs": warm_u, "lower_obs": warm_l})
 
         print(
-            f"DualAgentTracking policy initializing (backend=onnx, dual-input) "
+            f"DualAgentRunTracking policy initializing (backend=onnx, dual-input) "
             f"| motion frames={self.motion.total_frames} @ {self.motion.fps}Hz "
             f"| duration={self.motion.total_frames/self.motion.fps:.2f}s"
         )
@@ -180,7 +181,7 @@ class DualAgentTracking(FSMState):
         self.ramp_init_motor_pos = self.state_cmd.q.copy().astype(np.float32)
         self.ramp_cur_step = 0
         self.ramping = True
-        print(f"DualAgentTracking: ramping to default pose over {self.ramp_time:.2f}s "
+        print(f"DualAgentRunTracking: ramping to default pose over {self.ramp_time:.2f}s "
               f"({self.ramp_num_step} ticks) before policy inference starts.")
 
     def run(self):
@@ -196,7 +197,7 @@ class DualAgentTracking(FSMState):
             self.policy_output.kds     = self.ramp_kds.copy()
             if alpha >= 1.0:
                 self.ramping = False
-                print("DualAgentTracking: ramp complete, starting policy inference.")
+                print("DualAgentRunTracking: ramp complete, starting policy inference.")
             return
 
         # 1. robot state (MuJoCo order from bus).
@@ -295,8 +296,8 @@ class DualAgentTracking(FSMState):
         elif self.state_cmd.skill_cmd == FSMCommand.DUAL_AGENT_BOX_TRANS_VEL:
             self.state_cmd.skill_cmd = FSMCommand.INVALID
             return FSMStateName.DUAL_AGENT_BOX_TRANS_VEL
-        elif self.state_cmd.skill_cmd == FSMCommand.DUAL_AGENT_RUN_TRACK:
+        elif self.state_cmd.skill_cmd == FSMCommand.DUAL_AGENT_TRACK:
             self.state_cmd.skill_cmd = FSMCommand.INVALID
-            return FSMStateName.DUAL_AGENT_RUN_TRACK
-        else:
             return FSMStateName.DUAL_AGENT_TRACK
+        else:
+            return FSMStateName.DUAL_AGENT_RUN_TRACK

@@ -121,8 +121,15 @@ class DualAgentTracking(FSMState):
         # Scratch buffers.
         self.qj_obs         = np.zeros(self.num_actions, dtype=np.float32)
         self.dqj_obs        = np.zeros(self.num_actions, dtype=np.float32)
+        self.lower_action_indices = np.array(
+            config.get("lower_action_indices", list(range(15))),
+            dtype=np.int64,
+        )
+        if self.lower_action_indices.shape != (15,):
+            raise ValueError(f"lower_action_indices must have 15 entries, got {self.lower_action_indices}")
+
         # Upper last_action = full 29-dim Isaac-order raw action (pre-reorder).
-        # Lower last_action = first 15 slots of that same Isaac-order action.
+        # Lower last_action follows the training-time lower action index layout.
         self.action_isaac   = np.zeros(self.num_actions, dtype=np.float32)
         self.upper_obs_flat = np.zeros(self.num_obs_upper, dtype=np.float32)
         self.lower_obs_flat = np.zeros(self.num_obs_lower, dtype=np.float32)
@@ -240,7 +247,7 @@ class DualAgentTracking(FSMState):
         joint_vel_l       = self.dqj_obs.astype(np.float32)
         gravity_s_l       = gravity.astype(np.float32)
         ang_vel_s_l       = ang_vel.astype(np.float32)
-        last_action_lower = self.action_isaac[:15].astype(np.float32)
+        last_action_lower = self.action_isaac[self.lower_action_indices].astype(np.float32)
 
         o = self.lower_obs_flat
         o[0:15]   = lower_cmd_pos
@@ -298,5 +305,8 @@ class DualAgentTracking(FSMState):
         elif self.state_cmd.skill_cmd == FSMCommand.DUAL_AGENT_RUN_TRACK:
             self.state_cmd.skill_cmd = FSMCommand.INVALID
             return FSMStateName.DUAL_AGENT_RUN_TRACK
+        elif self.state_cmd.skill_cmd == FSMCommand.DUAL_AGENT_JUMP_TRACK:
+            self.state_cmd.skill_cmd = FSMCommand.INVALID
+            return FSMStateName.DUAL_AGENT_JUMP_TRACK
         else:
             return FSMStateName.DUAL_AGENT_TRACK

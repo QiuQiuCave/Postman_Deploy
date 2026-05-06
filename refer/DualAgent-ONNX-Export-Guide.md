@@ -23,6 +23,14 @@ Dual Agent 是一个双策略架构的人形机器人控制系统：
 
 **导出的 ONNX 模型输出已经是 Mujoco 顺序**，可以直接在 Mujoco 中使用，无需额外转换！
 
+> **2026-05-06 更新: semantic lower action layout**
+>
+> 老 walk/run checkpoint 使用 legacy lower layout(`0..14`),但新的 jump
+> checkpoint 使用按 `g1_lower_body_joint_names` 解析的 semantic layout:
+> `[6, 3, 0, 9, 13, 17, 7, 4, 1, 10, 14, 18, 2, 5, 8]`。部署侧每个
+> tracking policy 的 config 都必须写明 `lower_action_indices`。runtime 构建
+> lower obs 的 `last_action` 时按该索引取值,不能再固定 `actions[:15]`。
+
 ### 1.3 导出模式
 
 | 模式 | 输出文件 | 使用场景 |
@@ -49,8 +57,8 @@ Dual Agent 是一个双策略架构的人形机器人控制系统：
 │    ├─ upper_action = upper_actor(upper_obs)  → [1, 29]         │
 │    ├─ lower_action = lower_actor(lower_obs)  → [1, 15]         │
 │    └─ Merge:                                                    │
-│        combined[0:15]  = lower_action[0:15]                     │
-│        combined[15:29] = upper_action[15:29]                    │
+│        combined[lower_action_indices] = lower_action             │
+│        combined[upper_action_indices] = upper_action[...]        │
 │                                                                 │
 │  Output:                                                        │
 │    └─ actions: float32[1, 29]       合并后的关节动作             │
@@ -170,6 +178,31 @@ G1_ISAAC_JOINT_NAMES = [
     "right_wrist_yaw_joint",      # 28
 ]
 ```
+
+### 3.3 部署侧 lower action layout
+
+ONNX 输出已经是 MuJoCo 顺序,但 `DualAgentTracking` / `DualAgentRunTracking`
+runtime 会同时维护一份 `action_isaac`,用于构造下一步 lower obs 中的
+`last_action_lower`。这 15 维 feedback 必须匹配训练时 lower actor 的 action
+layout。
+
+配置位置:
+
+```yaml
+# policy/<tracking_policy>/config/*.yaml
+lower_action_indices: [...]
+```
+
+当前约定:
+
+- walk/run:旧 checkpoint,继续使用 legacy
+  `[0, 1, 2, ..., 14]`。
+- jump:新 semantic checkpoint,使用
+  `[6, 3, 0, 9, 13, 17, 7, 4, 1, 10, 14, 18, 2, 5, 8]`。
+
+如果这个索引错了,ONNX 推理输出可能仍然维度正确,但 lower actor 看到的
+`last_action` feedback 会和训练时不同;如果 exporter 也用错 layout,则 lower
+动作会被写进错误的 Isaac 关节槽位,表现为 MuJoCo 全身乱动。
 
 ---
 
@@ -298,6 +331,7 @@ session = ort.InferenceSession("dual_agent_combined.onnx")
 history_buffer = []
 last_action = np.zeros(29, dtype=np.float32)
 last_lower_action = np.zeros(15, dtype=np.float32)
+lower_action_indices = load_lower_action_indices_from_config_or_metadata()
 
 # 控制频率: 50Hz (dt = 0.02s)
 # 仿真 decimation = 4, 仿真 dt = 0.005s
@@ -331,7 +365,7 @@ while running:
     
     # 6. 更新状态
     last_action = actions.copy()
-    last_lower_action = actions[:15].copy()
+    last_lower_action = actions[lower_action_indices].copy()
     time_step += 1
     
     time.sleep(control_dt)
@@ -350,6 +384,7 @@ session = ort.InferenceSession("dual_agent_motion.onnx")
 history_buffer = []
 last_action = np.zeros(29, dtype=np.float32)
 last_lower_action = np.zeros(15, dtype=np.float32)
+lower_action_indices = load_lower_action_indices_from_config_or_metadata()
 time_step = 0
 
 while running:
@@ -390,7 +425,7 @@ while running:
     
     # 7. 更新状态
     last_action = actions.copy()
-    last_lower_action = actions[:15].copy()
+    last_lower_action = actions[lower_action_indices].copy()
     time_step += 1
     
     # 时间步会在模型内部自动 clamp 到有效范围

@@ -12,8 +12,8 @@ preprocessed 参考轨迹(npz)。训练 cfg:
 - experiment: `g1_dual_agent`,目录 `logs/rsl_rl/g1_dual_agent/<ts>_joint_train/`
 
 部署目标:`FSMStateName.DUAL_AGENT_TRACK`,ONNX 推理,键位 `a+l1`(手柄 A+L1 /
-键盘 `a+l1`)。`b+l1` 已接入跑步 tracking demo,`x+l1` / `y+l1` 预留给未来
-tracking demo。每个新 demo **自带一份 ONNX + 自带一份 motion npz**(训练时
+键盘 `a+l1`)。`b+l1` 已接入跑步 tracking demo,`x+l1` 已接入 jump tracking
+demo,`y+l1` 预留给未来 tracking demo。每个新 demo **自带一份 ONNX + 自带一份 motion npz**(训练时
 motion 和 policy 绑定,不能共享 ONNX 切 motion)。
 
 与 `DualAgentBoxTransVel` 的关键差异:

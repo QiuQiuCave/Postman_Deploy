@@ -69,6 +69,15 @@ class FixedPose(FSMState):
         elif(self.state_cmd.skill_cmd == FSMCommand.SKILL_BOX_TRANSPORT_V):
             self.state_cmd.skill_cmd = FSMCommand.INVALID
             return FSMStateName.SKILL_BOX_TRANSPORT_V
+        elif(self.state_cmd.skill_cmd == FSMCommand.DUAL_AGENT_TRACK):
+            self.state_cmd.skill_cmd = FSMCommand.INVALID
+            return FSMStateName.DUAL_AGENT_TRACK
+        elif(self.state_cmd.skill_cmd == FSMCommand.DUAL_AGENT_RUN_TRACK):
+            self.state_cmd.skill_cmd = FSMCommand.INVALID
+            return FSMStateName.DUAL_AGENT_RUN_TRACK
+        elif(self.state_cmd.skill_cmd == FSMCommand.DUAL_AGENT_JUMP_TRACK):
+            self.state_cmd.skill_cmd = FSMCommand.INVALID
+            return FSMStateName.DUAL_AGENT_JUMP_TRACK
         elif(self.state_cmd.skill_cmd == FSMCommand.PASSIVE):
             self.state_cmd.skill_cmd = FSMCommand.INVALID
             return FSMStateName.PASSIVE

@@ -100,7 +100,7 @@ python deploy_mujoco/deploy_mujoco_keyboard_input.py
 ## 3. 训了一个**新的 tracking 任务**(不同 motion,不同动作)
 
 每个新 tracking 任务 = 一份独立 ONNX + 一份独立 motion npz + 一个独立的
-state 类 + 一个键位(目前 `x+l1` / `y+l1` 预留;`b+l1` 已给 run tracking)。最省心的做法是
+state 类 + 一个键位(目前 `x+l1` 已给 jump tracking,`y+l1` 预留;`b+l1` 已给 run tracking)。最省心的做法是
 直接克隆 `DualAgentTracking` 再改几处符号。
 
 ### Step 1: 训练侧导出 artifact
@@ -236,13 +236,14 @@ python deploy_mujoco/deploy_mujoco_keyboard_input.py
 ```xml
 <body name="transport_box" pos="100 100 0.15">
   <freejoint/>
-  <geom type="box" size="0.15 0.15 0.15" mass="1.5" rgba="0.82 0.45 0.22 1"/>
+  <geom type="box" size="0.15 0.15 0.15" mass="0.5" rgba="0.82 0.45 0.22 1"/>
 </body>
 ```
 
 - **`size="0.15 0.15 0.15"`** 是 MuJoCo box 的**半长**,对应 0.3 m 立方体
   (和训练 cfg `BOX_SIZE=0.3` 对齐)。训练里换大小,这里也要改。
-- **`mass="1.5"`**(kg)。训练侧 `mass=1.5`。
+- **`mass="0.5"`**(kg)。这是部署侧 MuJoCo `transport_box` 的当前质量;
+  训练/Isaac 随机化配置不由这个文件控制。
 - **`rgba`** 纯视觉,随意。
 - **顶层 `pos="100 100 0.15"`** 是场景里的**初始停放位置**。这个值在
   `d.qpos` 第一次初始化时被写入。运行时的重置停放由下一节的

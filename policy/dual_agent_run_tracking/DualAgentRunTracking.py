@@ -75,21 +75,26 @@ class DualAgentRunTracking(FSMState):
     # into the grasp region on entry so the upper actor has something to hold.
     needs_transport_box = True
     transport_box_offset_base = (0.32, 0.0, 0.22)
+    policy_dir_name = "dual_agent_run_tracking"
+    config_filename = "DualAgentRunTracking.yaml"
+    state_name = FSMStateName.DUAL_AGENT_RUN_TRACK
+    state_name_str = "dual_agent_run_tracking_mode"
+    display_name = "DualAgentRunTracking"
 
     def __init__(self, state_cmd: StateAndCmd, policy_output: PolicyOutput):
         super().__init__()
         self.state_cmd = state_cmd
         self.policy_output = policy_output
-        self.name = FSMStateName.DUAL_AGENT_RUN_TRACK
-        self.name_str = "dual_agent_run_tracking_mode"
+        self.name = self.state_name
+        self.name_str = self.state_name_str
 
-        current_dir = os.path.dirname(os.path.abspath(__file__))
-        config_path = os.path.join(current_dir, "config", "DualAgentRunTracking.yaml")
+        policy_dir = os.path.join(PROJECT_ROOT, "policy", self.policy_dir_name)
+        config_path = os.path.join(policy_dir, "config", self.config_filename)
         with open(config_path, "r") as f:
             config = yaml.load(f, Loader=yaml.FullLoader)
 
-        self.policy_path     = os.path.join(current_dir, "model",  config["policy_path"])
-        self.motion_path     = os.path.join(current_dir, "motion", config["motion_file"])
+        self.policy_path     = os.path.join(policy_dir, "model",  config["policy_path"])
+        self.motion_path     = os.path.join(policy_dir, "motion", config["motion_file"])
         self.kps             = np.array(config["kps"],             dtype=np.float32)
         self.kds             = np.array(config["kds"],             dtype=np.float32)
         self.default_angles  = np.array(config["default_angles"],  dtype=np.float32)
@@ -122,8 +127,15 @@ class DualAgentRunTracking(FSMState):
         # Scratch buffers.
         self.qj_obs         = np.zeros(self.num_actions, dtype=np.float32)
         self.dqj_obs        = np.zeros(self.num_actions, dtype=np.float32)
+        self.lower_action_indices = np.array(
+            config.get("lower_action_indices", list(range(15))),
+            dtype=np.int64,
+        )
+        if self.lower_action_indices.shape != (15,):
+            raise ValueError(f"lower_action_indices must have 15 entries, got {self.lower_action_indices}")
+
         # Upper last_action = full 29-dim Isaac-order raw action (pre-reorder).
-        # Lower last_action = first 15 slots of that same Isaac-order action.
+        # Lower last_action follows the training-time lower action index layout.
         self.action_isaac   = np.zeros(self.num_actions, dtype=np.float32)
         self.upper_obs_flat = np.zeros(self.num_obs_upper, dtype=np.float32)
         self.lower_obs_flat = np.zeros(self.num_obs_lower, dtype=np.float32)
@@ -153,7 +165,7 @@ class DualAgentRunTracking(FSMState):
             self.sess.run(["actions"], {"upper_obs": warm_u, "lower_obs": warm_l})
 
         print(
-            f"DualAgentRunTracking policy initializing (backend=onnx, dual-input) "
+            f"{self.display_name} policy initializing (backend=onnx, dual-input) "
             f"| motion frames={self.motion.total_frames} @ {self.motion.fps}Hz "
             f"| duration={self.motion.total_frames/self.motion.fps:.2f}s"
         )
@@ -181,7 +193,7 @@ class DualAgentRunTracking(FSMState):
         self.ramp_init_motor_pos = self.state_cmd.q.copy().astype(np.float32)
         self.ramp_cur_step = 0
         self.ramping = True
-        print(f"DualAgentRunTracking: ramping to default pose over {self.ramp_time:.2f}s "
+        print(f"{self.display_name}: ramping to default pose over {self.ramp_time:.2f}s "
               f"({self.ramp_num_step} ticks) before policy inference starts.")
 
     def run(self):
@@ -197,7 +209,7 @@ class DualAgentRunTracking(FSMState):
             self.policy_output.kds     = self.ramp_kds.copy()
             if alpha >= 1.0:
                 self.ramping = False
-                print("DualAgentRunTracking: ramp complete, starting policy inference.")
+                print(f"{self.display_name}: ramp complete, starting policy inference.")
             return
 
         # 1. robot state (MuJoCo order from bus).
@@ -241,7 +253,7 @@ class DualAgentRunTracking(FSMState):
         joint_vel_l       = self.dqj_obs.astype(np.float32)
         gravity_s_l       = gravity.astype(np.float32)
         ang_vel_s_l       = ang_vel.astype(np.float32)
-        last_action_lower = self.action_isaac[:15].astype(np.float32)
+        last_action_lower = self.action_isaac[self.lower_action_indices].astype(np.float32)
 
         o = self.lower_obs_flat
         o[0:15]   = lower_cmd_pos
@@ -299,5 +311,8 @@ class DualAgentRunTracking(FSMState):
         elif self.state_cmd.skill_cmd == FSMCommand.DUAL_AGENT_TRACK:
             self.state_cmd.skill_cmd = FSMCommand.INVALID
             return FSMStateName.DUAL_AGENT_TRACK
+        elif self.state_cmd.skill_cmd == FSMCommand.DUAL_AGENT_JUMP_TRACK:
+            self.state_cmd.skill_cmd = FSMCommand.INVALID
+            return FSMStateName.DUAL_AGENT_JUMP_TRACK
         else:
-            return FSMStateName.DUAL_AGENT_RUN_TRACK
+            return self.name

@@ -106,13 +106,16 @@ class Controller:
             if self.remote_controller.is_button_pressed(KeyMap.start):
                 self.state_cmd.skill_cmd = FSMCommand.POS_RESET    # FixedPose 缓降
 
-            # --- R1 group: hardware-capable locomotion / stable skills ---
+            # --- R1 group: original loco plus staged box handoff ---
             if self.remote_controller.is_button_pressed(KeyMap.A) and \
                self.remote_controller.is_button_pressed(KeyMap.R1):
                 self.state_cmd.skill_cmd = FSMCommand.LOCO         # a+r1 → LocoMode
+            if self.remote_controller.is_button_pressed(KeyMap.B) and \
+               self.remote_controller.is_button_pressed(KeyMap.R1):
+                self.state_cmd.skill_cmd = FSMCommand.BOX_HANDOFF_STAND
             if self.remote_controller.is_button_pressed(KeyMap.X) and \
                self.remote_controller.is_button_pressed(KeyMap.R1):
-                self.state_cmd.skill_cmd = FSMCommand.SKILL_1      # x+r1 → Dance
+                self.state_cmd.skill_cmd = FSMCommand.BOX_HOLD_STAND
 
             # --- L1 group: motion-tracking family ---
             # Tracking actors use the slim 96/109 obs contract: no

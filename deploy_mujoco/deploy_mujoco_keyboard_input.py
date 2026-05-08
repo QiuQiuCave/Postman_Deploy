@@ -36,11 +36,10 @@ class TerminalController:
         print("Commands:")
         print("  l3          - Passive mode")
         print("  start       - Position reset")
-        print("  -- R1 group (loco / box-transport / mimic) --")
+        print("  -- R1 group (loco / staged box handoff) --")
         print("  a+r1        - Locomotion mode")
-        print("  b+r1        - Box Transport Velocity (sim2sim, .onnx)")
-        print("  x+r1        - Dual Agent Box Transport Vel (upper+lower, sim2sim, .onnx)")
-        print("  y+r1        - BeyondMimic")
+        print("  b+r1        - Box Handoff Stand (open hands, no box spawn)")
+        print("  x+r1        - Box Hold Stand (clamp box)")
         print("  -- L1 group (motion tracking demos) --")
         print("  a+l1        - Dual Agent Tracking: walk (sim2sim, .onnx)")
         print("  b+l1        - Dual Agent Tracking: run (sim2sim, .onnx)")
@@ -143,14 +142,11 @@ if __name__ == "__main__":
                     state_cmd.skill_cmd = FSMCommand.LOCO
                     print("Locomotion mode")
                 elif cmd == "b+r1":
-                    state_cmd.skill_cmd = FSMCommand.SKILL_BOX_TRANSPORT_V
-                    print("Box Transport Velocity (sim2sim, ONNX)")
+                    state_cmd.skill_cmd = FSMCommand.BOX_HANDOFF_STAND
+                    print("Box Handoff Stand")
                 elif cmd == "x+r1":
-                    state_cmd.skill_cmd = FSMCommand.DUAL_AGENT_BOX_TRANS_VEL
-                    print("Dual Agent Box Transport Vel (upper+lower, sim2sim, ONNX)")
-                elif cmd == "y+r1":
-                    state_cmd.skill_cmd = FSMCommand.SKILL_4
-                    print("BeyondMimic")
+                    state_cmd.skill_cmd = FSMCommand.BOX_HOLD_STAND
+                    print("Box Hold Stand")
                 elif cmd == "a+l1":
                     state_cmd.skill_cmd = FSMCommand.DUAL_AGENT_TRACK
                     print("Dual Agent Tracking: walk (sim2sim, ONNX)")

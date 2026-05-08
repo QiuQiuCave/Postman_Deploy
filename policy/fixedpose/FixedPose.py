@@ -66,6 +66,12 @@ class FixedPose(FSMState):
         elif(self.state_cmd.skill_cmd == FSMCommand.LOCO_NEW_ONNX):
             self.state_cmd.skill_cmd = FSMCommand.INVALID
             return FSMStateName.LOCO_NEW_ONNX
+        elif(self.state_cmd.skill_cmd == FSMCommand.BOX_HANDOFF_STAND):
+            self.state_cmd.skill_cmd = FSMCommand.INVALID
+            return FSMStateName.BOX_HANDOFF_STAND
+        elif(self.state_cmd.skill_cmd == FSMCommand.BOX_HOLD_STAND):
+            self.state_cmd.skill_cmd = FSMCommand.INVALID
+            return FSMStateName.BOX_HOLD_STAND
         elif(self.state_cmd.skill_cmd == FSMCommand.SKILL_BOX_TRANSPORT_V):
             self.state_cmd.skill_cmd = FSMCommand.INVALID
             return FSMStateName.SKILL_BOX_TRANSPORT_V

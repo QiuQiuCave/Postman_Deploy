@@ -66,8 +66,8 @@ joint2motor_idx: [0, 6, 12,
                              20, 27,
                              21, 28]
 
-# Semantic lower-body action slots from the walk3500 training run's params/env.yaml.
-lower_action_indices: [6, 3, 0, 9, 13, 17, 7, 4, 1, 10, 14, 18, 2, 5, 8]
+# Legacy walk checkpoints were trained before semantic action-index routing.
+lower_action_indices: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
 
 # Upper-body obs scales (matches DualAgent-Train UpperBodyPolicyCfg exactly —
 # same 6 terms / 5-frame history as velocity variant).

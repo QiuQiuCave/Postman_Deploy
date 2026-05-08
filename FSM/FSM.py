@@ -10,6 +10,8 @@ from policy.skill_cooldown.SkillCooldown import SkillCooldown
 from policy.skill_cast.SkillCast import SkillCast
 from policy.kungfu2.KungFu2 import KungFu2
 from policy.beyond_mimic.BeyondMimic import BeyondMimic
+from policy.box_handoff_stand.BoxHandoffStand import BoxHandoffStand
+from policy.box_hold_stand.BoxHoldStand import BoxHoldStand
 from policy.box_transport_velocity.BoxTransportVelocity import BoxTransportVelocity
 from policy.dual_agent_box_trans_vel.DualAgentBoxTransVel import DualAgentBoxTransVel
 from policy.dual_agent_tracking.DualAgentTracking import DualAgentTracking
@@ -44,6 +46,8 @@ class FSM:
         self.skill_cast_policy = SkillCast(state_cmd, policy_output)
         self.kungfu2_policy = KungFu2(state_cmd, policy_output)
         self.beyond_mimic_policy = BeyondMimic(state_cmd, policy_output)
+        self.box_handoff_stand_policy = BoxHandoffStand(state_cmd, policy_output)
+        self.box_hold_stand_policy = BoxHoldStand(state_cmd, policy_output)
         self.box_transport_velocity_policy = BoxTransportVelocity(state_cmd, policy_output)
         self.dual_agent_box_trans_vel_policy = DualAgentBoxTransVel(state_cmd, policy_output)
         self.dual_agent_tracking_policy = DualAgentTracking(state_cmd, policy_output)
@@ -109,6 +113,10 @@ class FSM:
             self.cur_policy = self.kungfu2_policy
         elif((policy_name == FSMStateName.SKILL_BEYOND_MIMIC)):
             self.cur_policy = self.beyond_mimic_policy
+        elif((policy_name == FSMStateName.BOX_HANDOFF_STAND)):
+            self.cur_policy = self.box_handoff_stand_policy
+        elif((policy_name == FSMStateName.BOX_HOLD_STAND)):
+            self.cur_policy = self.box_hold_stand_policy
         elif((policy_name == FSMStateName.SKILL_BOX_TRANSPORT_V)):
             self.cur_policy = self.box_transport_velocity_policy
         elif((policy_name == FSMStateName.DUAL_AGENT_BOX_TRANS_VEL)):

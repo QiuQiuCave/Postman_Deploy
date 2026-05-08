@@ -74,15 +74,13 @@ if __name__ == "__main__":
                     state_cmd.skill_cmd = FSMCommand.PASSIVE
                 if joystick.is_button_released(JoystickButton.START):
                     state_cmd.skill_cmd = FSMCommand.POS_RESET
-                # R1 group: locomotion / box-transport / mimic family.
+                # R1 group: original loco plus the staged box-handoff policies.
                 if joystick.is_button_released(JoystickButton.A) and joystick.is_button_pressed(JoystickButton.R1):
                     state_cmd.skill_cmd = FSMCommand.LOCO
                 if joystick.is_button_released(JoystickButton.B) and joystick.is_button_pressed(JoystickButton.R1):
-                    state_cmd.skill_cmd = FSMCommand.SKILL_BOX_TRANSPORT_V
+                    state_cmd.skill_cmd = FSMCommand.BOX_HANDOFF_STAND
                 if joystick.is_button_released(JoystickButton.X) and joystick.is_button_pressed(JoystickButton.R1):
-                    state_cmd.skill_cmd = FSMCommand.DUAL_AGENT_BOX_TRANS_VEL
-                if joystick.is_button_released(JoystickButton.Y) and joystick.is_button_pressed(JoystickButton.R1):
-                    state_cmd.skill_cmd = FSMCommand.SKILL_4
+                    state_cmd.skill_cmd = FSMCommand.BOX_HOLD_STAND
                 # L1 group: motion-tracking demos. y+l1 reserved for future demos.
                 if joystick.is_button_released(JoystickButton.A) and joystick.is_button_pressed(JoystickButton.L1):
                     state_cmd.skill_cmd = FSMCommand.DUAL_AGENT_TRACK

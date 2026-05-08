@@ -186,5 +186,14 @@ class BoxHandoffStand(FSMState):
         elif self.state_cmd.skill_cmd == FSMCommand.BOX_HOLD_STAND:
             self.state_cmd.skill_cmd = FSMCommand.INVALID
             return FSMStateName.BOX_HOLD_STAND
+        elif self.state_cmd.skill_cmd == FSMCommand.DUAL_AGENT_TRACK:
+            self.state_cmd.skill_cmd = FSMCommand.INVALID
+            return FSMStateName.DUAL_AGENT_TRACK
+        elif self.state_cmd.skill_cmd == FSMCommand.DUAL_AGENT_RUN_TRACK:
+            self.state_cmd.skill_cmd = FSMCommand.INVALID
+            return FSMStateName.DUAL_AGENT_RUN_TRACK
+        elif self.state_cmd.skill_cmd == FSMCommand.DUAL_AGENT_JUMP_TRACK:
+            self.state_cmd.skill_cmd = FSMCommand.INVALID
+            return FSMStateName.DUAL_AGENT_JUMP_TRACK
         else:
             return FSMStateName.BOX_HANDOFF_STAND

@@ -97,7 +97,7 @@ num_obs_lower: 109   # 30 (lower_body_command) + 3 + 3 + 29 + 29 + 15
 anchor_body_name: torso_link
 
 control_dt: 0.02
-ramp_time: 0.5
+ramp_time: 0.1
 ramp_kp_scale: 1.0
 ramp_kd_scale: 1.0
 

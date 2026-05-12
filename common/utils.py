@@ -23,6 +23,7 @@ class FSMStateName(Enum):
     DUAL_AGENT_JUMP_TRACK = 19
     BOX_HANDOFF_STAND = 20
     BOX_HOLD_STAND = 21
+    DUAL_AGENT_DANCE_TRACK = 22
 
 
 @unique
@@ -42,6 +43,7 @@ class FSMCommand(Enum):
     DUAL_AGENT_JUMP_TRACK = 19
     BOX_HANDOFF_STAND = 20
     BOX_HOLD_STAND = 21
+    DUAL_AGENT_DANCE_TRACK = 22
     
     
     

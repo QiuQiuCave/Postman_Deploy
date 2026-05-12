@@ -17,6 +17,7 @@ from policy.dual_agent_box_trans_vel.DualAgentBoxTransVel import DualAgentBoxTra
 from policy.dual_agent_tracking.DualAgentTracking import DualAgentTracking
 from policy.dual_agent_run_tracking.DualAgentRunTracking import DualAgentRunTracking
 from policy.dual_agent_jump_tracking.DualAgentJumpTracking import DualAgentJumpTracking
+from policy.dual_agent_dance_tracking.DualAgentDanceTracking import DualAgentDanceTracking
 from FSM.FSMState import *
 import time
 from common.ctrlcomp import *
@@ -53,6 +54,7 @@ class FSM:
         self.dual_agent_tracking_policy = DualAgentTracking(state_cmd, policy_output)
         self.dual_agent_run_tracking_policy = DualAgentRunTracking(state_cmd, policy_output)
         self.dual_agent_jump_tracking_policy = DualAgentJumpTracking(state_cmd, policy_output)
+        self.dual_agent_dance_tracking_policy = DualAgentDanceTracking(state_cmd, policy_output)
 
         print("initalized all policies!!!")
         
@@ -127,6 +129,8 @@ class FSM:
             self.cur_policy = self.dual_agent_run_tracking_policy
         elif((policy_name == FSMStateName.DUAL_AGENT_JUMP_TRACK)):
             self.cur_policy = self.dual_agent_jump_tracking_policy
+        elif((policy_name == FSMStateName.DUAL_AGENT_DANCE_TRACK)):
+            self.cur_policy = self.dual_agent_dance_tracking_policy
         else:
             pass
             

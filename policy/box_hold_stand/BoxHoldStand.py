@@ -197,5 +197,8 @@ class BoxHoldStand(FSMState):
         elif self.state_cmd.skill_cmd == FSMCommand.DUAL_AGENT_JUMP_TRACK:
             self.state_cmd.skill_cmd = FSMCommand.INVALID
             return FSMStateName.DUAL_AGENT_JUMP_TRACK
+        elif self.state_cmd.skill_cmd == FSMCommand.DUAL_AGENT_DANCE_TRACK:
+            self.state_cmd.skill_cmd = FSMCommand.INVALID
+            return FSMStateName.DUAL_AGENT_DANCE_TRACK
         else:
             return FSMStateName.BOX_HOLD_STAND

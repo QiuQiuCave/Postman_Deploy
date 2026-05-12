@@ -129,9 +129,9 @@ class Controller:
                self.remote_controller.is_button_pressed(KeyMap.L1):
                 self.state_cmd.skill_cmd = FSMCommand.DUAL_AGENT_RUN_TRACK
 
-            # x+l1 / y+l1 remain reserved for future tracking demos. Do NOT
-            # bind sim-only policies here without a separate real-robot
-            # validation ladder.
+            # x+l1 / y+l1 remain unbound on real hardware. y+l1 is currently a
+            # sim2sim-only dance tracking demo; do not bind it here without a
+            # separate real-robot validation ladder.
 
             self.state_cmd.vel_cmd[0] =  self.remote_controller.ly
             self.state_cmd.vel_cmd[1] =  self.remote_controller.lx * -1

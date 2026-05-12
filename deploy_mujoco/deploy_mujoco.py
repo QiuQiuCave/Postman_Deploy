@@ -81,13 +81,15 @@ if __name__ == "__main__":
                     state_cmd.skill_cmd = FSMCommand.BOX_HANDOFF_STAND
                 if joystick.is_button_released(JoystickButton.X) and joystick.is_button_pressed(JoystickButton.R1):
                     state_cmd.skill_cmd = FSMCommand.BOX_HOLD_STAND
-                # L1 group: motion-tracking demos. y+l1 reserved for future demos.
+                # L1 group: motion-tracking demos.
                 if joystick.is_button_released(JoystickButton.A) and joystick.is_button_pressed(JoystickButton.L1):
                     state_cmd.skill_cmd = FSMCommand.DUAL_AGENT_TRACK
                 if joystick.is_button_released(JoystickButton.B) and joystick.is_button_pressed(JoystickButton.L1):
                     state_cmd.skill_cmd = FSMCommand.DUAL_AGENT_RUN_TRACK
                 if joystick.is_button_released(JoystickButton.X) and joystick.is_button_pressed(JoystickButton.L1):
                     state_cmd.skill_cmd = FSMCommand.DUAL_AGENT_JUMP_TRACK
+                if joystick.is_button_released(JoystickButton.Y) and joystick.is_button_pressed(JoystickButton.L1):
+                    state_cmd.skill_cmd = FSMCommand.DUAL_AGENT_DANCE_TRACK
 
                 state_cmd.vel_cmd[0] = -joystick.get_axis_value(1)
                 state_cmd.vel_cmd[1] = -joystick.get_axis_value(0)

@@ -37,7 +37,8 @@ class MotionBuffer:
 
 class DualAgentRunTracking(FSMState):
     """
-    ONNX sim2sim runtime for the dual-agent *tracking* policy (upper + lower).
+    ONNX runtime for the dual-agent *tracking* policy (upper + lower), shared
+    by MuJoCo sim2sim and deploy_real.
 
     Model: single ONNX file (dual_agent_combined.onnx) with two inputs.
       upper_obs: float32[1,  96]   single frame

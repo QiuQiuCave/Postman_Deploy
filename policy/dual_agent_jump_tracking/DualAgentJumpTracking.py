@@ -5,7 +5,7 @@ from policy.dual_agent_run_tracking.DualAgentRunTracking import DualAgentRunTrac
 
 
 class DualAgentJumpTracking(DualAgentRunTracking):
-    """MuJoCo sim2sim runtime for the jump lower-body tracking demo."""
+    """Runtime for the jump lower-body tracking demo in sim2sim and deploy_real."""
 
     policy_dir_name = "dual_agent_jump_tracking"
     config_filename = "DualAgentJumpTracking.yaml"

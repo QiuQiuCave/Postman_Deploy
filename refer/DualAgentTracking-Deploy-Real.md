@@ -1,5 +1,11 @@
 # deploy_real.py 真机使用手册
 
+> 当前真机主流程已经改为 `A+R1 -> B+R1 -> X+R1 -> A+L1` 的递箱 /
+> 夹箱 / walk tracking 链路,并使用 `deploy_real/config/real.yaml` 做
+> run / jump / dance 的硬件门控。新的环境安装与操作步骤以
+> `refer/RealDeploy-Setup-And-Operation-Guide.zh.md` 为准。本文保留为早期
+> DualAgentTracking walk/run 部署记录。
+
 **目的**:从零把 Unitree G1 开机,到完整走完一遍 DualAgentTracking walk
 或 DualAgentRunTracking run 抱箱行走。配套的安全梯子与 abort 触发条件见
 `refer/DualAgentTracking-Sim2Real-Guide.md`;本文聚焦"按什么键、出什么现象"。

@@ -160,7 +160,8 @@ uv run python deploy_real/deploy_real.py
 ```
 
 键位和状态机逻辑跟之前完全一样,见 `README.md` / `CLAUDE.md` Safety 段。
-DualAgentTracking 真机流程单独见 `refer/DualAgentTracking-Sim2Real-Guide.md`。
+当前 dual-agent 真机环境安装和操作流程见
+`refer/RealDeploy-Setup-And-Operation-Guide.zh.md`。
 
 ---
 

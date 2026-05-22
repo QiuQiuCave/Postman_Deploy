@@ -7,3 +7,23 @@ lowstate_topic: "rt/lowstate"
 control_dt: 0.02
 
 error_over_time: 5
+max_control_over_time: 5
+
+# Real-hardware skill gates for the current selected short tracking clips.
+# Walk/run/jump are enabled so the sim2real experiment operator can use
+# A/B/X+L1 after the staged box-handoff flow. Dance remains disabled because it
+# is not part of the current three-clip deploy set.
+enable_box_handoff_stand: true
+enable_box_hold_stand: true
+enable_walk_tracking: true
+enable_run_tracking: true
+enable_jump_tracking: true
+enable_dance_tracking: false
+
+# CSV telemetry for real deploy debugging.
+log_real_run: true
+real_log_dir: "logs/real_deploy"
+real_log_interval: 1
+
+# Optional hardware-only target limiter. 0.0 disables it.
+max_target_delta: 0.0

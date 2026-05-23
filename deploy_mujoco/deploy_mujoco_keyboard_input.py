@@ -44,7 +44,7 @@ class TerminalController:
         print("  a+l1        - Dual Agent Tracking: walk (sim2sim, .onnx)")
         print("  b+l1        - Dual Agent Tracking: run (sim2sim, .onnx)")
         print("  x+l1        - Dual Agent Tracking: jump (sim2sim, .onnx)")
-        print("  y+l1        - Dual Agent Tracking: dance (sim2sim, .onnx)")
+        print("  y+l1        - Dual Agent Tracking: sprint (sim2sim, .onnx)")
         print("  vel x y z   - Set velocity (e.g., 'vel 0.5 0 0.2')")
         print("  exit        - Exit program")
         print("===========================\n")
@@ -159,7 +159,7 @@ if __name__ == "__main__":
                     print("Dual Agent Tracking: jump (sim2sim, ONNX)")
                 elif cmd == "y+l1":
                     state_cmd.skill_cmd = FSMCommand.DUAL_AGENT_DANCE_TRACK
-                    print("Dual Agent Tracking: dance (sim2sim, ONNX)")
+                    print("Dual Agent Tracking: sprint (sim2sim, ONNX)")
                 elif cmd.startswith("vel "):
                     try:
                         parts = cmd.split()

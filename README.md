@@ -11,6 +11,22 @@
 
 ---
 
+## Current Deployment-Machine Entry Point
+
+For a fresh experiment/deployment computer where an agent will clone this repo
+and configure the runtime, start from:
+
+```text
+refer/NewMachine-Agent-Setup-And-SmokeTest.zh.md
+```
+
+That guide covers the `uv` environment, CycloneDDS, Unitree SDK, artifact
+validation, MuJoCo smoke tests, and the future `git pull` update workflow. The
+current key bindings should be taken from that guide and the runtime terminal
+output.
+
+---
+
 ## 📢 About This Fork
 
 This repository is an enhanced version based on the excellent work from [ccrpRepo/RoboMimic_Deploy](https://github.com/ccrpRepo/RoboMimic_Deploy). 

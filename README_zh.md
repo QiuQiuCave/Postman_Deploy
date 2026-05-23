@@ -11,6 +11,20 @@
 
 ---
 
+## 当前部署电脑入口
+
+如果是在新的实验部署电脑上由 agent 拉取本仓库并配置环境,请优先阅读:
+
+```text
+refer/NewMachine-Agent-Setup-And-SmokeTest.zh.md
+```
+
+这份文档覆盖 `uv` 环境、CycloneDDS、Unitree SDK、artifact 验收、MuJoCo
+smoke test 和后续 `git pull` 更新流程。当前实际键位以该文档和运行时终端
+输出为准。
+
+---
+
 ## 📢 关于本仓库
 
 本仓库是基于 [ccrpRepo/RoboMimic_Deploy](https://github.com/ccrpRepo/RoboMimic_Deploy) 的优秀工作进行增强的版本。

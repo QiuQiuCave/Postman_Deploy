@@ -1,28 +1,33 @@
-from common.path_config import PROJECT_ROOT
+from abc import ABC, abstractmethod
 
-from common.utils import FSMStateName    
+from common.ctrlcomp import PolicyOutput, StateAndCmd
+from common.utils import FSMStateName
 
-class FSMState:
-    # Override to True in policies that need the MuJoCo transport_box body
-    # teleported into the grasp region on entry. Deploy loops read this flag
-    # so box-handling logic doesn't need to enumerate every such policy.
-    needs_transport_box = False
-    transport_box_offset_base = None
 
-    def __init__(self):
-        self.name = FSMStateName.INVALID
-        self.name_str = "invalid"
-        self.control_dt = 0.02
-    def enter(self):
-        raise NotImplementedError("enter() function must be implement!")
-    
-    def run(self):
-        raise NotImplementedError("run() function must be implement!")
-    
-    def exit(self):
-        raise NotImplementedError("exit() function must be implement!")
-    
-    def checkChange(self):
-        # joystick callback
-        raise NotImplementedError("checkChange() function must be implement!")
-        
+class FSMState(ABC):
+    def __init__(
+        self,
+        state_cmd: StateAndCmd,
+        policy_output: PolicyOutput,
+        name: FSMStateName,
+        name_str: str,
+    ):
+        self.state_cmd = state_cmd
+        self.policy_output = policy_output
+        self.name = name
+        self.name_str = name_str
+
+    def enter(self) -> None:
+        pass
+
+    @abstractmethod
+    def run(self) -> None:
+        raise NotImplementedError
+
+    def exit(self) -> None:
+        pass
+
+    @abstractmethod
+    def checkChange(self) -> FSMStateName:
+        raise NotImplementedError
+

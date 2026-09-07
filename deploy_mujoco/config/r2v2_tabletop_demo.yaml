@@ -1,0 +1,34 @@
+# Demonstration only: Reach precision is logged, not a transition requirement.
+# No changes to the strict compatibility gate or the confirmed hand baseline.
+warmup_standing_s: 2.0
+ready_s: 1.0
+phase_timeout_s: 10.0
+motion_settle_s: 0.3
+motion_speed_mps: 0.025
+table_above_waist_m: 0.10
+# Front edge x=.36 leaves the pitched wrist clear during upright placement.
+# A cylinder centered at x=.40 retains 20 mm support margin at its near edge.
+table_center_xy: [0.555, 0.16]
+table_half_size: [0.195, 0.26, 0.02]
+cylinder_xy: [0.40, 0.20]
+cylinder_initial_clearance_m: 0.001
+pregrasp_retreat_m: 0.05
+approach_step_m: 0.01
+trial_lift_m: 0.02
+lift_m: 0.08
+inward_translation_m: 0.10
+lower_step_m: 0.02
+touch_step_m: 0.003
+max_touch_descent_m: 0.025
+retreat_distance_m: 0.12
+retreat_backoff_m: 0.04
+close_minimum_s: 2.5
+contact_stable_s: 0.3
+trial_clearance_m: 0.008
+max_slip_m: 0.015
+max_slip_deg: 15.0
+slip_violation_s: 0.2
+final_position_m: 0.02
+final_tilt_deg: 10.0
+final_stable_s: 1.0
+grasp_enabled: true

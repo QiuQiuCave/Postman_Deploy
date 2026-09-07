@@ -18,6 +18,11 @@ for the new model. It requires neither G1 policies nor the Unitree SDK. The lega
 G1 deployment entrypoints have not yet been wired to R2V2.
 The accepted 75-degree thumb grasp, recorded hand/object poses and planned full-body
 integration contract are in the [R2V2 grasp FSM handoff](docs/r2v2_grasp_fsm_handoff.md).
+The new full-body policy adapter and its reproducible compatibility gate are documented in
+[R2V2 Reach deployment](docs/r2v2_reach_deployment.md). Numerical parity and 20-second
+standing passed; the strict empty-hand transfer precision gate still fails.
+After explicit authorization to bypass Reach precision for a demonstration, a separate
+[physical tabletop demo](docs/r2v2_tabletop_demo.md) is available. The strict gate remains unchanged.
 
 For a fresh experiment/deployment computer where an agent will clone this repo
 and configure the runtime, start from:

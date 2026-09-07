@@ -1,0 +1,35 @@
+# Simulation-only compatibility gate. No table/grasp episode until this passes.
+policy_path: ../AMO_R2/logs/rsl_rl/r2v2_reach_dual_arm_speed_limited_28dof/2026-08-30_00-45-04_dual-arm-speed-limited-v1-from-13250/2026-08-30_00-45-04_dual-arm-speed-limited-v1-from-13250.onnx
+checkpoint_path: ../AMO_R2/logs/rsl_rl/r2v2_reach_dual_arm_speed_limited_28dof/2026-08-30_00-45-04_dual-arm-speed-limited-v1-from-13250/model_12000.pt
+simulation_dt: 0.001
+policy_dt: 0.02
+hand_dt: 0.01
+foot_clearance_m: 0.001
+reset_settle_s: 0.4
+standing_duration_s: 20.0
+phase_timeout_s: 10.0
+standby_xyz_rpy_deg:
+  left: [0.35, 0.22, 0.42, 0, 0, 0]
+  right: [0.35, -0.22, 0.42, 0, 0, 0]
+gates:
+  position_m: 0.005
+  orientation_deg: 3.0
+  linear_speed_mps: 0.02
+  stable_s: 0.3
+  standby_position_m: 0.025
+  standby_orientation_deg: 7.0
+  inactive_position_m: 0.02
+  inactive_orientation_deg: 5.0
+  inactive_violation_s: 0.3
+  max_base_tilt_deg: 35.0
+  min_base_height_m: 0.55
+  max_joint_violation_rad: 0.05
+  max_self_penetration_m: 0.005
+placement:
+  # Coordinates in the stationary robot's initial yaw frame, meters.
+  cylinder_xy: [0.40, 0.20]
+  table_above_waist_m: 0.10
+  cylinder_height_m: 0.12
+  pregrasp_retreat_m: 0.05
+  lift_m: 0.08
+  inward_translation_m: 0.10

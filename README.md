@@ -13,6 +13,12 @@
 
 ## Current Deployment-Machine Entry Point
 
+On the `r2v2-fsm` branch, use the standalone [R2V2 hand validation guide](docs/r2v2_hand_validation.md)
+for the new model. It requires neither G1 policies nor the Unitree SDK. The legacy
+G1 deployment entrypoints have not yet been wired to R2V2.
+The accepted 75-degree thumb grasp, recorded hand/object poses and planned full-body
+integration contract are in the [R2V2 grasp FSM handoff](docs/r2v2_grasp_fsm_handoff.md).
+
 For a fresh experiment/deployment computer where an agent will clone this repo
 and configure the runtime, start from:
 

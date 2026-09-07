@@ -13,6 +13,11 @@
 
 ## 当前部署电脑入口
 
+**`r2v2-fsm` 分支的灵巧手测试请先看 [R2V2 手部验证说明](docs/r2v2_hand_validation.md)。**
+该入口不需要 G1 策略或 Unitree SDK；原有 G1 入口尚未完成 R2V2 接线。
+75° 手型的轨迹、圆柱相对位姿及后续全身接入约定见
+[抓取 FSM 交接记录](docs/r2v2_grasp_fsm_handoff.md)。
+
 如果是在新的实验部署电脑上由 agent 拉取本仓库并配置环境,请优先阅读:
 
 ```text

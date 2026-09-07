@@ -1,0 +1,8 @@
+# Standalone hand/model validation, Python 3.11. No Torch or Unitree SDK needed.
+mujoco==3.3.7
+numpy==1.26.4
+PyYAML==6.0.3
+ruckig==0.12.2
+imageio==2.37.0
+imageio-ffmpeg==0.6.0
+pytest>=8,<9

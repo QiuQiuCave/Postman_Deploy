@@ -1,0 +1,192 @@
+{
+  "grasp_passed": true,
+  "checks": {
+    "completed": true,
+    "finite_no_warnings": true,
+    "hand_joint_limits": true,
+    "hand_mimic_constraints": true,
+    "no_initial_overlap": true,
+    "limited_pre_release_penetration": true,
+    "limited_hand_penetration": true,
+    "limited_hand_self_penetration": true,
+    "support_clear_during_hold": true,
+    "floor_clear_during_hold": true,
+    "retained_height": true,
+    "stable_unsupported_hold": true,
+    "opposing_finger_contacts": true,
+    "drops_after_open": true
+  },
+  "parameters": {
+    "side": "right",
+    "x": 0.015,
+    "palm_offset": 0.035,
+    "z": 0.45,
+    "radius": 0.02,
+    "height": 0.12,
+    "mass": 0.1,
+    "close_time": 0.5,
+    "withdraw_start": 5.0,
+    "withdraw_end": 7.0,
+    "release_time": 12.0,
+    "duration": 15.0,
+    "grasp": true
+  },
+  "scope": "fixed wrist; free object; no object weld, teleport, adhesion or external force",
+  "duration_s": 14.999999999997126,
+  "start_position": [
+    0.015,
+    -0.11499999999999999,
+    0.45
+  ],
+  "final_position": [
+    0.004293947724709076,
+    -0.1333871901614814,
+    0.2710054086500491
+  ],
+  "initial_penetration_m": 0.0,
+  "max_penetration_m": 0.004873748593461793,
+  "max_contact_normal_force_N": 46.67466886696291,
+  "max_hand_penetration_m": 0.0004885304100099065,
+  "initial_hand_self_penetration_m": 0.00017053465591659918,
+  "max_hand_self_penetration_m": 0.00017053465591659918,
+  "max_pre_release_penetration_m": 0.0004885304100099065,
+  "max_actuator_torque_Nm": 0.35,
+  "max_mimic_error_rad": 1.932439264873409e-05,
+  "max_joint_limit_violation_rad": 0.0,
+  "hold_displacement_m": 0.001962963710230127,
+  "hold_min_height_m": 0.45052773891641906,
+  "opposing_contact_fraction": 1.0,
+  "release_drop_m": 0.1795220440153973,
+  "warnings": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+  ],
+  "contact_geoms": {
+    "cylinder_support_geom": 0.004873748593461793,
+    "right_pinky_distal_link_col_3": 0.000237113538517255,
+    "right_thumb_proximal_link_col_1": 0.00030329252274957186,
+    "right_hand_roll_link_col_6": 0.0004885304100099065,
+    "right_index_distal_link_col_3": 0.00033862640299434077,
+    "right_ring_distal_link_col_3": 0.00029875808477220086,
+    "right_middle_distal_link_col_3": 0.00025795335595520477,
+    "right_index_distal_link_col_1": 0.00017762343350126246
+  },
+  "hand_configuration": {
+    "simulation_dt": 0.001,
+    "control_dt": 0.01,
+    "channels": [
+      "thumb_metacarpal_joint",
+      "thumb_proximal_joint",
+      "index_proximal_joint",
+      "middle_proximal_joint",
+      "ring_proximal_joint",
+      "pinky_proximal_joint"
+    ],
+    "trajectory": {
+      "max_velocity": [
+        0.7,
+        0.6,
+        0.8,
+        0.8,
+        0.8,
+        0.8
+      ],
+      "max_acceleration": [
+        1.5,
+        1.5,
+        2.0,
+        2.0,
+        2.0,
+        2.0
+      ],
+      "max_jerk": [
+        8.0,
+        8.0,
+        10.0,
+        10.0,
+        10.0,
+        10.0
+      ]
+    },
+    "servo": {
+      "kp": [
+        3.0,
+        3.0,
+        3.0,
+        3.0,
+        3.0,
+        3.0
+      ],
+      "kd": [
+        0.35,
+        0.45,
+        0.45,
+        0.45,
+        0.45,
+        0.45
+      ],
+      "torque_limit": [
+        0.15,
+        0.3,
+        0.35,
+        0.35,
+        0.35,
+        0.35
+      ]
+    },
+    "hands": {
+      "left": {
+        "open": [
+          1.3089969389957472,
+          0.04,
+          0.03,
+          0.03,
+          0.03,
+          0.03
+        ],
+        "closed": [
+          1.3089969389957472,
+          0.6,
+          0.85,
+          0.9,
+          0.9,
+          0.85
+        ]
+      },
+      "right": {
+        "open": [
+          1.3089969389957472,
+          0.04,
+          0.03,
+          0.03,
+          0.03,
+          0.03
+        ],
+        "closed": [
+          1.3089969389957472,
+          0.6,
+          0.85,
+          0.9,
+          0.9,
+          0.85
+        ]
+      }
+    },
+    "validation": {
+      "max_tracking_error": 0.12,
+      "max_mimic_error": 0.015,
+      "max_limit_violation": 0.01,
+      "max_penetration": 0.003,
+      "physical_velocity_tolerance": 0.1,
+      "settle_tolerance": 0.06
+    }
+  },
+  "mujoco_version": "3.3.7",
+  "video_frames": 0
+}

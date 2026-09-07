@@ -96,4 +96,6 @@ logs/
 # uv / venv / external SDK clones
 # ==============================
 .venv/
+.venv-r2v2/
+artifacts/
 external/

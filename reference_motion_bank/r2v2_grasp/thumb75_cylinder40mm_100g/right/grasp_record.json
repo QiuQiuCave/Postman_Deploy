@@ -1,0 +1,887 @@
+{
+  "schema_version": 1,
+  "recorded_at_utc": "2026-09-07T07:07:45.934227+00:00",
+  "trajectory_file": "grasp_trajectory.npz",
+  "trajectory_sha256": "aa4ad6a8d63b3e57ebd572a89b0a64c8f902ea26020e835a8e433bb52e99ba14",
+  "samples": 1501,
+  "sample_dt_s": 0.01,
+  "physics_dt_s": 0.001,
+  "side": "right",
+  "wrist_body": "right_hand_roll_link",
+  "cylinder_body": "test_cylinder",
+  "units": {
+    "distance": "m",
+    "angle": "rad",
+    "time": "s",
+    "torque": "Nm",
+    "force": "N"
+  },
+  "transform_convention": "T_A_B maps B-frame coordinates into A; column vectors; translation in A",
+  "quaternion_convention": "wxyz, scalar first; rotation maps local coordinates into parent",
+  "sampling_convention": "t=0 initialization then post-step qpos/qvel every control_dt. Pose transforms are FK at that qpos. command/reference/torque/contact describe the preceding physics step; contact forces are instantaneous, not 10 ms averages. The boundary command change appears in the next sampled row. phase describes the timeline at the row time, not measured grasp success.",
+  "scope": "fixed wrist, selected hand only; no full-body trajectory or verified real-robot replay",
+  "reference_joint_names": [
+    "right_thumb_metacarpal_joint",
+    "right_thumb_proximal_joint",
+    "right_index_proximal_joint",
+    "right_middle_proximal_joint",
+    "right_ring_proximal_joint",
+    "right_pinky_proximal_joint"
+  ],
+  "measured_joint_names": [
+    "right_thumb_metacarpal_joint",
+    "right_thumb_proximal_joint",
+    "right_thumb_distal_joint",
+    "right_index_proximal_joint",
+    "right_index_distal_joint",
+    "right_middle_proximal_joint",
+    "right_middle_distal_joint",
+    "right_ring_proximal_joint",
+    "right_ring_distal_joint",
+    "right_pinky_proximal_joint",
+    "right_pinky_distal_joint"
+  ],
+  "contact_part_names": [
+    "palm",
+    "thumb",
+    "index",
+    "middle",
+    "ring",
+    "pinky"
+  ],
+  "experiment_parameters": {
+    "side": "right",
+    "x": 0.015,
+    "palm_offset": 0.035,
+    "z": 0.45,
+    "radius": 0.02,
+    "height": 0.12,
+    "mass": 0.1,
+    "close_time": 0.5,
+    "withdraw_start": 5.0,
+    "withdraw_end": 7.0,
+    "release_time": 12.0,
+    "duration": 15.0,
+    "grasp": true
+  },
+  "hand_configuration": {
+    "simulation_dt": 0.001,
+    "control_dt": 0.01,
+    "channels": [
+      "thumb_metacarpal_joint",
+      "thumb_proximal_joint",
+      "index_proximal_joint",
+      "middle_proximal_joint",
+      "ring_proximal_joint",
+      "pinky_proximal_joint"
+    ],
+    "trajectory": {
+      "max_velocity": [
+        0.7,
+        0.6,
+        0.8,
+        0.8,
+        0.8,
+        0.8
+      ],
+      "max_acceleration": [
+        1.5,
+        1.5,
+        2.0,
+        2.0,
+        2.0,
+        2.0
+      ],
+      "max_jerk": [
+        8.0,
+        8.0,
+        10.0,
+        10.0,
+        10.0,
+        10.0
+      ]
+    },
+    "servo": {
+      "kp": [
+        3.0,
+        3.0,
+        3.0,
+        3.0,
+        3.0,
+        3.0
+      ],
+      "kd": [
+        0.35,
+        0.45,
+        0.45,
+        0.45,
+        0.45,
+        0.45
+      ],
+      "torque_limit": [
+        0.15,
+        0.3,
+        0.35,
+        0.35,
+        0.35,
+        0.35
+      ]
+    },
+    "hands": {
+      "left": {
+        "open": [
+          1.3089969389957472,
+          0.04,
+          0.03,
+          0.03,
+          0.03,
+          0.03
+        ],
+        "closed": [
+          1.3089969389957472,
+          0.6,
+          0.85,
+          0.9,
+          0.9,
+          0.85
+        ]
+      },
+      "right": {
+        "open": [
+          1.3089969389957472,
+          0.04,
+          0.03,
+          0.03,
+          0.03,
+          0.03
+        ],
+        "closed": [
+          1.3089969389957472,
+          0.6,
+          0.85,
+          0.9,
+          0.9,
+          0.85
+        ]
+      }
+    },
+    "validation": {
+      "max_tracking_error": 0.12,
+      "max_mimic_error": 0.015,
+      "max_limit_violation": 0.01,
+      "max_penetration": 0.003,
+      "physical_velocity_tolerance": 0.1,
+      "settle_tolerance": 0.06
+    }
+  },
+  "mujoco_version": "3.3.7",
+  "keyframes": {
+    "initial": {
+      "index": 0,
+      "time_s": 0.0,
+      "command_during_preceding_step": 0,
+      "cylinder_in_wrist": {
+        "position_m": [
+          0.14500000000000002,
+          0.035,
+          0.0
+        ],
+        "quaternion_wxyz": [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "wrist_in_cylinder": {
+        "position_m": [
+          -0.14500000000000002,
+          -0.035,
+          0.0
+        ],
+        "quaternion_wxyz": [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "reference_q_rad": [
+        1.3089969389957472,
+        0.04,
+        0.03,
+        0.03,
+        0.03,
+        0.03
+      ],
+      "measured_q_rad": [
+        1.3089969389957472,
+        0.04,
+        0.04,
+        0.03,
+        0.03465,
+        0.03,
+        0.03465,
+        0.03,
+        0.03465,
+        0.03,
+        0.03465
+      ]
+    },
+    "pre_close": {
+      "index": 50,
+      "time_s": 0.5000000000000003,
+      "command_during_preceding_step": 0,
+      "cylinder_in_wrist": {
+        "position_m": [
+          0.14499336069658547,
+          0.0350021157966284,
+          -7.836076704131889e-05
+        ],
+        "quaternion_wxyz": [
+          0.9999901107208043,
+          -2.652823413467818e-05,
+          -5.643248745459218e-05,
+          -0.004446860940158135
+        ]
+      },
+      "wrist_in_cylinder": {
+        "position_m": [
+          -0.14467632064734015,
+          -0.036290253867930534,
+          9.281642998134496e-05
+        ],
+        "quaternion_wxyz": [
+          0.9999901107208039,
+          2.652823413467816e-05,
+          5.643248745459214e-05,
+          0.004446860940158132
+        ]
+      },
+      "reference_q_rad": [
+        1.3089969389957472,
+        0.04,
+        0.03,
+        0.03,
+        0.03,
+        0.03
+      ],
+      "measured_q_rad": [
+        1.3154279428876505,
+        0.040139631438620586,
+        0.0401393267449029,
+        0.030030769233806553,
+        0.03468548852996348,
+        0.03001313134106446,
+        0.03466514748094248,
+        0.02998742961190839,
+        0.03463549932408672,
+        0.029969123411731424,
+        0.03461438259224663
+      ]
+    },
+    "supported_grasp": {
+      "index": 450,
+      "time_s": 4.4999999999998375,
+      "command_during_preceding_step": 1,
+      "cylinder_in_wrist": {
+        "position_m": [
+          0.13649780197608416,
+          0.029980706288941145,
+          0.003170879851784547
+        ],
+        "quaternion_wxyz": [
+          0.98701726024112,
+          0.028164092873263054,
+          0.13326349968071216,
+          0.08511493119064441
+        ]
+      },
+      "wrist_in_cylinder": {
+        "position_m": [
+          -0.13411535042568135,
+          -0.007837258680905344,
+          -0.038628970080572415
+        ],
+        "quaternion_wxyz": [
+          0.9870172602411201,
+          -0.028164092873263054,
+          -0.13326349968071216,
+          -0.0851149311906444
+        ]
+      },
+      "reference_q_rad": [
+        1.3089969389957472,
+        0.5999999999999989,
+        0.8499999999999998,
+        0.9000000000000001,
+        0.9000000000000001,
+        0.8499999999999998
+      ],
+      "measured_q_rad": [
+        1.2987073971364358,
+        0.49051899555657397,
+        0.49051988462510365,
+        0.7236688387867392,
+        0.8358210108322245,
+        0.8645470621651787,
+        0.9985457051673201,
+        0.8650498123206166,
+        0.9991269147864655,
+        0.7944425706038974,
+        0.9175730847046316
+      ]
+    },
+    "hold_start": {
+      "index": 700,
+      "time_s": 7.000000000000672,
+      "command_during_preceding_step": 1,
+      "cylinder_in_wrist": {
+        "position_m": [
+          0.1362451624114038,
+          0.02999344801740912,
+          0.002417061389281383
+        ],
+        "quaternion_wxyz": [
+          0.9878007814432964,
+          0.026833028857182507,
+          0.13368812025106197,
+          0.07521363736783894
+        ]
+      },
+      "wrist_in_cylinder": {
+        "position_m": [
+          -0.13387692842042967,
+          -0.010520172334570454,
+          -0.037874627404166514
+        ],
+        "quaternion_wxyz": [
+          0.9878007814432958,
+          -0.026833028857182483,
+          -0.13368812025106183,
+          -0.07521363736783888
+        ]
+      },
+      "reference_q_rad": [
+        1.3089969389957472,
+        0.5999999999999981,
+        0.8499999999999996,
+        0.9000000000000002,
+        0.9000000000000002,
+        0.8499999999999996
+      ],
+      "measured_q_rad": [
+        1.298369911406185,
+        0.4899844846802407,
+        0.4899854297927633,
+        0.7243571543719983,
+        0.8366156192457223,
+        0.8651870122580974,
+        0.9992850712926528,
+        0.8656204313612089,
+        0.9997860833521673,
+        0.7951517684242531,
+        0.9183923642766901
+      ]
+    },
+    "hold_mid": {
+      "index": 950,
+      "time_s": 9.500000000000174,
+      "command_during_preceding_step": 1,
+      "cylinder_in_wrist": {
+        "position_m": [
+          0.13597842342089658,
+          0.030025752920093463,
+          0.001470842988670118
+        ],
+        "quaternion_wxyz": [
+          0.9885564126927945,
+          0.02536965647489674,
+          0.13395623149141986,
+          0.06456258590635745
+        ]
+      },
+      "wrist_in_cylinder": {
+        "position_m": [
+          -0.13361681438379044,
+          -0.013402921635303633,
+          -0.036888337711451294
+        ],
+        "quaternion_wxyz": [
+          0.9885564126927949,
+          -0.025369656474896758,
+          -0.13395623149141994,
+          -0.06456258590635751
+        ]
+      },
+      "reference_q_rad": [
+        1.3089969389957472,
+        0.5999999999999972,
+        0.8499999999999994,
+        0.9000000000000005,
+        0.9000000000000005,
+        0.8499999999999994
+      ],
+      "measured_q_rad": [
+        1.29834325939539,
+        0.4898411748886449,
+        0.4898420406907385,
+        0.7243866576273201,
+        0.8366496210727145,
+        0.8652089342838281,
+        0.9993104245121173,
+        0.8656179478350343,
+        0.9997832249185371,
+        0.7951660077159587,
+        0.9184088560784278
+      ]
+    },
+    "pre_release": {
+      "index": 1200,
+      "time_s": 11.999999999998789,
+      "command_during_preceding_step": 1,
+      "cylinder_in_wrist": {
+        "position_m": [
+          0.13571686075686976,
+          0.030055744350009128,
+          0.0005274526654463485
+        ],
+        "quaternion_wxyz": [
+          0.989237610606586,
+          0.02385864263075171,
+          0.1342005379362813,
+          0.05319709156337644
+        ]
+      },
+      "wrist_in_cylinder": {
+        "position_m": [
+          -0.13327736142940294,
+          -0.016468851137003505,
+          -0.035897272056390914
+        ],
+        "quaternion_wxyz": [
+          0.9892376106065871,
+          -0.02385864263075176,
+          -0.13420053793628156,
+          -0.05319709156337655
+        ]
+      },
+      "reference_q_rad": [
+        1.3089969389957472,
+        0.5999999999999964,
+        0.8499999999999993,
+        0.9000000000000006,
+        0.9000000000000006,
+        0.8499999999999993
+      ],
+      "measured_q_rad": [
+        1.2984514367624198,
+        0.4898289241648868,
+        0.489829728167659,
+        0.724421690802054,
+        0.8366901279223408,
+        0.8651977170532913,
+        0.9992974691950639,
+        0.8656217183212349,
+        0.999787601170831,
+        0.7951331109584497,
+        0.91837081484307
+      ]
+    },
+    "released": {
+      "index": 1450,
+      "time_s": 14.499999999997403,
+      "command_during_preceding_step": 0,
+      "cylinder_in_wrist": {
+        "position_m": [
+          0.13975951230591424,
+          0.007202154592251153,
+          -0.17714949350935194
+        ],
+        "quaternion_wxyz": [
+          0.9917623586488202,
+          0.07259275728762203,
+          0.07886971879174788,
+          -0.0701233414379175
+        ]
+      },
+      "wrist_in_cylinder": {
+        "position_m": [
+          -0.1652438346652001,
+          -0.0045469283969499985,
+          0.15375414111064065
+        ],
+        "quaternion_wxyz": [
+          0.9917623586488213,
+          -0.07259275728762217,
+          -0.07886971879174805,
+          0.07012334143791764
+        ]
+      },
+      "reference_q_rad": [
+        1.3089969389957472,
+        0.04000000000000054,
+        0.029999999999999662,
+        0.029999999999999808,
+        0.029999999999999808,
+        0.029999999999999662
+      ],
+      "measured_q_rad": [
+        1.3167693436619945,
+        0.04215287138257301,
+        0.04215294855827153,
+        0.02756450771530955,
+        0.03183648893984782,
+        0.02709912229284043,
+        0.031298915315137045,
+        0.026691207055735095,
+        0.030827737910948727,
+        0.026580313247055665,
+        0.030699664183370102
+      ]
+    },
+    "final": {
+      "index": 1500,
+      "time_s": 14.999999999997126,
+      "command_during_preceding_step": 0,
+      "cylinder_in_wrist": {
+        "position_m": [
+          0.13442773794085264,
+          0.016683482375186853,
+          -0.17896020394702333
+        ],
+        "quaternion_wxyz": [
+          0.9994223056222494,
+          0.007776523453577252,
+          0.03225595255261087,
+          -0.007357596931557344
+        ]
+      },
+      "wrist_in_cylinder": {
+        "position_m": [
+          -0.14545533795074708,
+          -0.016027260609893318,
+          0.17018161324830122
+        ],
+        "quaternion_wxyz": [
+          0.999422305622249,
+          -0.0077765234535772465,
+          -0.03225595255261086,
+          0.007357596931557339
+        ]
+      },
+      "reference_q_rad": [
+        1.3089969389957472,
+        0.04000000000000065,
+        0.02999999999999958,
+        0.02999999999999978,
+        0.02999999999999978,
+        0.02999999999999958
+      ],
+      "measured_q_rad": [
+        1.3170450311880797,
+        0.04213539916598678,
+        0.04213547306441702,
+        0.02775229352647338,
+        0.032053417150792414,
+        0.027298729420060168,
+        0.03152949933904177,
+        0.026890925541006444,
+        0.03105845059148368,
+        0.026768683954499054,
+        0.030917268073879185
+      ]
+    }
+  },
+  "validation": {
+    "grasp_passed": true,
+    "checks": {
+      "completed": true,
+      "finite_no_warnings": true,
+      "hand_joint_limits": true,
+      "hand_mimic_constraints": true,
+      "no_initial_overlap": true,
+      "limited_pre_release_penetration": true,
+      "limited_hand_penetration": true,
+      "limited_hand_self_penetration": true,
+      "support_clear_during_hold": true,
+      "floor_clear_during_hold": true,
+      "retained_height": true,
+      "stable_unsupported_hold": true,
+      "opposing_finger_contacts": true,
+      "drops_after_open": true
+    },
+    "parameters": {
+      "side": "right",
+      "x": 0.015,
+      "palm_offset": 0.035,
+      "z": 0.45,
+      "radius": 0.02,
+      "height": 0.12,
+      "mass": 0.1,
+      "close_time": 0.5,
+      "withdraw_start": 5.0,
+      "withdraw_end": 7.0,
+      "release_time": 12.0,
+      "duration": 15.0,
+      "grasp": true
+    },
+    "scope": "fixed wrist; free object; no object weld, teleport, adhesion or external force",
+    "duration_s": 14.999999999997126,
+    "start_position": [
+      0.015,
+      -0.11499999999999999,
+      0.45
+    ],
+    "final_position": [
+      0.004293947724709076,
+      -0.1333871901614814,
+      0.2710054086500491
+    ],
+    "initial_penetration_m": 0.0,
+    "max_penetration_m": 0.004873748593461793,
+    "max_contact_normal_force_N": 46.67466886696291,
+    "max_hand_penetration_m": 0.0004885304100099065,
+    "initial_hand_self_penetration_m": 0.00017053465591659918,
+    "max_hand_self_penetration_m": 0.00017053465591659918,
+    "max_pre_release_penetration_m": 0.0004885304100099065,
+    "max_actuator_torque_Nm": 0.35,
+    "max_mimic_error_rad": 1.932439264873409e-05,
+    "max_joint_limit_violation_rad": 0.0,
+    "hold_displacement_m": 0.001962963710230127,
+    "hold_min_height_m": 0.45052773891641906,
+    "opposing_contact_fraction": 1.0,
+    "release_drop_m": 0.1795220440153973,
+    "warnings": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "contact_geoms": {
+      "cylinder_support_geom": 0.004873748593461793,
+      "right_pinky_distal_link_col_3": 0.000237113538517255,
+      "right_thumb_proximal_link_col_1": 0.00030329252274957186,
+      "right_hand_roll_link_col_6": 0.0004885304100099065,
+      "right_index_distal_link_col_3": 0.00033862640299434077,
+      "right_ring_distal_link_col_3": 0.00029875808477220086,
+      "right_middle_distal_link_col_3": 0.00025795335595520477,
+      "right_index_distal_link_col_1": 0.00017762343350126246
+    },
+    "hand_configuration": {
+      "simulation_dt": 0.001,
+      "control_dt": 0.01,
+      "channels": [
+        "thumb_metacarpal_joint",
+        "thumb_proximal_joint",
+        "index_proximal_joint",
+        "middle_proximal_joint",
+        "ring_proximal_joint",
+        "pinky_proximal_joint"
+      ],
+      "trajectory": {
+        "max_velocity": [
+          0.7,
+          0.6,
+          0.8,
+          0.8,
+          0.8,
+          0.8
+        ],
+        "max_acceleration": [
+          1.5,
+          1.5,
+          2.0,
+          2.0,
+          2.0,
+          2.0
+        ],
+        "max_jerk": [
+          8.0,
+          8.0,
+          10.0,
+          10.0,
+          10.0,
+          10.0
+        ]
+      },
+      "servo": {
+        "kp": [
+          3.0,
+          3.0,
+          3.0,
+          3.0,
+          3.0,
+          3.0
+        ],
+        "kd": [
+          0.35,
+          0.45,
+          0.45,
+          0.45,
+          0.45,
+          0.45
+        ],
+        "torque_limit": [
+          0.15,
+          0.3,
+          0.35,
+          0.35,
+          0.35,
+          0.35
+        ]
+      },
+      "hands": {
+        "left": {
+          "open": [
+            1.3089969389957472,
+            0.04,
+            0.03,
+            0.03,
+            0.03,
+            0.03
+          ],
+          "closed": [
+            1.3089969389957472,
+            0.6,
+            0.85,
+            0.9,
+            0.9,
+            0.85
+          ]
+        },
+        "right": {
+          "open": [
+            1.3089969389957472,
+            0.04,
+            0.03,
+            0.03,
+            0.03,
+            0.03
+          ],
+          "closed": [
+            1.3089969389957472,
+            0.6,
+            0.85,
+            0.9,
+            0.9,
+            0.85
+          ]
+        }
+      },
+      "validation": {
+        "max_tracking_error": 0.12,
+        "max_mimic_error": 0.015,
+        "max_limit_violation": 0.01,
+        "max_penetration": 0.003,
+        "physical_velocity_tolerance": 0.1,
+        "settle_tolerance": 0.06
+      }
+    },
+    "mujoco_version": "3.3.7",
+    "video_frames": 0
+  },
+  "source_sha256": {
+    "common/r2v2_cylinder_test.py": "e178bcd7bea6a60dd7f8c6a125754481606f420c86eaf5cb293486e0786ec3ea",
+    "common/r2v2_grasp_recording.py": "1fd71278e972fafa55063109bb0ff5b93ec64ab86c3953601424ce718070a11b",
+    "common/r2v2_hand_control.py": "34932afd8e903af65c922ef786b9d4e5c11efde804029efd7c560b8d6f514453",
+    "deploy_mujoco/config/r2v2_hands.yaml": "a933e398fd8f12b906f243e01df09424362ad6eb6bf5130ae99a693007753516",
+    "deploy_mujoco/r2v2_cylinder_test.py": "be4b8f754c81acadc3ffea8cb1863594b50a603951f0113e0468323a48fbbbc1",
+    "r2v2_description/model.py": "46dec6b135dba2faa6b610b86054c9cbbffa2a25345b2a5ba2722007e3e87a13",
+    "r2v2_description/source/r2v2_with_hand/meshes/base_link.STL": "d183cc569ceba95ca6f43af84a963eb36763f8300111328af56a635e11513466",
+    "r2v2_description/source/r2v2_with_hand/meshes/head_pitch_link.STL": "87764eb28ba69a31897c7976f40867a89369755bf1e5bf96290790db4fc221ce",
+    "r2v2_description/source/r2v2_with_hand/meshes/head_yaw_link.STL": "2cdb8ad5a4927fe26c7ea73ad2601db22e14181a6e840c2eb3eb23a7c22e3053",
+    "r2v2_description/source/r2v2_with_hand/meshes/left_ankle_pitch_link.STL": "807e0db4c097e218a133526df157bb04005ddfe611ec40ddd459f0e5ccf39768",
+    "r2v2_description/source/r2v2_with_hand/meshes/left_ankle_roll_link.STL": "639ee4702270790e73a1daf8617a8ebea4577c56725278d75397f9d564affe5a",
+    "r2v2_description/source/r2v2_with_hand/meshes/left_arm_pitch_link.STL": "3007807a1abe2b8fe9e1d5f0622e0e33c57fc3b5b49d4590f9354226ff19b1c4",
+    "r2v2_description/source/r2v2_with_hand/meshes/left_base_link.STL": "340401f796bbac762cf85d53e6db4be02cce2f06b66fcf8d6ecb5ba883f06afd",
+    "r2v2_description/source/r2v2_with_hand/meshes/left_base_visual_link.STL": "d9d2558da8369d2f0993e46eed3d1e2a11b4927ab2b8c1731d460b72fea04e9e",
+    "r2v2_description/source/r2v2_with_hand/meshes/left_hand_link.STL": "7ba3925dea6e25b1c07f373884fff44c53d021a29987bfa51e12b1de739937d0",
+    "r2v2_description/source/r2v2_with_hand/meshes/left_hand_link2.STL": "dd5e8fcb4a604c4b6dd0ba287c0c5e09bee2236ad4276fc7efabf32af2338d43",
+    "r2v2_description/source/r2v2_with_hand/meshes/left_hand_roll_link.STL": "6dffd04d26249cc79f748bd3ad27fd65505c8f89782f0bb07fe95b1cbe58d1f6",
+    "r2v2_description/source/r2v2_with_hand/meshes/left_hip_pitch_link.STL": "5af61e9de646c97b06f3472b1bd275face7425fc4171f17277dca557a480c32b",
+    "r2v2_description/source/r2v2_with_hand/meshes/left_hip_roll_link.STL": "5be0630908c786bc63cc7456bf0dd688835fd554204823c152b2a8976cf01cb0",
+    "r2v2_description/source/r2v2_with_hand/meshes/left_hip_yaw_link.STL": "9606f0cce46db12e46f51901aaebc7c7cc319e5956c532897bea657670950961",
+    "r2v2_description/source/r2v2_with_hand/meshes/left_index_distal_link.STL": "634d5c569628c3c2dbc92932065748ed830fb17ccf933959a5834b2759ab8acd",
+    "r2v2_description/source/r2v2_with_hand/meshes/left_index_proximal_link.STL": "1fed32c1a8451282b314579eed3903a288a62524dc7d8b08464fb559261bb580",
+    "r2v2_description/source/r2v2_with_hand/meshes/left_index_tip_link.STL": "9f5a11d72375073e8373a02ce604ca99abcb583074ba2f520510b48abc4c5b86",
+    "r2v2_description/source/r2v2_with_hand/meshes/left_index_touch_link.STL": "821249c18a0cf66c87aa4029de1f0ce532f03e7a173c951a5121f2df3b301b52",
+    "r2v2_description/source/r2v2_with_hand/meshes/left_knee_pitch_link.STL": "bced3ce135b0a97dff6fbd7eac13835f1d461fa21f22acd305b160c69f05a1cf",
+    "r2v2_description/source/r2v2_with_hand/meshes/left_middle_distal_link.STL": "e0ff6f648bbb7712bbc7f06bacdd3a574cac2e1bc2398383b57da2d76c88932a",
+    "r2v2_description/source/r2v2_with_hand/meshes/left_middle_proximal_link.STL": "50122ebf6e75698ba2c469efd58e07ad3f82b1a002728cd15802f1c435d54c0c",
+    "r2v2_description/source/r2v2_with_hand/meshes/left_middle_tip_link.STL": "ef4ac885d12e603918722c22000a59827f168f276d9c41651ef0d94175113486",
+    "r2v2_description/source/r2v2_with_hand/meshes/left_middle_touch_link.STL": "c91b30341a816ac079ec1268c8427ca3a010356002a30b6847b2853a0edf1e6b",
+    "r2v2_description/source/r2v2_with_hand/meshes/left_pinky_distal_link.STL": "d52822897dcc0de60fff7f2652a7d12a342b47905eff7555eaabcc1bcfcaeac4",
+    "r2v2_description/source/r2v2_with_hand/meshes/left_pinky_proximal_link.STL": "9f1408568638fbbec4cf32507d4b233fbd8cdb9c862e07cc7da6cd826497caa6",
+    "r2v2_description/source/r2v2_with_hand/meshes/left_pinky_tip_link.STL": "56eae1cc71cf6acab0a20c1a8e2e470c9ec96f520386c1ea22f10f51e2dbf758",
+    "r2v2_description/source/r2v2_with_hand/meshes/left_pinky_touch_link.STL": "850ad4ad9daf4188aa17f96588fe5541fb0c70be10d714930b3cb816748258a0",
+    "r2v2_description/source/r2v2_with_hand/meshes/left_ring_distal_link.STL": "c59b62ef04c9cb436f6a6bac5ae9be985eca0d538bc58380c40c00d16079d580",
+    "r2v2_description/source/r2v2_with_hand/meshes/left_ring_proximal_link.STL": "77220c07d5bbc119cb828af89f35cb4cef755bbc98a1cae2dda846268ff59501",
+    "r2v2_description/source/r2v2_with_hand/meshes/left_ring_tip_link.STL": "870a5b7890a41c8fb8e91cd0c4f74f01c64778bf33f29c135b0b0431a489cde1",
+    "r2v2_description/source/r2v2_with_hand/meshes/left_ring_touch_link.STL": "c2fb7d2c4fb0df91209ab7158d5f17ab59a7aa56522a9e91a3c3884a35ac6ae0",
+    "r2v2_description/source/r2v2_with_hand/meshes/left_shoulder_pitch_link.STL": "c31b947741e52c45d24b3f2a7972d734dbae4653bc9274ed141ef4286e5cf396",
+    "r2v2_description/source/r2v2_with_hand/meshes/left_shoulder_roll_l_link.STL": "4de89ed8ecb5c47b29691ae521f262c5c6d0ae3c759080ec17732e3509a7bb7a",
+    "r2v2_description/source/r2v2_with_hand/meshes/left_shoulder_roll_link.STL": "3ae7525ace30cde47df604bc1fb32ab465014df88d818136085bb203a71fb8cf",
+    "r2v2_description/source/r2v2_with_hand/meshes/left_shoulder_yaw_link.STL": "b5dc00330bdc644754814613316c3067f1e7ee7d03196faf287bceb71ae570bf",
+    "r2v2_description/source/r2v2_with_hand/meshes/left_thumb_distal_link.STL": "99300669452dc8e34d5f62caf31c9c769077af45e0127511cd0c56967fe691a6",
+    "r2v2_description/source/r2v2_with_hand/meshes/left_thumb_metacarpal_link.STL": "415a75193e7773572b0df8a80fa4e1d187a67901a5ff381a89ee5b7df64735ea",
+    "r2v2_description/source/r2v2_with_hand/meshes/left_thumb_proximal_link.STL": "ccffe779ed683ec5c2f24e3776c11a127e341743142ddd8f275bfded76938da8",
+    "r2v2_description/source/r2v2_with_hand/meshes/left_thumb_proximal_visual_link.STL": "bcd5279fb8a4d8ba4b06b3d302caa567fde9add81b057943cc6a445abb9e27b5",
+    "r2v2_description/source/r2v2_with_hand/meshes/left_thumb_tip_link.STL": "acb6f2d6820d17a22eeb4a02cfc26c8b8fab0ddfdcda8d4d4ef65929275687c5",
+    "r2v2_description/source/r2v2_with_hand/meshes/left_thumb_touch_link.STL": "e31a6aa8faf2be8a6bfc3f222ebe7cf59fb5266487d1d98b86a55a7a2524fc20",
+    "r2v2_description/source/r2v2_with_hand/meshes/left_wrist_pitch_link.STL": "8fdfe4e5c7799afc78b37d5c0460135a7783d7fd79a29d01ca5fc5666c9ff7ad",
+    "r2v2_description/source/r2v2_with_hand/meshes/left_wrist_roll_link.STL": "60ab988af504ae69bbd15325285685970635360467c11f56e3cbd0212847b20d",
+    "r2v2_description/source/r2v2_with_hand/meshes/left_wrist_yaw_link.STL": "bf7aa7ad3d73c8d81a2549465b68444262282444d45933b2d1aecc319321e045",
+    "r2v2_description/source/r2v2_with_hand/meshes/right_ankle_pitch_link.STL": "a3edc23466b1cdb580744cd53fec2b7e37948e2773f8d148c62d799c68f30568",
+    "r2v2_description/source/r2v2_with_hand/meshes/right_ankle_roll_link.STL": "accc1696a269be113b62b7607f4ec4fb8bb8243125f467a58e48ffc73141b958",
+    "r2v2_description/source/r2v2_with_hand/meshes/right_arm_pitch_link.STL": "bb3953af12978793180c26d048c59847a2074cf6006b48531d18c40799de6d3e",
+    "r2v2_description/source/r2v2_with_hand/meshes/right_base_link.STL": "2754b59a9132a04a28cf5725d5478599218c9f7dd4b2e13329147e824211ec44",
+    "r2v2_description/source/r2v2_with_hand/meshes/right_base_visual_link.STL": "7357830cda11d9749adc1e796aa0e493f8001ac2c21815d40fdc1406a3b3457c",
+    "r2v2_description/source/r2v2_with_hand/meshes/right_hand_link.STL": "95f5e64626d9b7d88bef0b49deeb47f40d987b85855ac5ee88e7ccb1a196afd4",
+    "r2v2_description/source/r2v2_with_hand/meshes/right_hand_link2.STL": "18580db317de5be9cfd7aa637399530eb7fef9c1b74782bb0f13c0743fc0bd45",
+    "r2v2_description/source/r2v2_with_hand/meshes/right_hand_roll_link.STL": "9a5ff0dd2c55dcc59832d55086d4120790feb835d36623ac76819b2a256b1192",
+    "r2v2_description/source/r2v2_with_hand/meshes/right_hip_pitch_link.STL": "6f50eb3dfc40d6046a425611a961226c46568ae554d4ba4b4b9dd67cbb83df6b",
+    "r2v2_description/source/r2v2_with_hand/meshes/right_hip_roll_link.STL": "513f742993571cbeaa47a4233e3ad16a353c09b55922abdbd4c110656bcd3fc4",
+    "r2v2_description/source/r2v2_with_hand/meshes/right_hip_yaw_link.STL": "bcd119039d907114df1deee6d4308657623ad0977d4a170c1e213e568576e5d4",
+    "r2v2_description/source/r2v2_with_hand/meshes/right_index_distal_link.STL": "44d4b12f55e85baf77685443aa1f38ae521130a58f0b742920f2a99abc1a1efb",
+    "r2v2_description/source/r2v2_with_hand/meshes/right_index_proximal_link.STL": "94fdff414f1c29940495d1f0264a50621340cfc30f9b5365b3490d39ae367f2f",
+    "r2v2_description/source/r2v2_with_hand/meshes/right_index_tip.STL": "4af36131feedb7f83a695ff8e7d09a7e8893df96f971b2d363c0d359e3a82bbf",
+    "r2v2_description/source/r2v2_with_hand/meshes/right_index_touch_link.STL": "a7f7b054539a858173b3e002be2df5ebc60a3e3d8bdf38e32f490a1475809251",
+    "r2v2_description/source/r2v2_with_hand/meshes/right_knee_pitch_link.STL": "9fd03f470862f8d09b16bb1758a99cd886b4e13cc34fa368024b2713aa8e12b5",
+    "r2v2_description/source/r2v2_with_hand/meshes/right_middle_distal_link.STL": "8f11ee9addab1a1eab40fd765c21389e6f98397166ae5899dc83ddf66f871b3b",
+    "r2v2_description/source/r2v2_with_hand/meshes/right_middle_proximal_link.STL": "56d9f019bad093daf93a736596ab4e7d9b17fb3c79e2be4181d909958cf76a37",
+    "r2v2_description/source/r2v2_with_hand/meshes/right_middle_tip.STL": "844204b7bcf3de3ad500232e2e30ac15a8ec41728be281d0670c7ad1a2b09e34",
+    "r2v2_description/source/r2v2_with_hand/meshes/right_middle_touch_link.STL": "1fdd83c56c7eccb38b1af2d75742f1681d6a4dff93e9f15a37173e22117fecf0",
+    "r2v2_description/source/r2v2_with_hand/meshes/right_pinky_distal_link.STL": "14c25fb57059978594ea518860522ae401e3a3602d6a39297c52807620e30bac",
+    "r2v2_description/source/r2v2_with_hand/meshes/right_pinky_proximal_link.STL": "1a4ba525880efd4da2bcdfd5d2d69a684a02f8c7c01f8e185adf23f47469d0f4",
+    "r2v2_description/source/r2v2_with_hand/meshes/right_pinky_tip.STL": "f632c67971d2d6dc8a5edcfcac4db8b3078e346540270bd89a9e9c783d304415",
+    "r2v2_description/source/r2v2_with_hand/meshes/right_pinky_touch_link.STL": "96ed796046634fead6ac789be979e3b013c3a6d32ba866a31ea92f7c3ebf19ee",
+    "r2v2_description/source/r2v2_with_hand/meshes/right_ring_distal_link.STL": "40acf67de96d432bbbc0a3eda7bbb292cbd2ea0c5f0c78a9b299cf360f3a9f07",
+    "r2v2_description/source/r2v2_with_hand/meshes/right_ring_proximal_link.STL": "89c64252e891bc91567241b74de18d986e20e4e57d74cd10289d7171f6c57dc6",
+    "r2v2_description/source/r2v2_with_hand/meshes/right_ring_tip.STL": "c3be3c69a1b7cba72d4b09c8ca4e04f3ad15ef2e47f8212bb547be7487f88022",
+    "r2v2_description/source/r2v2_with_hand/meshes/right_ring_touch_link.STL": "f9c0ac36994b014d25b7d5c292cbd39192e5146c8961ded1e8a9702e2d4e62c2",
+    "r2v2_description/source/r2v2_with_hand/meshes/right_shoulder_pitch_link.STL": "bd65b9a1c92f04c2562de935f26cea16806c6f1f50a1af9bc2501f1642da6bee",
+    "r2v2_description/source/r2v2_with_hand/meshes/right_shoulder_roll_l_link.STL": "e2dd90b0c0c6e93a287bec62b80d2bf4b81d920140aa327012d5983543b24740",
+    "r2v2_description/source/r2v2_with_hand/meshes/right_shoulder_roll_link.STL": "56a312c5f05a28e6571549910a64c9b742beacabcfed88ae3f049fc2cfe444d3",
+    "r2v2_description/source/r2v2_with_hand/meshes/right_shoulder_yaw_link.STL": "b1fbb097ba2819ee8fdce263e961ea0bfecc33ea5be3ea31c2ed09446e02de4d",
+    "r2v2_description/source/r2v2_with_hand/meshes/right_thumb_distal_link.STL": "f489da4e47935510ffba42016052318f123ef07360fdbbfaadcb0f7d8ddbe28f",
+    "r2v2_description/source/r2v2_with_hand/meshes/right_thumb_metacarpal_link.STL": "15464fa122dddc49a56462898777e9e407f22b81abb03d10aba0d95f8fefc83a",
+    "r2v2_description/source/r2v2_with_hand/meshes/right_thumb_proximal_link.STL": "17d6f8575ffdc49fd0c8a4525650180a6806ee3fc0a6485f0610040010aeed34",
+    "r2v2_description/source/r2v2_with_hand/meshes/right_thumb_proximal_visual_link.STL": "0c415499f0b28609062d1364cd2500cd801a5f4e6a8a2083ae82b8a870404495",
+    "r2v2_description/source/r2v2_with_hand/meshes/right_thumb_tip.STL": "0e53267b1a3abdbcb41b190b264f805bf83f650e79ea2c22b4974e404e78e454",
+    "r2v2_description/source/r2v2_with_hand/meshes/right_thumb_touch_link.STL": "184c29c27b46ea21df210a13af795c49569fcc1b36cd8b8ebe5aa66b4a0f5612",
+    "r2v2_description/source/r2v2_with_hand/meshes/right_wrist_pitch_link.STL": "235b733cf22f1992b6f018a7d0789c673c787f6c7f88e7f7dc9eafc83472ae8f",
+    "r2v2_description/source/r2v2_with_hand/meshes/right_wrist_roll_link.STL": "2bbc73d7a2da607e59139216194bd861c68ed94f2bae60fb232a9312c9fe89cd",
+    "r2v2_description/source/r2v2_with_hand/meshes/right_wrist_yaw_link.STL": "8e2653e7f02dd3d4b1e829c98279cf34ae6429c88711644c00e753e45cafc11e",
+    "r2v2_description/source/r2v2_with_hand/meshes/waist_pitch_link.STL": "0c971d35f23862fbdffc349671b92c3c567b242023a12af64d21df9b545f9f8b",
+    "r2v2_description/source/r2v2_with_hand/meshes/waist_pitch_link_collision.STL": "1e350379a14f8ede3a269207444dc98cfddd595c8f007fbc2c03a12e134d6444",
+    "r2v2_description/source/r2v2_with_hand/meshes/waist_yaw_link.STL": "6bec8f019d3bd3dd9cf41d9d8b41516d3b5ccad872eede14c7927689ce579a41",
+    "r2v2_description/source/r2v2_with_hand/r2v2_with_hand.urdf": "835d73f0dae071321e8ab469390a3a63fd51a2adf02151f05edd0db947ad5eef",
+    "r2v2_description/source/r2v2_with_hand/r2v2_with_hand.xml": "fbc20b4e6d7c8a78c8fe88721be219a7b831817c3f372fa97cec10250738b050",
+    "requirements-r2v2-sim.txt": "c470ec22ae9b07965986c27d8bea47de5fd157651c22f117b6b37f1daa09fbb5"
+  }
+}

@@ -38,6 +38,39 @@ uv pip install --python .venv-r2v2/bin/python -r requirements-r2v2-reach-sim.txt
 权重路径仍在 `deploy_mujoco/config/r2v2_reach.yaml`。完整策略接口约定见
 [Reach 部署说明](r2v2_reach_deployment.md)。
 
+## 细长可乐罐外观（2026-09-09）
+
+默认配置现为 `object_appearance: cola_can`：红色 Coca-Cola 风格罐身、银色上下盖、
+卷边和几何拉环。改为 `orange_cylinder` 可恢复橙色圆柱；底层场景构建函数未指定该项时
+也仍使用橙色圆柱，固定手腕抓取基线不变。
+
+这只是外观替换，仍使用原直径 4 cm、高 12 cm、质量 100 g 的自由圆柱，
+不是按真实商品规格重新建模。原碰撞 geom 只隐藏颜色，尺寸、质量、惯量、摩擦和接触
+求解参数不变。8 个视觉 geom 全部附加到原物体 body，显式零质量、零密度、无碰撞，
+不增加关节或约束。策略、手部轨迹、状态机判据和双视角相机均未改动。
+
+外观生成在 `common/r2v2_can_visual.py`，贴图在
+`r2v2_description/visuals/cola_can/label.png`；内置 imagegen 生成方式和完整提示词见
+[贴图说明](../r2v2_description/visuals/cola_can/README.md)。贴图随仓库保存，无需在线生成。
+
+```bash
+.venv-r2v2/bin/python deploy_mujoco/r2v2_tabletop_demo.py \
+  --parity-report artifacts/r2v2_reach/parity_12000/report.json \
+  --video --output artifacts/r2v2_tabletop/demo_cola_can
+```
+
+外观回归测试比较原模型的全部身体质量/惯量、关节、执行器、约束及碰撞参数，
+并验证 1000 步相同输入下状态和接触逐位一致：
+
+```bash
+.venv-r2v2/bin/python -m pytest tests/test_r2v2_can_visual.py -q
+```
+
+本次可乐罐录像为 `artifacts/r2v2_tabletop/demo_cola_can/demo.mp4`，约 19.4 s、
+1280×720、30 fps。完整抓起、搬运、落放和撤离成功，最终物体误差 4.20 mm。
+与上一版正侧面橙色圆柱结果 `demo_side_view` 对照，`trace.json` 和
+`transitions.json` 均逐字节相同，确认换皮没有改变实际控制和物理轨迹。
+
 ## 场景与控制
 
 - 左手执行任务，右手锁定预热站稳时的世界末端位姿；不锁定右臂关节。

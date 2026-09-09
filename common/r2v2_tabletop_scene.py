@@ -36,15 +36,20 @@ def _text(value):
     return " ".join(map(str, value))
 
 
-def build_tabletop_model(reach_cfg, demo_cfg):
-    """Return ``(model, hand_cfg)`` without mutating either input config.
+def build_tabletop_xml(reach_cfg, demo_cfg):
+    """Return ``(MJCF text, hand_cfg)`` without mutating either input config.
 
     ``demo_cfg`` accepts world-coordinate ``table_center_xyz``, positive box
     ``table_half_size`` (including half thickness), ``cylinder_position_xyz``,
-    and optional ``cylinder_quaternion_wxyz``. The table remains axis-aligned
+    and optional ``cylinder_quaternion_wxyz``. ``object_appearance`` defaults
+    to ``orange_cylinder``; ``cola_can`` adds a purely visual can skin.
+    The table remains axis-aligned
     and fixed, with four collision-enabled legs. Cylinder dimensions, mass,
     friction and contact solver values preserve the successful hand baseline.
     """
+    appearance = demo_cfg.get("object_appearance", "orange_cylinder")
+    if appearance not in ("orange_cylinder", "cola_can"):
+        raise ValueError(f"Unknown object_appearance: {appearance}")
     center = _vector(demo_cfg.get("table_center_xyz", DEFAULT_TABLE_CENTER), 3, "table_center_xyz")
     half_size = _vector(demo_cfg.get("table_half_size", DEFAULT_TABLE_HALF_SIZE), 3, "table_half_size")
     cylinder_position = _vector(demo_cfg.get("cylinder_position_xyz", DEFAULT_CYLINDER_POSITION), 3,
@@ -90,11 +95,25 @@ def build_tabletop_model(reach_cfg, demo_cfg):
     cylinder = ET.SubElement(world, "body", name="test_cylinder", pos=_text(cylinder_position),
                              quat=_text(quaternion))
     ET.SubElement(cylinder, "freejoint", name="cylinder_free")
-    ET.SubElement(cylinder, "geom", name="cylinder_geom", type="cylinder",
+    collider = ET.SubElement(cylinder, "geom", name="cylinder_geom", type="cylinder",
                   size=_text([baseline.radius, baseline.height/2]), mass=str(baseline.mass),
                   rgba="0.95 0.45 0.08 1", friction="1 0.005 0.0001", condim="3",
                   priority="1", solref="0.008 1", solimp="0.95 0.99 0.001")
-    return mujoco.MjModel.from_xml_string(ET.tostring(root, encoding="unicode")), hand_cfg
+    if appearance == "cola_can":
+        from common.r2v2_can_visual import add_can_visual
+
+        # Hide only the orange rendering; the original collider still owns
+        # the complete mass, inertia and contact response of the object.
+        collider.set("rgba", "0.95 0.45 0.08 0")
+        add_can_visual(root, cylinder,
+                       PROJECT_ROOT / "r2v2_description/visuals/cola_can/label.png")
+    return ET.tostring(root, encoding="unicode"), hand_cfg
+
+
+def build_tabletop_model(reach_cfg, demo_cfg):
+    """Compile the unchanged tabletop scene; XML is reusable for asset previews."""
+    xml, hand_cfg = build_tabletop_xml(reach_cfg, demo_cfg)
+    return mujoco.MjModel.from_xml_string(xml), hand_cfg
 
 
 def object_metrics(model, data):

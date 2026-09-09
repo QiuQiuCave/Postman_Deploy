@@ -86,6 +86,7 @@ class TabletopDemoExperiment(ReachCompatibilityExperiment):
         self.table_height = float(warm.scratch.xpos[warm.model.body("waist_pitch_link").id, 2]
                                   + cfg["table_above_waist_m"])
         self.scene_cfg = {
+            "object_appearance": cfg.get("object_appearance", "orange_cylinder"),
             "table_center_xyz": [*cfg["table_center_xy"], self.table_height - cfg["table_half_size"][2]],
             "table_half_size": copy.deepcopy(cfg["table_half_size"]),
             "cylinder_position_xyz": [*cfg["cylinder_xy"], self.table_height + 0.06

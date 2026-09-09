@@ -1,0 +1,34 @@
+# Independent moving-wrist fixture experiment, not a full-body policy.
+insertion_m: 0.060
+start_palm_clearance_m: 0.080
+table_height: 0.4
+# Torque-limited hook profile. This target does not force fingers through the beam.
+closed_curl_rad: 0.80
+# After inserting at the clear hole height, raise gently WHILE closing.
+# Preserve the 60 mm horizontal insertion depth throughout this seating move.
+closure_seating_m: 0.0175
+grasp_enabled: true
+ready_s: 1.0
+insert_s: 2.5
+insert_settle_s: 0.5
+close_minimum_s: 2.5
+close_timeout_s: 6.0
+contact_stable_s: 0.3
+trial_height_m: 0.02
+trial_lift_s: 2.0
+trial_timeout_s: 2.0
+trial_clearance_m: 0.008
+lift_height_m: 0.10
+lift_s: 4.0
+hold_s: 3.0
+hold_clearance_m: 0.08
+hold_tilt_deg: 8.0
+min_side_vertical_force_N: 0.2
+max_slip_m: 0.015
+violation_s: 0.2
+max_penetration_m: 0.003
+max_tilt_deg: 15.0
+max_joint_violation_rad: 0.01
+max_mimic_error_rad: 0.015
+max_wrist_tracking_m: 0.003
+max_wrist_tracking_deg: 3.0

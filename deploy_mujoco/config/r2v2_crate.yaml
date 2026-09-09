@@ -1,0 +1,26 @@
+# Standalone cargo-crate geometry; this does not enable a load/carry FSM.
+# SI units. Origin is the outside bottom centre; +X front, +Y left, +Z up.
+depth: 0.24
+width: 0.36
+height: 0.16
+bottom_thickness: 0.005
+wall_thickness: 0.004
+
+# Through holes on both +/-Y sides: X in [-0.060, +0.060],
+# Z in [0.085, 0.140]. Opening dimensions are unchanged; the beam stays at the top.
+# The top beam thickens only towards the cavity.
+handle_opening_width: 0.120
+handle_opening_height: 0.055
+handle_beam_height: 0.020
+handle_beam_thickness: 0.010
+handle_rounding_radius: 0.002
+handle_rounding_segments: 6
+
+# Total empty-crate mass, uniformly distributed over the non-overlapping
+# physical solids. Rounded beam inertia uses the exact convex mesh volume.
+mass: 0.4
+friction: [1.0, 0.005, 0.0001]
+condim: 3
+solref: [0.008, 1.0]
+solimp: [0.95, 0.99, 0.001]
+rgba: [0.12, 0.28, 0.45, 1.0]

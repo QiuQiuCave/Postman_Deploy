@@ -1,5 +1,7 @@
 # Demonstration only: Reach precision is logged, not a transition requirement.
 # No changes to the strict compatibility gate or the confirmed hand baseline.
+# Visual skin only: orange_cylinder restores the original rendering.
+object_appearance: cola_can
 warmup_standing_s: 2.0
 ready_s: 1.0
 phase_timeout_s: 10.0

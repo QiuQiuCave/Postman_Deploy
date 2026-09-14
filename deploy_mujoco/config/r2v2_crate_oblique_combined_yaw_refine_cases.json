@@ -1,0 +1,6 @@
+{
+  "down20_yaw5": {"tip_up_deg": -20, "yaw_deg": 5, "seating_m": 0.030, "active_sides": ["left", "right"]},
+  "down20_yaw15": {"tip_up_deg": -20, "yaw_deg": 15, "seating_m": 0.030, "active_sides": ["left", "right"]},
+  "down20_yaw_minus5": {"tip_up_deg": -20, "yaw_deg": -5, "seating_m": 0.030, "active_sides": ["left", "right"]},
+  "down20_yaw_minus15": {"tip_up_deg": -20, "yaw_deg": -15, "seating_m": 0.030, "active_sides": ["left", "right"]}
+}

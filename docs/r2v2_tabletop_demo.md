@@ -73,6 +73,11 @@ uv pip install --python .venv-r2v2/bin/python -r requirements-r2v2-reach-sim.txt
 
 ## 场景与控制
 
+2026-09-10 增加独立物理规格 profile；默认和下述历史演示数据仍为
+`baseline_40mm_100g`。另有 58 mm × 145.4 mm 的 330 ml Sleek profile，
+质量暂设 350 g（非测量），尚未完成新抓握标定。
+选择方式、尺寸联动和限制见 [圆柱 / 可乐罐物理 profile](r2v2_cylinder_profiles.md)。
+
 - 左手执行任务，右手锁定预热站稳时的世界末端位姿；不锁定右臂关节。
   右腕保持的 2 cm / 5° 门槛仍保留，持续超出 0.3 s 则停止。
 - 圆柱直径 4 cm、高 12 cm、质量 100 g，真实自由关节。

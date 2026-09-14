@@ -45,6 +45,7 @@ class PolicyStub:
 def gate(phase="CLOSE"):
     exp = demo.TabletopDemoExperiment.__new__(demo.TabletopDemoExperiment)
     exp.demo_cfg = demo.load_demo_config()
+    exp.cylinder_params = demo.CylinderParameters.from_profile(exp.demo_cfg["cylinder_profile"])
     exp.cfg = exp.demo_cfg["reach"]
     exp.demo_cfg["contact_stable_s"] = exp.demo_cfg["motion_settle_s"] = 0.3
     exp.data = SimpleNamespace(time=0.0)
@@ -450,8 +451,10 @@ def test_named_initial_state_copy_preserves_extra_free_object_even_when_reordere
     assert target.ctrl[new.actuator("finger_motor").id] == -0.5
 
 
-def test_constructor_copies_input_configuration_and_policy_history(monkeypatch):
+@pytest.mark.parametrize("profile", ["baseline_40mm_100g", "sleek_330ml_approx_full"])
+def test_constructor_copies_input_configuration_and_policy_history(monkeypatch, profile):
     cfg = demo.load_demo_config()
+    cfg["cylinder_profile"] = profile
     model, hands = build_reach_model(cfg["reach"])
     data = mujoco.MjData(model)
     initialize_robot(model, data, hands)
@@ -472,7 +475,11 @@ def test_constructor_copies_input_configuration_and_policy_history(monkeypatch):
         exp.contact_state = {"robot_table_contacts": []}
 
     monkeypatch.setattr(demo.TabletopDemoExperiment, "sync", sync)
-    exp = demo.TabletopDemoExperiment(cfg)
+    if profile == "sleek_330ml_approx_full":
+        with pytest.warns(RuntimeWarning, match="require new grasp calibration"):
+            exp = demo.TabletopDemoExperiment(cfg)
+    else:
+        exp = demo.TabletopDemoExperiment(cfg)
     original_half_size = cfg["table_half_size"].copy()
     original_gate = cfg["reach"]["gates"]["position_m"]
     cfg["table_half_size"][0] += 0.5
@@ -482,3 +489,25 @@ def test_constructor_copies_input_configuration_and_policy_history(monkeypatch):
     assert exp.scene_cfg["table_half_size"] == original_half_size
     assert exp.cfg["gates"]["position_m"] == original_gate
     assert exp.policy.histories["sample"][0, 0] == 7
+    assert exp.scene_cfg["cylinder_profile"] == exp.demo_cfg["cylinder_profile"]
+    half_height = exp.cylinder_params.half_height
+    assert exp.scene_cfg["cylinder_position_xyz"][2] == pytest.approx(
+        exp.table_height + half_height + cfg["cylinder_initial_clearance_m"])
+    assert exp.destination_transform[2, 3] == pytest.approx(exp.table_height + half_height)
+    geom = exp.model.geom("cylinder_geom").id
+    np.testing.assert_array_equal(exp.model.geom_size[geom, :2], [exp.cylinder_params.radius, half_height])
+
+
+def test_sleek_trial_lift_uses_profile_height_without_changing_grip_gates():
+    # A synthetic FSM input tests target arithmetic, not a successful real grasp.
+    exp, _ = gate("TRIAL_LIFT")
+    exp.demo_cfg["cylinder_profile"] = demo.load_cylinder_profile("sleek_330ml_approx_full")
+    exp.cylinder_params = demo.CylinderParameters.from_profile(exp.demo_cfg["cylinder_profile"])
+    enable_unsupported_grip(exp)
+    tick(exp, 0.0)
+    tick(exp, 0.3)
+    assert exp.phase == "LIFT"
+    assert exp.carry_transform[2, 3] == pytest.approx(
+        exp.table_height + 0.0727 + exp.demo_cfg["lift_m"])
+    assert exp.demo_cfg["trial_clearance_m"] == pytest.approx(0.008)
+    assert exp.demo_cfg["max_slip_m"] == pytest.approx(0.015)

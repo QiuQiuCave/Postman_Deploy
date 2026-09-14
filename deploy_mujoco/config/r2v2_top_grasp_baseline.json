@@ -1,0 +1,10 @@
+{
+  "side": "left",
+  "depth_m": 0.0,
+  "yaw_deg": 0.0,
+  "tilt_deg": 0.0,
+  "spread_tilt_deg": 60.0,
+  "lateral_m": -0.015,
+  "across_m": -0.03,
+  "open_curl_rad": 0.03
+}

@@ -1,0 +1,21 @@
+# External envelope: Royal Can 330ml Sleek, diameter 58 mm, height 145.4 mm.
+# The nominal 330 ml capacity is a label, not the solid collider's volume.
+schema_version: 1
+profile_id: sleek_330ml_approx_full
+radius_m: 0.029
+height_m: 0.1454
+mass_kg: 0.350
+nominal_capacity_ml: 330
+geometry_source: https://www.royalcanco.com/products-cans
+mass_provenance: simulation_assumption_not_measured
+mass_notes: >-
+  0.350 kg is a temporary approximate full-can simulation test value, not a
+  measured mass or a manufacturer specification. Replace after weighing the
+  actual object. Uniform solid-cylinder inertia; no liquid slosh or thin shell.
+grasp_calibration_status: unvalidated
+grasp_calibration_notes: >-
+  The 75-degree thumb initialization, finger closure and [0.145,-0.035,0] m
+  wrist-cylinder relation were verified only for the 40 mm / 100 g baseline.
+  Recalibrate and validate contact, unsupported hold, slip and release for this
+  larger/heavier profile before claiming a successful grasp.
+simulation_only: true

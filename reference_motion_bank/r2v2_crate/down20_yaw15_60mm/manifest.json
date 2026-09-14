@@ -1,0 +1,554 @@
+{
+  "schema_version": 1,
+  "recorded_at_utc": "2026-09-11T10:15:19.321832+00:00",
+  "trajectory_file": "trajectory.npz",
+  "trajectory_sha256": "45b0cbfb0ee31f95e09e48f1ef59b86ca985139dc8747981e6761d87676d91d7",
+  "samples": 1285,
+  "source_samples": 1286,
+  "duplicate_timestamp_rows_removed": 1,
+  "duration_s": 12.839999999998323,
+  "sample_dt_s": 0.01,
+  "physics_dt_s": 0.001,
+  "sides": [
+    "left",
+    "right"
+  ],
+  "wrist_body_names": [
+    "left_hand_roll_link",
+    "right_hand_roll_link"
+  ],
+  "hand_channel_names": [
+    "thumb_metacarpal_joint",
+    "thumb_proximal_joint",
+    "index_proximal_joint",
+    "middle_proximal_joint",
+    "ring_proximal_joint",
+    "pinky_proximal_joint"
+  ],
+  "units": {
+    "distance": "m",
+    "angle": "rad",
+    "time": "s",
+    "torque": "Nm",
+    "force": "N"
+  },
+  "transform_convention": "T_A_B maps B coordinates into A; column vectors; translation expressed in A",
+  "quaternion_convention": "WXYZ scalar first, active rotation from local frame into parent frame",
+  "anchor_definition": "source initial actual crate pose, T_world_crate[0], frozen for the whole trajectory",
+  "T_world_anchor": [
+    [
+      1.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      1.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      1.0,
+      0.401
+    ],
+    [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ]
+  ],
+  "sampling_convention": "100 Hz complete source trace, no resampling. Repeated timestamps retain the LAST row; exact transitions are preserved separately. Sampled phase, command/reference/torque describe the preceding integration step; a boundary CLOSE command appears at the next row. The final COMPLETE row is an instantaneous event, not an extra physics step. Interpolation uses exact transitions and hand_command_events for commands/phases.",
+  "pose_semantics": {
+    "measured": "T_world_wrist/T_crate_wrist/T_anchor_wrist are actual dynamic wrist-link poses from source metrics",
+    "target": "*_wrist_target are fixture mocap goals, built from recorded target translation and fixed layout quaternion",
+    "replay": "T_world_anchor_new @ T_anchor_wrist_target(t); or measured T_anchor_wrist(t) when explicitly selected",
+    "lift_warning": "current measured crate @ T_crate_wrist(t) alone cannot reproduce object lift; retain the recorded T_anchor_crate motion"
+  },
+  "missing_signals": [
+    "finger velocities/accelerations and five mimic-joint states per hand were not in source; not synthesized"
+  ],
+  "finger_torque_semantics": "source hands[side].torque_Nm: commanded actuator control, not reconstructed contact/actuator force",
+  "scope": "successful free-crate, externally driven dynamic wrist-fixture experiment; not full-body reachability or deployment certification",
+  "candidate": {
+    "tip_up_deg": -20.0,
+    "yaw_deg": 15.0,
+    "roll_deg": 0.0,
+    "insertion_m": 0.06,
+    "closed_curl_rad": 0.8,
+    "seating_m": 0.03,
+    "active_sides": [
+      "left",
+      "right"
+    ]
+  },
+  "parameters": {
+    "insertion_m": 0.06,
+    "start_palm_clearance_m": 0.08,
+    "table_height": 0.4,
+    "closed_curl_rad": 0.8,
+    "closure_seating_m": 0.03,
+    "grasp_enabled": true,
+    "ready_s": 1.0,
+    "insert_s": 2.5,
+    "insert_settle_s": 0.5,
+    "close_minimum_s": 2.5,
+    "close_timeout_s": 6.0,
+    "contact_stable_s": 0.3,
+    "trial_height_m": 0.02,
+    "trial_lift_s": 2.0,
+    "trial_timeout_s": 2.0,
+    "trial_clearance_m": 0.008,
+    "lift_height_m": 0.1,
+    "lift_s": 4.0,
+    "hold_s": 2.0,
+    "hold_clearance_m": 0.08,
+    "hold_tilt_deg": 8.0,
+    "min_side_vertical_force_N": 0.2,
+    "max_slip_m": 0.015,
+    "violation_s": 0.2,
+    "max_penetration_m": 0.003,
+    "max_tilt_deg": 45.0,
+    "max_joint_violation_rad": 0.01,
+    "max_mimic_error_rad": 0.015,
+    "max_wrist_tracking_m": 0.003,
+    "max_wrist_tracking_deg": 3.0
+  },
+  "crate_parameters": {
+    "depth": 0.24,
+    "width": 0.26,
+    "height": 0.16,
+    "bottom_thickness": 0.005,
+    "wall_thickness": 0.004,
+    "handle_opening_width": 0.12,
+    "handle_opening_height": 0.055,
+    "handle_beam_height": 0.02,
+    "handle_beam_thickness": 0.01,
+    "handle_rounding_radius": 0.002,
+    "handle_rounding_segments": 6,
+    "mass": 0.4,
+    "friction": [
+      1.0,
+      0.005,
+      0.0001
+    ],
+    "condim": 3,
+    "solref": [
+      0.008,
+      1.0
+    ],
+    "solimp": [
+      0.95,
+      0.99,
+      0.001
+    ],
+    "rgba": [
+      0.12,
+      0.28,
+      0.45,
+      1.0
+    ]
+  },
+  "hand_configuration": {
+    "simulation_dt": 0.001,
+    "control_dt": 0.01,
+    "channels": [
+      "thumb_metacarpal_joint",
+      "thumb_proximal_joint",
+      "index_proximal_joint",
+      "middle_proximal_joint",
+      "ring_proximal_joint",
+      "pinky_proximal_joint"
+    ],
+    "trajectory": {
+      "max_velocity": [
+        0.7,
+        0.6,
+        0.8,
+        0.8,
+        0.8,
+        0.8
+      ],
+      "max_acceleration": [
+        1.5,
+        1.5,
+        2.0,
+        2.0,
+        2.0,
+        2.0
+      ],
+      "max_jerk": [
+        8.0,
+        8.0,
+        10.0,
+        10.0,
+        10.0,
+        10.0
+      ]
+    },
+    "servo": {
+      "kp": [
+        3.0,
+        3.0,
+        3.0,
+        3.0,
+        3.0,
+        3.0
+      ],
+      "kd": [
+        0.35,
+        0.45,
+        0.45,
+        0.45,
+        0.45,
+        0.45
+      ],
+      "torque_limit": [
+        0.15,
+        0.3,
+        0.35,
+        0.35,
+        0.35,
+        0.35
+      ]
+    },
+    "hands": {
+      "left": {
+        "open": [
+          1.3089969389957472,
+          0.04,
+          0.03,
+          0.03,
+          0.03,
+          0.03
+        ],
+        "closed": [
+          1.3089969389957472,
+          0.04,
+          0.8,
+          0.8,
+          0.8,
+          0.8
+        ]
+      },
+      "right": {
+        "open": [
+          1.3089969389957472,
+          0.04,
+          0.03,
+          0.03,
+          0.03,
+          0.03
+        ],
+        "closed": [
+          1.3089969389957472,
+          0.04,
+          0.8,
+          0.8,
+          0.8,
+          0.8
+        ]
+      }
+    },
+    "validation": {
+      "max_tracking_error": 0.12,
+      "max_mimic_error": 0.015,
+      "max_limit_violation": 0.01,
+      "max_penetration": 0.003,
+      "physical_velocity_tolerance": 0.1,
+      "settle_tolerance": 0.06
+    }
+  },
+  "layout": {
+    "initial_wrist_positions": {
+      "left": [
+        -0.06645383799785673,
+        0.37209266015386266,
+        0.5995790912517386
+      ],
+      "right": [
+        -0.06644574321449134,
+        -0.37210108850880325,
+        0.5995634677741134
+      ]
+    },
+    "inserted_wrist_positions": {
+      "left": [
+        -0.03723870997346199,
+        0.26306031801719215,
+        0.558494645603838
+      ],
+      "right": [
+        -0.03723053764641512,
+        -0.2630684569751736,
+        0.5584789130786274
+      ]
+    },
+    "wrist_quaternions": {
+      "left": [
+        0.62721137512625,
+        -0.4777144171082608,
+        0.5213338044735967,
+        -0.32650557562197685
+      ],
+      "right": [
+        0.62721137512625,
+        0.4777144171082608,
+        0.5213338044735967,
+        0.32650557562197685
+      ]
+    },
+    "mocap_ids": {
+      "left": 0,
+      "right": 1
+    },
+    "driver": "mocap_targets_with_dynamic_free_wrist_welds",
+    "wrist_free_joints": {
+      "left": "left_wrist_free",
+      "right": "right_wrist_free"
+    },
+    "wrist_welds": {
+      "left": "left_wrist_tracking_weld",
+      "right": "right_wrist_tracking_weld"
+    },
+    "wrist_weld_parameters": {
+      "solref": [
+        0.005,
+        1.0
+      ],
+      "solimp": [
+        0.95,
+        0.99,
+        0.001
+      ],
+      "torquescale_m": 1.0
+    },
+    "table_top_m": 0.4,
+    "crate_initial_position": [
+      0.0,
+      0.0,
+      0.401
+    ]
+  },
+  "angle_convention": {
+    "tip_up_positive": "fingertips rise toward world +Z",
+    "yaw_positive": "fingertips deflect toward box +X; mirrored left/right",
+    "roll": "about finger extension direction; mirrored left/right",
+    "composition": "Rz(sign*yaw) @ Rx(-sign*tip_up) @ R0 @ Rx(sign*roll)",
+    "sign": {
+      "left": 1,
+      "right": -1
+    }
+  },
+  "transitions": [
+    {
+      "time_s": 0.0,
+      "state": "READY"
+    },
+    {
+      "time_s": 1.0000000000000007,
+      "state": "INSERT"
+    },
+    {
+      "time_s": 3.5099999999997245,
+      "state": "INSERT_SETTLE"
+    },
+    {
+      "time_s": 4.019999999999677,
+      "state": "CLOSE"
+    },
+    {
+      "time_s": 6.820000000000612,
+      "state": "PROBE_LIFT"
+    },
+    {
+      "time_s": 10.829999999999437,
+      "state": "HOLD"
+    },
+    {
+      "time_s": 12.839999999998323,
+      "state": "COMPLETE"
+    }
+  ],
+  "hand_command_events": [
+    {
+      "time_s": 0.0,
+      "hand_command": [
+        0,
+        0
+      ],
+      "source": "initial trace sample"
+    },
+    {
+      "time_s": 4.019999999999677,
+      "hand_command": [
+        1,
+        1
+      ],
+      "source": "CLOSE entry immediately calls BinaryHandControl.command"
+    }
+  ],
+  "validation": {
+    "lift_passed": true,
+    "pickup_verified": true,
+    "experiment_completed": true,
+    "phase": "COMPLETE",
+    "failure": null,
+    "max_pickup_hold_s": 2.010000000000001,
+    "max_level_hold_s": 2.010000000000001,
+    "criteria": {
+      "exploratory_tilt_stop_deg": 45.0,
+      "level_tilt_max_deg": 8.0,
+      "level_clearance_m": 0.08,
+      "level_hold_s": 2.0,
+      "pickup_clearance_m": 0.008,
+      "pickup_hold_s": 1.0,
+      "slip_max_m": 0.015,
+      "angular_slip_max_deg": 5.0,
+      "min_net_weight_fraction": 0.8,
+      "no_table_bearing": true,
+      "real_finger_handle_contact": true,
+      "inactive_hand_no_contact": true
+    },
+    "crate_welds": 0,
+    "crate_runtime_resets": 0,
+    "no_external_crate_forces": true,
+    "final_metrics": {
+      "clearance_m": 0.1050106427171752,
+      "crate_tilt_deg": 2.131205995586513,
+      "grasp_slip_m": 0.00032877349729566063,
+      "table_vertical_force_N": 0.0,
+      "table_bearing_contact": false,
+      "crate_linear_speed_m_s": 6.400406963761277e-05,
+      "crate_angular_speed_rad_s": 0.00012917939117351696
+    }
+  },
+  "source_files": {
+    "report.json": {
+      "path": "/root/autodl-tmp/Postman_Deploy/oblique_crate_yaw_20260911/down20_yaw15_confirm_100427/report.json",
+      "sha256": "837e72a82b6420e647eb80426319a4c7975da4f2525bb75b52f47c435f4782c0"
+    },
+    "trace.json": {
+      "path": "/root/autodl-tmp/Postman_Deploy/oblique_crate_yaw_20260911/down20_yaw15_confirm_100427/trace.json",
+      "sha256": "59bbea3645c4ec33e2073a0b6ea6c49db036692eda083488a64dceb2519ae7b0"
+    },
+    "transitions.json": {
+      "path": "/root/autodl-tmp/Postman_Deploy/oblique_crate_yaw_20260911/down20_yaw15_confirm_100427/transitions.json",
+      "sha256": "fd123acb8c5338a2d0f042ec75efaf32a7ebd293b85e770a78e420f7e1a808e0"
+    }
+  },
+  "source_code_sha256": {
+    "/root/code/amo/Postman_Deploy/common/r2v2_crate_oblique.py": "57bf724c6cde8a475d691801bf4a45e5988d45ddf8b587da3159c93d45b4ba69"
+  },
+  "exporter_sha256": "f42e4c3bd211ac0e154ffd29ca17c3f5115f9d9b16e5254370cea1259eca222a",
+  "mujoco_version": "3.3.7",
+  "array_schema": {
+    "time_s": {
+      "shape": [
+        1285
+      ],
+      "dtype": "float64"
+    },
+    "phase": {
+      "shape": [
+        1285
+      ],
+      "dtype": "<U13"
+    },
+    "T_world_crate": {
+      "shape": [
+        1285,
+        4,
+        4
+      ],
+      "dtype": "float64"
+    },
+    "T_world_wrist": {
+      "shape": [
+        1285,
+        2,
+        4,
+        4
+      ],
+      "dtype": "float64"
+    },
+    "hand_command": {
+      "shape": [
+        1285,
+        2
+      ],
+      "dtype": "int8"
+    },
+    "hand_reference_q_rad": {
+      "shape": [
+        1285,
+        2,
+        6
+      ],
+      "dtype": "float64"
+    },
+    "hand_measured_q_rad": {
+      "shape": [
+        1285,
+        2,
+        6
+      ],
+      "dtype": "float64"
+    },
+    "hand_torque_Nm": {
+      "shape": [
+        1285,
+        2,
+        6
+      ],
+      "dtype": "float64"
+    },
+    "T_crate_wrist": {
+      "shape": [
+        1285,
+        2,
+        4,
+        4
+      ],
+      "dtype": "float64"
+    },
+    "T_anchor_crate": {
+      "shape": [
+        1285,
+        4,
+        4
+      ],
+      "dtype": "float64"
+    },
+    "T_anchor_wrist": {
+      "shape": [
+        1285,
+        2,
+        4,
+        4
+      ],
+      "dtype": "float64"
+    },
+    "T_crate_wrist_target": {
+      "shape": [
+        1285,
+        2,
+        4,
+        4
+      ],
+      "dtype": "float64"
+    },
+    "T_anchor_wrist_target": {
+      "shape": [
+        1285,
+        2,
+        4,
+        4
+      ],
+      "dtype": "float64"
+    }
+  }
+}

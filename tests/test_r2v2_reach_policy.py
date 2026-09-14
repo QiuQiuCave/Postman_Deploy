@@ -15,6 +15,7 @@ from common.r2v2_reach_policy import (
     ACTION_DIM, ANGULAR_ACCELERATION_LIMIT, ANGULAR_SPEED_LIMIT, HISTORY_LENGTH,
     LINEAR_ACCELERATION_LIMIT, LINEAR_SPEED_LIMIT, POLICY_DT, ReachPolicy,
     ReachReference, TCP_WRIST_POSITIONS, TERM_DIMS, TRAINING_EFFORT_LIMITS,
+    LEGACY_ENDPOINT_CONTRACT, WRIST_ENDPOINT_CONTRACT, validate_endpoint_metadata,
     _box_plus, _quat_inv, _quat_mul, _quaternion, _rotation_vector,
 )
 from r2v2_description.model import (
@@ -44,6 +45,7 @@ def model():
         parent = root.find(f'.//body[@name="{side}_hand_roll_link"]')
         ET.SubElement(parent, "site", name=f"{side}_tcp",
                       pos=" ".join(map(str, TCP_WRIST_POSITIONS[side])))
+        ET.SubElement(parent, "site", name=f"{side}_wrist", pos="0 0 0", quat="1 0 0 0")
     return mujoco.MjModel.from_xml_string(ET.tostring(root, encoding="unicode"))
 
 
@@ -52,7 +54,7 @@ def policy_factory(model, tmp_path, monkeypatch):
     path = tmp_path / "fake.onnx"
     path.write_bytes(b"ONNX session is stubbed by this unit test")
 
-    def make(meta=None, input_shape=None, output_shape=None, output=None):
+    def make(meta=None, input_shape=None, output_shape=None, output=None, expected_endpoint_contract=None):
         session = SimpleNamespace()
         session.get_inputs = lambda: [SimpleNamespace(name="obs", shape=input_shape or [1, 1460], type="tensor(float)")]
         session.get_outputs = lambda: [SimpleNamespace(name="actions", shape=output_shape or [1, 28], type="tensor(float)")]
@@ -73,10 +75,101 @@ def policy_factory(model, tmp_path, monkeypatch):
         ))
         data = mujoco.MjData(model)
         initialize_hands(model, data, load_config())
-        controller = ReachPolicy(model, data, path)
+        controller = ReachPolicy(model, data, path, expected_endpoint_contract=expected_endpoint_contract)
         return controller, data
 
     return make
+
+
+def wrist_metadata():
+    return {**metadata(), "endpoint_contract": WRIST_ENDPOINT_CONTRACT,
+            "quaternion_order": "wxyz", "speed_reference_point": "wrist",
+            "endpoint_body_names": "left_hand_roll_link,right_hand_roll_link"}
+
+
+def test_wrist_contract_uses_physical_origin_without_legacy_offset(policy_factory):
+    policy, data = policy_factory(meta=wrist_metadata(), expected_endpoint_contract=WRIST_ENDPOINT_CONTRACT)
+    assert policy.endpoint_contract == WRIST_ENDPOINT_CONTRACT
+    for side in SIDES:
+        origin, quat = policy.wrist_pose(data, side)
+        endpoint, endpoint_quat = policy.endpoint_pose(data, side)
+        np.testing.assert_allclose(endpoint, origin, atol=1e-12)
+        np.testing.assert_allclose(endpoint_quat, quat, atol=1e-12)
+        goal = origin + [0.01, -0.02, 0.03]
+        policy.set_wrist_target_world(side, goal, quat)
+        np.testing.assert_array_equal(policy.references[side].goal_position, goal)
+        before = policy.references[side].position.copy()
+        policy.set_wrist_target_world(side, goal, -quat)
+        np.testing.assert_array_equal(policy.references[side].position, before)
+
+
+def test_legacy_wrist_helper_converts_once_and_raw_world_interface_unchanged(policy_factory):
+    policy, data = policy_factory()
+    assert policy.endpoint_contract == LEGACY_ENDPOINT_CONTRACT
+    quat = _quaternion([1, 0.2, -0.3, 0.4])
+    goal = np.array([0.25, 0.2, 1.1])
+    rotation = np.empty(9)
+    mujoco.mju_quat2Mat(rotation, quat)
+    policy.set_wrist_target_world("left", goal, quat)
+    np.testing.assert_allclose(policy.references["left"].goal_position,
+                               goal + rotation.reshape(3, 3) @ TCP_WRIST_POSITIONS["left"])
+    policy.set_target_world("left", goal, quat)
+    np.testing.assert_array_equal(policy.references["left"].goal_position, goal)
+
+
+@pytest.mark.parametrize("metadata_contract,scene_contract", [
+    (LEGACY_ENDPOINT_CONTRACT, WRIST_ENDPOINT_CONTRACT),
+    (WRIST_ENDPOINT_CONTRACT, LEGACY_ENDPOINT_CONTRACT),
+])
+def test_cross_version_configuration_fails_closed(policy_factory, metadata_contract, scene_contract):
+    meta = wrist_metadata() if metadata_contract == WRIST_ENDPOINT_CONTRACT else metadata()
+    with pytest.raises(ValueError, match="contract mismatch"):
+        policy_factory(meta=meta, expected_endpoint_contract=scene_contract)
+
+
+@pytest.mark.parametrize("key,value", [
+    ("endpoint_contract", "wrist_world_v3"),
+    ("quaternion_order", "xyzw"),
+    ("speed_reference_point", "tcp"),
+    ("endpoint_body_names", "left_hand_base_link,right_hand_base_link"),
+])
+def test_incompatible_wrist_metadata_is_rejected(policy_factory, key, value):
+    meta = wrist_metadata()
+    meta[key] = value
+    with pytest.raises(ValueError):
+        policy_factory(meta=meta)
+
+
+@pytest.mark.parametrize("missing", ["quaternion_order", "speed_reference_point", "endpoint_body_names"])
+def test_v2_does_not_silently_default_missing_contract_fields(missing):
+    meta = wrist_metadata()
+    del meta[missing]
+    with pytest.raises(ValueError, match="requires ONNX"):
+        validate_endpoint_metadata(meta)
+
+
+def test_named_wrist_site_with_nonzero_tcp_offset_fails_closed(policy_factory, model):
+    site = model.site("left_wrist").id
+    original = model.site_pos[site].copy()
+    try:
+        model.site_pos[site] = TCP_WRIST_POSITIONS["left"]
+        with pytest.raises(ValueError, match="exactly the hand_roll_link origin"):
+            policy_factory(meta=wrist_metadata())
+    finally:
+        model.site_pos[site] = original
+
+
+def test_wrist_speed_is_link_origin_velocity_not_com(policy_factory):
+    policy, data = policy_factory(meta=wrist_metadata())
+    data.qvel[policy.body_map.dofs] = np.linspace(-0.7, 0.7, 28)
+    mujoco.mj_forward(policy.model, data)
+    linear, angular = policy.wrist_twist(data, "left")
+    jp, jr = np.zeros((3, policy.model.nv)), np.zeros((3, policy.model.nv))
+    mujoco.mj_jacSite(policy.model, data, jp, jr, policy.site_ids["left"])
+    np.testing.assert_allclose(linear, jp @ data.qvel, atol=1e-12)
+    np.testing.assert_allclose(angular, jr @ data.qvel, atol=1e-12)
+    mujoco.mj_jacBodyCom(policy.model, data, jp, jr, policy.wrist_ids["left"])
+    assert np.linalg.norm(linear - jp @ data.qvel) > 1e-4
 
 
 def term_slices():
@@ -242,8 +335,9 @@ def test_action_scaling_no_extra_normalization_or_raw_clipping(policy_factory):
     np.testing.assert_array_equal(actual, output[0])
 
 
-def test_body_pd_clips_effort_and_leaves_hands_and_model_untouched(policy_factory):
-    policy, data = policy_factory()
+@pytest.mark.parametrize("v2", [False, True])
+def test_body_pd_clips_effort_and_leaves_hands_and_model_untouched(policy_factory, v2):
+    policy, data = policy_factory(meta=wrist_metadata() if v2 else metadata())
     hand_acts = np.concatenate([JointMap.create(policy.model, hand_names(side)).actuators for side in SIDES])
     data.ctrl[hand_acts] = np.linspace(-0.1, 0.1, 12)
     before = data.ctrl[hand_acts].copy()

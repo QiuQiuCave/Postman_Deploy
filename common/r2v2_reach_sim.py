@@ -14,6 +14,9 @@ import yaml
 
 from common.r2v2_hand_control import DualHandControl
 from common.r2v2_grasp_recording import body_transform
+from common.r2v2_reach_policy import (
+    ENDPOINT_CONTRACTS, LEGACY_ENDPOINT_CONTRACT, WRIST_ENDPOINT_CONTRACT,
+)
 from r2v2_description.model import (
     BODY_JOINTS, JointMap, SIDES, build_model_xml, initialize_hands, load_config,
 )
@@ -31,6 +34,8 @@ def load_reach_config(path=None):
     cfg = yaml.safe_load(path.read_text())
     if (cfg["simulation_dt"], cfg["policy_dt"], cfg["hand_dt"]) != (0.001, 0.02, 0.01):
         raise ValueError("Validated schedule requires 1 kHz physics, 50 Hz policy, 100 Hz hands")
+    if cfg.get("endpoint_contract", LEGACY_ENDPOINT_CONTRACT) not in ENDPOINT_CONTRACTS:
+        raise ValueError("Unknown Reach endpoint_contract in simulation config")
     return cfg
 
 
@@ -47,6 +52,8 @@ def require_parity(path, cfg):
     report = json.loads(Path(path).read_text())
     if not report.get("passed"):
         raise ValueError("Training/deployment numerical parity has not passed")
+    if report.get("endpoint_contract", LEGACY_ENDPOINT_CONTRACT) != cfg.get("endpoint_contract", LEGACY_ENDPOINT_CONTRACT):
+        raise ValueError("Parity evidence belongs to a different endpoint contract")
     for key, file in (("onnx_sha256", resolve_asset(cfg["policy_path"])),
                       ("checkpoint_sha256", resolve_asset(cfg["checkpoint_path"])),
                       ("adapter_sha256", PROJECT_ROOT / "common/r2v2_reach_policy.py")):
@@ -56,14 +63,19 @@ def require_parity(path, cfg):
 
 
 def build_reach_model(cfg):
+    contract = cfg.get("endpoint_contract", LEGACY_ENDPOINT_CONTRACT)
+    if contract not in ENDPOINT_CONTRACTS:
+        raise ValueError(f"Unknown Reach endpoint_contract: {contract}")
     hands = copy.deepcopy(load_config())
     hands["simulation_dt"] = cfg["simulation_dt"]
     hands["control_dt"] = cfg["hand_dt"]
     root = ET.fromstring(build_model_xml(hands, fixture=False))
-    root.set("model", "R2V2_new_asset_reach_compatibility")
+    root.set("model", f"R2V2_new_asset_reach_{contract}")
     for side, position in TCP_OFFSETS.items():
         body = root.find(f'.//body[@name="{side}_hand_roll_link"]')
-        ET.SubElement(body, "site", name=f"{side}_tcp", pos=" ".join(map(str, position)),
+        suffix = "wrist" if contract == WRIST_ENDPOINT_CONTRACT else "tcp"
+        position = np.zeros(3) if contract == WRIST_ENDPOINT_CONTRACT else position
+        ET.SubElement(body, "site", name=f"{side}_{suffix}", pos=" ".join(map(str, position)),
                       quat="1 0 0 0", size="0.008", rgba="0.1 0.8 0.3 1")
     model = mujoco.MjModel.from_xml_string(ET.tostring(root, encoding="unicode"))
     return model, hands
@@ -127,7 +139,10 @@ class ReachCompatibilityExperiment:
         self.initial_base_height = initialize_robot(
             self.model, self.data, self.hand_cfg, cfg["foot_clearance_m"])
         self.hands = DualHandControl(self.model, self.data, self.hand_cfg)
-        self.policy = ReachPolicy(self.model, self.data, policy_path or resolve_asset(cfg["policy_path"]))
+        self.policy = ReachPolicy(
+            self.model, self.data, policy_path or resolve_asset(cfg["policy_path"]),
+            expected_endpoint_contract=cfg.get("endpoint_contract", LEGACY_ENDPOINT_CONTRACT),
+        )
         self.body_map = JointMap.create(self.model, BODY_JOINTS)
         self.foot_geoms = set(foot_collision_ids(self.model))
         self.floor = self.model.geom("floor").id
@@ -185,7 +200,7 @@ class ReachCompatibilityExperiment:
         # to low-gain PASSIVE while carrying an object in a future task.
 
     def tcp(self, side):
-        site = self.model.site(f"{side}_tcp").id
+        site = self.policy.site_ids[side]
         s = self.scratch
         jp, jr = np.zeros((3, self.model.nv)), np.zeros((3, self.model.nv))
         mujoco.mj_jacSite(self.model, s, jp, jr, site)
@@ -197,7 +212,9 @@ class ReachCompatibilityExperiment:
         ref = self.policy.references[side]
         rotation = np.empty(9)
         mujoco.mju_quat2Mat(rotation, ref.goal_quaternion)
-        wrist_goal = ref.goal_position - rotation.reshape(3, 3) @ TCP_OFFSETS[side]
+        offset = (np.zeros(3) if self.policy.endpoint_contract == WRIST_ENDPOINT_CONTRACT
+                  else TCP_OFFSETS[side])
+        wrist_goal = ref.goal_position - rotation.reshape(3, 3) @ offset
         wrist = self.model.body(f"{side}_hand_roll_link").id
         jp, jr = np.zeros((3, self.model.nv)), np.zeros((3, self.model.nv))
         mujoco.mj_jacBody(self.model, self.scratch, jp, jr, wrist)
@@ -267,7 +284,8 @@ class ReachCompatibilityExperiment:
         relation[:3, 3] = [0.145, -0.035, 0]
         wrist = cylinder @ np.linalg.inv(relation)
         tool = np.eye(4)
-        tool[:3, 3] = TCP_OFFSETS["left"]
+        if self.policy.endpoint_contract == LEGACY_ENDPOINT_CONTRACT:
+            tool[:3, 3] = TCP_OFFSETS["left"]
         grasp = wrist @ tool
         pre = grasp.copy()
         pre[:3, 3] -= self.initial_yaw[:, 0] * cfg["pregrasp_retreat_m"]
@@ -396,6 +414,7 @@ class ReachCompatibilityExperiment:
                           "reference_position_world_m": ref.position.tolist(),
                           "wrist_transform_world": wrist.tolist()}
         self.samples.append({"time_s": float(s.time), "phase": self.phase,
+                             "endpoint_contract": self.policy.endpoint_contract,
                              "base_position_world_m": s.xpos[self.base].tolist(),
                              "body_q_rad": self.data.qpos[self.body_map.qpos].tolist(),
                              "body_tau_Nm": self.data.ctrl[self.body_map.actuators].tolist(),
@@ -404,6 +423,8 @@ class ReachCompatibilityExperiment:
 
     def report(self):
         return {"passed": self.phase == "PASSED", "standing_passed": self.standing_passed,
+                "endpoint_contract": self.policy.endpoint_contract,
+                "speed_reference_point": ("wrist" if self.policy.endpoint_contract == WRIST_ENDPOINT_CONTRACT else "tcp"),
                 "phase": self.phase, "failure_phase": self.failure_phase,
                 "failure": self.failure, "duration_s": float(self.data.time),
                 "scope": "new complete asset, free base, empty hands; no table, object or grasp task executed",

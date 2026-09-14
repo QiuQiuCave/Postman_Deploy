@@ -1,0 +1,21 @@
+# User-requested geometry/placement comparison to r2v2_crate_reach.yaml.
+# Frozen policy, wrist orientations, hand profile and all gates are unchanged.
+# Only width is overridden; depth .24 m, height .16 m, holes .12 x .055 m,
+# empty mass .4 kg and contact parameters come from r2v2_crate.yaml.
+crate_width_m: 0.26
+warmup_standing_s: 2.0
+# Previous table was waist + .10 m. This puts it exactly .10 m lower.
+table_above_waist_m: 0.0
+# Box moves .10 m toward the robot, along world -X; no lateral displacement.
+crate_center_xy: [0.38, 0.0]
+# Table horizontal position and footprint stay unchanged. The box's near
+# edge .38-.12=.26 coincides with the table's near edge .48-.22=.26.
+table_center_xy: [0.48, 0.0]
+table_half_size: [0.22, 0.35, 0.02]
+phase_timeout_s: 10.0
+prealign_position_m: 0.020
+prealign_orientation_deg: 10.0
+insertion_position_m: 0.005
+insertion_orientation_deg: 3.0
+motion_speed_mps: 0.025
+motion_stable_s: 0.3

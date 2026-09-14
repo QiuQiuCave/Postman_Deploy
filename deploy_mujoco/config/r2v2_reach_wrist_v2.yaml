@@ -1,0 +1,40 @@
+# Simulation-only wrist-world interface. Set BOTH paths to the same verified v2
+# training export. Paths are deliberately not wired to an existing legacy model.
+endpoint_contract: wrist_world_v2
+policy_path: policy/r2v2_reach_wrist_v2/model/policy.onnx
+checkpoint_path: policy/r2v2_reach_wrist_v2/model/checkpoint.pt
+simulation_dt: 0.001
+policy_dt: 0.02
+hand_dt: 0.01
+foot_clearance_m: 0.001
+reset_settle_s: 0.4
+standing_duration_s: 20.0
+phase_timeout_s: 10.0
+# Body-yaw-relative standby WRIST origins; equivalent to legacy standby TCP
+# after subtracting its identity-orientation offset. Not crate acceptance poses.
+standby_xyz_rpy_deg:
+  left: [0.1765, 0.2200004, 0.4517504, 0, 0, 0]
+  right: [0.1765, -0.2200004, 0.4517504, 0, 0, 0]
+gates:
+  position_m: 0.005
+  orientation_deg: 3.0
+  linear_speed_mps: 0.02
+  stable_s: 0.3
+  standby_position_m: 0.025
+  standby_orientation_deg: 7.0
+  inactive_position_m: 0.02
+  inactive_orientation_deg: 5.0
+  inactive_violation_s: 0.3
+  max_base_tilt_deg: 35.0
+  min_base_height_m: 0.55
+  max_joint_violation_rad: 0.05
+  max_self_penetration_m: 0.005
+# Existing empty-air cylinder path retained solely as a separate compatibility
+# probe. This configuration does not launch a table/crate/grasp FSM.
+placement:
+  cylinder_xy: [0.40, 0.20]
+  table_above_waist_m: 0.10
+  cylinder_height_m: 0.12
+  pregrasp_retreat_m: 0.05
+  lift_m: 0.08
+  inward_translation_m: 0.10

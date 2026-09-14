@@ -69,7 +69,7 @@ def _new_part():
             "loaded_contact_count": 0, "contact_indices": []}
 
 
-def measure_crate_lift(model, data, table_top_m):
+def measure_crate_lift(model, data, table_top_m, *, virtual_props=False):
     """Return JSON-ready measurements, without claiming lift success.
 
     ``hands[side].finger_vertical_force_N`` is the net world +Z force on
@@ -78,6 +78,8 @@ def measure_crate_lift(model, data, table_top_m):
     ``bearing_finger_contacts`` further identifies upward-loaded contacts
     specifically against a handle beam. All thresholds here only distinguish
     numerical zero (1e-8 N), not stable support or grasp success.
+    In explicit virtual-prop mode, noncolliding crate geometry is used for
+    pose/outline measurements only; zero contact values are not grasp evidence.
     """
     if not np.isfinite(table_top_m):
         raise ValueError("table_top_m must be finite")
@@ -87,9 +89,13 @@ def measure_crate_lift(model, data, table_top_m):
     wrist_ids = {side: model.body(f"{side}_hand_roll_link").id for side in SIDES}
     crate_geoms, hand_geoms = set(), {}
     for geom in range(model.ngeom):
+        body = int(model.geom_bodyid[geom])
+        if virtual_props and _descendant(model, body, crate):
+            if model.geom_contype[geom] or model.geom_conaffinity[geom]:
+                raise ValueError("Virtual crate geometry must have both contact masks disabled")
+            crate_geoms.add(geom)
         if not (model.geom_contype[geom] or model.geom_conaffinity[geom]):
             continue
-        body = int(model.geom_bodyid[geom])
         if _descendant(model, body, crate):
             crate_geoms.add(geom)
         for side, wrist in wrist_ids.items():
@@ -194,7 +200,9 @@ def measure_crate_lift(model, data, table_top_m):
             part["force_on_crate_world_N"] = part["force_on_crate_world_N"].tolist()
 
     maximum_depth = lambda contacts: max((contact["penetration_m"] for contact in contacts), default=0.)
-    return {"scope": "instantaneous two-hand crate fixture measurements; not a grasp-success verdict",
+    return {"scope": ("virtual static crate pose; contacts/load/lift NOT evaluated" if virtual_props else
+                       "instantaneous two-hand crate fixture measurements; not a grasp-success verdict"),
+            "prop_contact_physics_evaluated": not virtual_props,
             "grasp_success_evaluated": False, "time_s": float(data.time), "table_top_m": float(table_top_m),
             "T_world_crate": crate_transform.tolist(), "crate_position_m": crate_transform[:3, 3].tolist(),
             "crate_quaternion_wxyz": quaternion.tolist(), "crate_tilt_rad": tilt,

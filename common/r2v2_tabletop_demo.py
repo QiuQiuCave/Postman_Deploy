@@ -10,11 +10,13 @@ from common.path_config import PROJECT_ROOT
 
 import copy
 from pathlib import Path
+import warnings
 
 import mujoco
 import numpy as np
 import yaml
 
+from common.r2v2_cylinder_test import CylinderParameters, load_cylinder_profile
 from common.r2v2_grasp_recording import body_transform
 from common.r2v2_hand_control import DualHandControl
 from common.r2v2_reach_policy import ReachPolicy
@@ -30,6 +32,7 @@ def load_demo_config(path=None):
     path = Path(path or PROJECT_ROOT / "deploy_mujoco/config/r2v2_tabletop_demo.yaml")
     cfg = yaml.safe_load(path.read_text())
     cfg["reach"] = load_reach_config()
+    cfg["cylinder_profile"] = load_cylinder_profile(cfg.get("cylinder_profile"))
     positive = ("warmup_standing_s", "phase_timeout_s", "motion_settle_s", "motion_speed_mps",
                 "approach_step_m", "trial_lift_m", "lift_m", "lower_step_m", "touch_step_m",
                 "close_minimum_s", "contact_stable_s", "max_slip_m", "max_slip_deg")
@@ -38,6 +41,21 @@ def load_demo_config(path=None):
     if not 0 < cfg["trial_lift_m"] < cfg["lift_m"]:
         raise ValueError("Trial lift must be smaller than the total lift")
     return cfg
+
+
+def build_demo_scene_config(cfg, table_height):
+    """Pure reset-time placement; no policy, physics stepping or runtime resets."""
+    profile = load_cylinder_profile(cfg.get("cylinder_profile"))
+    params = CylinderParameters.from_profile(profile)
+    return {
+        "object_appearance": cfg.get("object_appearance", "orange_cylinder"),
+        "cylinder_profile": profile,
+        "table_center_xyz": [*cfg["table_center_xy"], table_height - cfg["table_half_size"][2]],
+        "table_half_size": copy.deepcopy(cfg["table_half_size"]),
+        "cylinder_position_xyz": [*cfg["cylinder_xy"], params.upright_center_height(
+            table_height, cfg["cylinder_initial_clearance_m"])],
+        "cylinder_initial_clearance_m": cfg["cylinder_initial_clearance_m"],
+    }
 
 
 def serializable(value):
@@ -73,6 +91,14 @@ class TabletopDemoExperiment(ReachCompatibilityExperiment):
     def __init__(self, cfg):
         self.demo_cfg = copy.deepcopy(cfg)
         self.cfg = copy.deepcopy(cfg["reach"])
+        self.demo_cfg["cylinder_profile"] = load_cylinder_profile(cfg.get("cylinder_profile"))
+        self.cylinder_params = CylinderParameters.from_profile(self.demo_cfg["cylinder_profile"])
+        if (self.demo_cfg["cylinder_profile"]["grasp_calibration_status"] == "unvalidated"
+                and cfg["grasp_enabled"]):
+            warnings.warn("Cylinder profile is unvalidated: the baseline 75-degree hand trajectory "
+                          "and wrist-cylinder relation require new grasp calibration. "
+                          "This run is an unvalidated simulation experiment, not a verified grasp.",
+                          RuntimeWarning, stacklevel=2)
         # The source neutral arms would intersect a waist-high table. Warm up
         # the free robot first, then create the fixed scene at episode reset.
         warm = ReachCompatibilityExperiment(self.cfg)
@@ -85,13 +111,7 @@ class TabletopDemoExperiment(ReachCompatibilityExperiment):
         self.warmup_duration_s = float(warm.data.time)
         self.table_height = float(warm.scratch.xpos[warm.model.body("waist_pitch_link").id, 2]
                                   + cfg["table_above_waist_m"])
-        self.scene_cfg = {
-            "object_appearance": cfg.get("object_appearance", "orange_cylinder"),
-            "table_center_xyz": [*cfg["table_center_xy"], self.table_height - cfg["table_half_size"][2]],
-            "table_half_size": copy.deepcopy(cfg["table_half_size"]),
-            "cylinder_position_xyz": [*cfg["cylinder_xy"], self.table_height + 0.06
-                                      + cfg["cylinder_initial_clearance_m"]],
-        }
+        self.scene_cfg = build_demo_scene_config(self.demo_cfg, self.table_height)
         self.model, self.hand_cfg = build_tabletop_model(self.cfg, self.scene_cfg)
         self.data = mujoco.MjData(self.model)
         copy_robot_initial_state(warm.model, warm.data, self.model, self.data)
@@ -141,7 +161,7 @@ class TabletopDemoExperiment(ReachCompatibilityExperiment):
         self.initial_object_transform = self.object_state["T_world_cylinder"].copy()
         self.destination_transform = self.initial_object_transform.copy()
         self.destination_transform[1, 3] -= cfg["inward_translation_m"]
-        self.destination_transform[2, 3] = self.table_height + 0.06
+        self.destination_transform[2, 3] = self.cylinder_params.upright_center_height(self.table_height)
         self.record()
         if self.contact_state["robot_table_contacts"]:
             self.fail("Robot/table overlap at prepared scene initialization")
@@ -309,7 +329,7 @@ class TabletopDemoExperiment(ReachCompatibilityExperiment):
                 self.grasp_relation = self.relative_object()
                 self.carry_transform = self.object_state["T_world_cylinder"].copy()
                 self.carry_transform[:3, 3] = self.initial_object_transform[:3, 3]
-                self.carry_transform[2, 3] = self.table_height + 0.06 + c["lift_m"]
+                self.carry_transform[2, 3] = self.cylinder_params.upright_center_height(self.table_height, c["lift_m"])
                 self.set_object_target("LIFT", self.carry_transform)
         elif phase == "LIFT":
             if self.motion_settled():
@@ -425,6 +445,7 @@ class TabletopDemoExperiment(ReachCompatibilityExperiment):
                        "strict_task_acceptance": False, "reach_precision_gate_bypassed": True,
                        "scope": "Single physical simulation demo; not strict precision or three-trial acceptance",
                        "demo_configuration": self.demo_cfg, "scene_configuration": self.scene_cfg,
+                       "cylinder_profile": load_cylinder_profile(self.demo_cfg.get("cylinder_profile")),
                        "warmup_duration_s": self.warmup_duration_s, "table_height_m": self.table_height,
                        "grasp_confirmed": self.grasp_confirmed, "release_commanded": self.released,
                        "grasp_relation": serializable(self.grasp_relation), "object_final": serializable(self.object_state),

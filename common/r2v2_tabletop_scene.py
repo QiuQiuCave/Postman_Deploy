@@ -14,7 +14,7 @@ import xml.etree.ElementTree as ET
 import mujoco
 import numpy as np
 
-from common.r2v2_cylinder_test import CylinderParameters
+from common.r2v2_cylinder_test import CylinderParameters, load_cylinder_profile
 from common.r2v2_grasp_recording import CONTACT_PARTS, body_transform
 from common.r2v2_reach_sim import TCP_OFFSETS
 from r2v2_description.model import SIDES, build_model_xml, load_config
@@ -41,18 +41,31 @@ def build_tabletop_xml(reach_cfg, demo_cfg):
 
     ``demo_cfg`` accepts world-coordinate ``table_center_xyz``, positive box
     ``table_half_size`` (including half thickness), ``cylinder_position_xyz``,
-    and optional ``cylinder_quaternion_wxyz``. ``object_appearance`` defaults
-    to ``orange_cylinder``; ``cola_can`` adds a purely visual can skin.
+    and optional ``cylinder_quaternion_wxyz``. ``cylinder_profile`` accepts a
+    profile name, YAML path or resolved profile mapping; omission retains the
+    40 mm / 120 mm / 100 g baseline. Without ``cylinder_position_xyz``, an
+    upright object is placed 1 mm above the configured tabletop (or the
+    specified nonnegative ``cylinder_initial_clearance_m``).
+    ``object_appearance`` defaults to ``orange_cylinder``; ``cola_can`` adds a
+    purely visual can skin scaled from the actual collision dimensions.
     The table remains axis-aligned
-    and fixed, with four collision-enabled legs. Cylinder dimensions, mass,
-    friction and contact solver values preserve the successful hand baseline.
+    and fixed, with four collision-enabled legs. The selected profile owns
+    dimensions/mass; friction and contact solver values retain the baseline.
     """
     appearance = demo_cfg.get("object_appearance", "orange_cylinder")
     if appearance not in ("orange_cylinder", "cola_can"):
         raise ValueError(f"Unknown object_appearance: {appearance}")
     center = _vector(demo_cfg.get("table_center_xyz", DEFAULT_TABLE_CENTER), 3, "table_center_xyz")
     half_size = _vector(demo_cfg.get("table_half_size", DEFAULT_TABLE_HALF_SIZE), 3, "table_half_size")
-    cylinder_position = _vector(demo_cfg.get("cylinder_position_xyz", DEFAULT_CYLINDER_POSITION), 3,
+    profile = load_cylinder_profile(demo_cfg.get("cylinder_profile"))
+    params = CylinderParameters.from_profile(profile)
+    clearance = demo_cfg.get("cylinder_initial_clearance_m", 0.001)
+    if (isinstance(clearance, bool) or not isinstance(clearance, (int, float))
+            or not np.isfinite(clearance) or clearance < 0):
+        raise ValueError("cylinder_initial_clearance_m must be finite and nonnegative")
+    default_position = [*DEFAULT_CYLINDER_POSITION[:2],
+                        params.upright_center_height(center[2] + half_size[2], clearance)]
+    cylinder_position = _vector(demo_cfg.get("cylinder_position_xyz", default_position), 3,
                                 "cylinder_position_xyz")
     quaternion = _vector(demo_cfg.get("cylinder_quaternion_wxyz", [1, 0, 0, 0]), 4,
                          "cylinder_quaternion_wxyz")
@@ -91,12 +104,11 @@ def build_tabletop_xml(reach_cfg, demo_cfg):
         ET.SubElement(table, "geom", name=f"tabletop_leg_{index}", type="box",
                       pos=_text(leg_position), size=_text([leg_half_width, leg_half_width, leg_half_height]),
                       rgba="0.25 0.28 0.30 1", friction="1 0.005 0.0001")
-    baseline = CylinderParameters()
     cylinder = ET.SubElement(world, "body", name="test_cylinder", pos=_text(cylinder_position),
                              quat=_text(quaternion))
     ET.SubElement(cylinder, "freejoint", name="cylinder_free")
     collider = ET.SubElement(cylinder, "geom", name="cylinder_geom", type="cylinder",
-                  size=_text([baseline.radius, baseline.height/2]), mass=str(baseline.mass),
+                  size=_text([params.radius, params.half_height]), mass=str(params.mass),
                   rgba="0.95 0.45 0.08 1", friction="1 0.005 0.0001", condim="3",
                   priority="1", solref="0.008 1", solimp="0.95 0.99 0.001")
     if appearance == "cola_can":

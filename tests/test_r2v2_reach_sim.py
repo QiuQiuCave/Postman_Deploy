@@ -14,6 +14,39 @@ from common.r2v2_reach_sim import (
 from r2v2_description.model import build_model
 
 
+def test_wrist_scene_adds_only_zero_offset_wrist_sites_preserving_dynamics():
+    cfg = load_reach_config()
+    cfg["endpoint_contract"] = "wrist_world_v2"
+    model, hands = build_reach_model(cfg)
+    baseline = build_model(hands)
+    assert (model.nq, model.nv, model.nu, model.neq) == (57, 56, 40, 10)
+    np.testing.assert_array_equal(model.body_mass, baseline.body_mass)
+    np.testing.assert_array_equal(model.body_inertia, baseline.body_inertia)
+    np.testing.assert_array_equal(model.jnt_range, baseline.jnt_range)
+    for side in ("left", "right"):
+        site = model.site(f"{side}_wrist")
+        assert site.bodyid[0] == model.body(f"{side}_hand_roll_link").id
+        np.testing.assert_array_equal(site.pos, np.zeros(3))
+        np.testing.assert_array_equal(site.quat, [1, 0, 0, 0])
+        assert mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_SITE, f"{side}_tcp") == -1
+
+
+def test_unknown_scene_contract_rejected():
+    cfg = load_reach_config()
+    cfg["endpoint_contract"] = "wrong_version"
+    with pytest.raises(ValueError, match="Unknown Reach endpoint_contract"):
+        build_reach_model(cfg)
+
+
+def test_legacy_parity_cannot_unlock_wrist_scene(tmp_path):
+    path = tmp_path / "legacy_report.json"
+    path.write_text(json.dumps({"passed": True}))
+    cfg = load_reach_config()
+    cfg["endpoint_contract"] = "wrist_world_v2"
+    with pytest.raises(ValueError, match="different endpoint contract"):
+        require_parity(path, cfg)
+
+
 def test_new_robot_only_adds_virtual_tcp_and_preserves_source_dynamics():
     cfg = load_reach_config()
     m, hands = build_reach_model(cfg)

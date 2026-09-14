@@ -1,0 +1,9 @@
+{
+  "down20_yaw0": {"tip_up_deg": -20, "yaw_deg": 0, "seating_m": 0.030, "active_sides": ["left", "right"]},
+  "down20_yaw10": {"tip_up_deg": -20, "yaw_deg": 10, "seating_m": 0.030, "active_sides": ["left", "right"]},
+  "down20_yaw20": {"tip_up_deg": -20, "yaw_deg": 20, "seating_m": 0.030, "active_sides": ["left", "right"]},
+  "down20_yaw30": {"tip_up_deg": -20, "yaw_deg": 30, "seating_m": 0.030, "active_sides": ["left", "right"]},
+  "down20_yaw_minus10": {"tip_up_deg": -20, "yaw_deg": -10, "seating_m": 0.030, "active_sides": ["left", "right"]},
+  "down20_yaw_minus20": {"tip_up_deg": -20, "yaw_deg": -20, "seating_m": 0.030, "active_sides": ["left", "right"]},
+  "down20_yaw_minus30": {"tip_up_deg": -20, "yaw_deg": -30, "seating_m": 0.030, "active_sides": ["left", "right"]}
+}

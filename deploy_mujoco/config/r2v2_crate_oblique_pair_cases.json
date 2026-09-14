@@ -1,0 +1,10 @@
+{
+  "pair_down15_seat25": {"tip_up_deg": -15, "seating_m": 0.025, "active_sides": ["left", "right"]},
+  "pair_down20_seat25": {"tip_up_deg": -20, "seating_m": 0.025, "active_sides": ["left", "right"]},
+  "pair_down30_seat25": {"tip_up_deg": -30, "seating_m": 0.025, "active_sides": ["left", "right"]},
+  "pair_down15_seat30": {"tip_up_deg": -15, "seating_m": 0.030, "active_sides": ["left", "right"]},
+  "pair_down20_seat30": {"tip_up_deg": -20, "seating_m": 0.030, "active_sides": ["left", "right"]},
+  "pair_down30_seat30": {"tip_up_deg": -30, "seating_m": 0.030, "active_sides": ["left", "right"]},
+  "pair_yaw20_seat25": {"yaw_deg": 20, "seating_m": 0.025, "active_sides": ["left", "right"]},
+  "pair_yaw20_seat30": {"yaw_deg": 20, "seating_m": 0.030, "active_sides": ["left", "right"]}
+}

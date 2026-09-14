@@ -2,6 +2,10 @@
 # No changes to the strict compatibility gate or the confirmed hand baseline.
 # Visual skin only: orange_cylinder restores the original rendering.
 object_appearance: cola_can
+# Physical baseline remains 40 mm diameter x 120 mm height / 100 g.
+# sleek_330ml_approx_full selects 58 x 145.4 mm with ASSUMED 350 g mass;
+# that profile needs new grasp calibration (see docs/r2v2_cylinder_profiles.md).
+cylinder_profile: baseline_40mm_100g
 warmup_standing_s: 2.0
 ready_s: 1.0
 phase_timeout_s: 10.0

@@ -166,8 +166,13 @@ def test_visual_geoms_share_existing_body_and_have_no_contacts(models):
     assert not np.isin(data.contact.geom, appended).any()
 
 
-def test_visual_skin_fits_inside_original_collision_envelope(models):
-    orange, can = models
+@pytest.mark.parametrize("profile", ["baseline_40mm_100g", "sleek_330ml_approx_full"])
+def test_visual_skin_fits_inside_original_collision_envelope(models, profile):
+    if profile == "baseline_40mm_100g":
+        orange, can = models
+    else:
+        orange, _ = build_tabletop_model(REACH_CFG, {"cylinder_profile": profile})
+        can, _ = build_tabletop_model(REACH_CFG, {"cylinder_profile": profile, "object_appearance": "cola_can"})
     data = mujoco.MjData(can)
     mujoco.mj_forward(can, data)
     cylinder = can.body("test_cylinder").id

@@ -22,11 +22,43 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 TASK = "R2V2-Reach-DualArm-SpeedLimited-28DoF"
+WRIST_TASK = "R2V2-Reach-CrateWrist-v2-28DoF"
+PATH_TASK = "R2V2-Reach-CrateWristPath-v1-28DoF"
+PAYLOAD_TASK = "R2V2-Reach-CrateWristPayload-v2-28DoF"
+PAYLOAD_PATH_CONTRACT = "wrist_payload_path_v2"
 RUN = (
     "logs/rsl_rl/r2v2_reach_dual_arm_speed_limited_28dof/"
     "2026-08-30_00-45-04_dual-arm-speed-limited-v1-from-13250"
 )
 DEFAULT_OUTPUT = ROOT / "artifacts/r2v2_reach/parity_12000"
+
+
+def endpoint_contract_for_task(task: str) -> str:
+    if task == TASK:
+        return "legacy_tcp_v1"
+    if task in (WRIST_TASK, PATH_TASK, PAYLOAD_TASK):
+        return "wrist_world_v2"
+    raise ValueError(f"Unsupported parity task: {task}")
+
+
+def resolve_training_scene(xml_path: Path, training_root: Path, task: str) -> str:
+    """Resolve disk meshes for the selected training asset, never swap its body.
+
+    V2's exported scene includes the locked hand bodies/joints exactly as trained;
+    it is intentionally not reconstructed with deployment's 40 actuators.
+    """
+    contract = endpoint_contract_for_task(task)
+    root = ET.parse(xml_path).getroot()
+    compiler = root.find("compiler")
+    if compiler is None:
+        compiler = ET.SubElement(root, "compiler")
+    asset = (training_root / "src/r2v2_loco/assets/r2v2" if contract == "legacy_tcp_v1"
+             else ROOT / "r2v2_description/source/r2v2_with_hand/meshes")
+    compiler.set("meshdir", str(asset.resolve()))
+    for mesh in root.findall("./asset/mesh"):
+        if mesh.get("file") and not (asset / mesh.get("file")).is_file():
+            raise FileNotFoundError(f"Missing {task} native mesh: {asset / mesh.get('file')}")
+    return ET.tostring(root, encoding="unicode")
 
 
 def sha256(path: Path) -> str:
@@ -39,6 +71,51 @@ def sha256(path: Path) -> str:
 
 def _dump(path: Path, value: dict) -> None:
     path.write_text(json.dumps(value, indent=2, allow_nan=False) + "\n")
+
+
+def validate_payload_bindings(checkpoint, onnx_metadata, checkpoint_path, path_manifest,
+                              *, asset_manifest_sha256=None):
+    """Bind the new task, exact checkpoint, path and real robot assets; fail closed.
+
+    This is not a path-v1 alias even though both actors have 1460 inputs. The
+    optional asset digest is provided by the actual native training runtime.
+    """
+    infos = checkpoint.get("infos") or {}
+    run = infos.get("wrist_payload_run") or {}
+    expected = dict(task_id=PAYLOAD_TASK, path_contract=PAYLOAD_PATH_CONTRACT,
+                    endpoint_contract="wrist_world_v2", quaternion_order="wxyz",
+                    speed_reference_point="wrist",
+                    endpoint_body_names="left_hand_roll_link,right_hand_roll_link")
+    for label, values in (("checkpoint", infos), ("run", run), ("ONNX", onnx_metadata)):
+        for key, value in expected.items():
+            if values.get(key) != value:
+                raise ValueError(f"Payload {label} requires {key}={value}")
+    checkpoint_sha = sha256(Path(checkpoint_path))
+    if onnx_metadata.get("checkpoint_sha256") != checkpoint_sha:
+        raise ValueError("Payload ONNX is not bound to the selected checkpoint hash")
+    path_manifest = Path(path_manifest).resolve()
+    manifest = json.loads(path_manifest.read_text())
+    if (manifest.get("payload_training") or {}).get("contract") != PAYLOAD_PATH_CONTRACT:
+        raise ValueError("Payload parity requires its versioned path manifest")
+    archive = (path_manifest.parent / manifest["trajectory_file"]).resolve()
+    if archive.parent != path_manifest.parent:
+        raise ValueError("Payload trajectory must be alongside its manifest")
+    trajectory_sha = sha256(archive)
+    for label, value in (("manifest", manifest.get("trajectory_sha256")),
+                         ("checkpoint", run.get("trajectory_sha256")),
+                         ("ONNX", onnx_metadata.get("path_trajectory_sha256"))):
+        if value != trajectory_sha:
+            raise ValueError(f"Payload {label} trajectory hash mismatch")
+    manifest_sha = sha256(path_manifest)
+    if run.get("path_manifest_sha256") != manifest_sha:
+        raise ValueError("Payload checkpoint path manifest hash mismatch")
+    if asset_manifest_sha256 is not None and run.get("asset_manifest_sha256") != asset_manifest_sha256:
+        raise ValueError("Payload checkpoint real robot asset hash differs from native runtime")
+    return dict(passed=True, **expected, checkpoint_sha256=checkpoint_sha,
+                path_manifest=str(path_manifest), path_manifest_sha256=manifest_sha,
+                path_trajectory_sha256=trajectory_sha,
+                asset_manifest_sha256=run.get("asset_manifest_sha256"),
+                native_asset_verified=asset_manifest_sha256 is not None)
 
 
 def compare_weight_arrays(initializers: dict, state: dict, epsilon: float) -> dict:
@@ -95,36 +172,67 @@ def collect_native(args: argparse.Namespace) -> None:
     from rsl_rl.modules.normalization import EmpiricalNormalization
 
     import r2v2_loco.tasks  # noqa: F401
+    from common.r2v2_reach_policy import validate_endpoint_metadata
 
-    configure_torch_backends()
+    # Numerical parity must not depend on reduced-precision TF32 matmuls.
+    configure_torch_backends(allow_tf32=False)
     torch.set_num_threads(1)
     torch.manual_seed(args.seed)
     np.random.seed(args.seed)
-    device = "cuda:0" if torch.cuda.is_available() else "cpu"
+    device = args.device or ("cuda:0" if torch.cuda.is_available() else "cpu")
     checkpoint = torch.load(args.checkpoint, map_location="cpu", weights_only=False)
     actor_state = {
         key: value.detach().cpu().numpy()
         for key, value in checkpoint["actor_state_dict"].items()
     }
     epsilon = float(EmpiricalNormalization(1).eps)
+    onnx_model = onnx.load(args.onnx)
+    onnx_metadata = {entry.key: entry.value for entry in onnx_model.metadata_props}
+    endpoint_contract = validate_endpoint_metadata(
+        onnx_metadata,
+        endpoint_contract_for_task(args.task),
+    )
     initializers = {
         item.name: onnx.numpy_helper.to_array(item)
-        for item in onnx.load(args.onnx).graph.initializer
+        for item in onnx_model.graph.initializer
     }
     weights = compare_weight_arrays(initializers, actor_state, epsilon)
-    cfg = load_env_cfg(TASK, play=True)
+    bindings = None
+    if args.task == PAYLOAD_TASK:
+        from r2v2_loco.robots.r2v2_wrist_constants import get_r2v2_wrist_source_manifest
+        asset_digest = hashlib.sha256(json.dumps(get_r2v2_wrist_source_manifest(),
+            sort_keys=True, separators=(",", ":"), allow_nan=False).encode()).hexdigest()
+        bindings = validate_payload_bindings(checkpoint, onnx_metadata, args.checkpoint,
+            args.path_manifest, asset_manifest_sha256=asset_digest)
+        if not weights["passed"]:
+            raise ValueError("Payload ONNX actor mismatch; no metadata-carrying silent re-export permitted")
+    cfg = load_env_cfg(args.task, play=True)
     cfg.seed = args.seed
     cfg.scene.num_envs = 1
-    cfg.terminations = {}
+    # Preserve v2's physical safety terminations. Legacy parity snapshots remain
+    # reproducible; neither branch constitutes a standing or task success gate.
+    if endpoint_contract == "legacy_tcp_v1":
+        cfg.terminations = {}
     cfg.episode_length_s = 1000.0
     cfg.observations["actor"].enable_corruption = False
     for command_name in ("reach", "reach_right"):
         cfg.commands[command_name].resampling_time_range = (1.0e9, 1.0e9)
-    agent_cfg = load_rl_cfg(TASK)
+        if args.task == PAYLOAD_TASK:
+            cfg.commands[command_name].path_manifest = str(args.path_manifest)
+    agent_cfg = load_rl_cfg(args.task)
     env = ManagerBasedRlEnv(cfg=cfg, device=device)
     try:
+        if args.task in (PATH_TASK, PAYLOAD_TASK):
+            # Keep the path task's actual observations, reset and safety gates,
+            # while this probe supplies its own held symmetric/asymmetric goals.
+            # Otherwise its automatic path clock would overwrite those targets.
+            env._paired_wrist_targets.set_external_control(True)
+        if args.task == PAYLOAD_TASK:
+            # Random training load is not part of numerical observer parity.
+            # enabled=False means random training mode, NOT zero payload.
+            env._wrist_payload.set_evaluation(enabled=True, mass_kg=0., seed=args.seed)
         wrapped = RslRlVecEnvWrapper(env, clip_actions=agent_cfg.clip_actions)
-        runner_cls = load_runner_cls(TASK) or MjlabOnPolicyRunner
+        runner_cls = load_runner_cls(args.task) or MjlabOnPolicyRunner
         runner = runner_cls(wrapped, asdict(agent_cfg), device=device)
         runner.load(str(args.checkpoint), load_cfg={"actor": True}, strict=True, map_location=device)
         native_policy = runner.get_inference_policy(device=device)
@@ -152,7 +260,8 @@ def collect_native(args: argparse.Namespace) -> None:
             records.setdefault(key, []).append(np.asarray(value).copy())
 
         metadata = {
-            "task": TASK,
+            "task": args.task,
+            "endpoint_contract": endpoint_contract,
             "frames": args.frames,
             "seed": args.seed,
             "episodes": 2,
@@ -168,6 +277,7 @@ def collect_native(args: argparse.Namespace) -> None:
             "onnx_sha256": sha256(args.onnx),
             "training_scene": str((args.output / "training_scene/scene.xml").resolve()),
             "observation_terms": {},
+            "payload_bindings": bindings,
         }
         offset = 0
         manager = env.observation_manager
@@ -217,10 +327,39 @@ def collect_native(args: argparse.Namespace) -> None:
                         for side, command_name, target in zip(
                             ("left", "right"), ("reach", "reach_right"), targets[target_index], strict=True
                         ):
-                            env.command_manager.get_term(command_name).set_target_xyz_rpy(
-                                ids, arm=side, xyz_rpy=torch.tensor(target), degrees=True
-                            )
-                    env.step(action)
+                            command = env.command_manager.get_term(command_name)
+                            if endpoint_contract == "wrist_world_v2":
+                                # Exercise modest world-frame goals near the actual
+                                # reset wrists; the older targets above are TCP/base-yaw.
+                                robot = env.scene["robot"]
+                                site_id = robot.find_sites(f"{side}_wrist")[0][0]
+                                if index == 0:
+                                    command._parity_start_position = robot.data.site_pos_w[:, site_id].clone()
+                                    command._parity_start_quaternion = robot.data.site_quat_w[:, site_id].clone()
+                                offsets = ((0.025, 0.0, 0.02), (0.04, 0.015, 0.035), (0.015, -0.01, 0.01))
+                                offset = torch.tensor(offsets[target_index], device=device)
+                                if side == "right":
+                                    offset[1] *= -1
+                                    if target_index == 1:
+                                        offset[0] *= 0.75  # One asymmetric pose.
+                                from mjlab.utils.lab_api.math import quat_mul, quat_from_euler_xyz
+                                angles = torch.tensor(target[3:], device=device) * (np.pi / 180) * 0.2
+                                delta = quat_from_euler_xyz(*angles.unbind())
+                                q = quat_mul(command._parity_start_quaternion, delta.expand(1, 4))
+                                command.set_target_world(ids, command._parity_start_position + offset, q)
+                            else:
+                                command.set_target_xyz_rpy(ids, arm=side, xyz_rpy=torch.tensor(target), degrees=True)
+                    result = env.step(action)
+                    if endpoint_contract == "wrist_world_v2" and bool((result[2] | result[3]).any()):
+                        raise RuntimeError("Native wrist parity rollout hit a safety termination; no parity pass published")
+        if args.task == PAYLOAD_TASK:
+            payload = env._wrist_payload.summarize()
+            if any(v["max_total_downward_force_N"] != 0 for v in payload["phase_metrics"].values()):
+                raise RuntimeError("Unloaded payload parity unexpectedly applied external force")
+            metadata["payload_runtime"] = payload
+            # A modified input during collection must not inherit a prior pass.
+            validate_payload_bindings(checkpoint, onnx_metadata, args.checkpoint,
+                args.path_manifest, asset_manifest_sha256=asset_digest)
         np.savez_compressed(args.output / "native_snapshots.npz", **records)
         _dump(args.output / "native_metadata.json", metadata)
     finally:
@@ -235,6 +374,19 @@ def _report_errors(errors: np.ndarray, tolerance: float) -> dict:
     }
 
 
+def seed_reset_history_from_current_state(adapter, data) -> None:
+    """Match native reset padding after restoring the SAME reference state.
+
+    No native observation/history values are copied. Every term is rebuilt by
+    the deployment adapter from MuJoCo state and the restored goal/reference.
+    Path v1 already moves its reference toward HOME during command-manager reset,
+    unlike legacy's follow-current reset, so seeding before restoration is wrong.
+    """
+    terms = adapter.observation_terms(data)
+    for name, value in terms.items():
+        adapter.histories[name][:] = value
+
+
 def verify_deployment(args: argparse.Namespace) -> dict:
     import mujoco
     import onnxruntime as ort
@@ -242,22 +394,36 @@ def verify_deployment(args: argparse.Namespace) -> dict:
     from common.r2v2_reach_policy import ReachPolicy
 
     metadata = json.loads((args.output / "native_metadata.json").read_text())
+    if metadata["task"] != args.task:
+        raise ValueError("Native snapshots belong to a different task/endpoint contract")
+    expected_contract = endpoint_contract_for_task(args.task)
+    if metadata.get("endpoint_contract", "legacy_tcp_v1") != expected_contract:
+        raise ValueError("Native snapshot endpoint contract mismatch")
     args.onnx = Path(metadata["onnx_path"])
     if metadata["checkpoint_sha256"] != sha256(args.checkpoint):
         raise ValueError("Native snapshots belong to a different checkpoint; recollect them")
     if metadata["onnx_sha256"] != sha256(args.onnx):
         raise ValueError("ONNX changed after native collection; recollect snapshots")
+    if args.task == PAYLOAD_TASK:
+        bindings = metadata.get("payload_bindings") or {}
+        if not bindings.get("passed") or not bindings.get("native_asset_verified"):
+            raise ValueError("Payload snapshots lack native asset/task/path binding evidence")
+        if args.path_manifest is None or str(args.path_manifest.resolve()) != bindings.get("path_manifest"):
+            raise ValueError("Payload snapshots belong to a different path manifest")
+        if sha256(args.path_manifest) != bindings.get("path_manifest_sha256"):
+            raise ValueError("Payload manifest changed after native collection")
+        manifest = json.loads(args.path_manifest.read_text())
+        if sha256(args.path_manifest.parent / manifest["trajectory_file"]) != bindings.get("path_trajectory_sha256"):
+            raise ValueError("Payload trajectory changed after native collection")
     # mjlab exports in-memory meshes only; this robot's meshes are disk-backed.
     # Resolve those assets read-only at their original location, not by copying
     # a robot/model from deployment or silently substituting simplified geometry.
-    xml_root = ET.fromstring(Path(metadata["training_scene"]).read_text())
-    xml_root.find("compiler").set(
-        "meshdir", str((args.training_root / "src/r2v2_loco/assets/r2v2").resolve())
-    )
-    model = mujoco.MjModel.from_xml_string(ET.tostring(xml_root, encoding="unicode"))
+    model = mujoco.MjModel.from_xml_string(resolve_training_scene(
+        Path(metadata["training_scene"]), args.training_root, args.task,
+    ))
     data = mujoco.MjData(model)
     samples = np.load(args.output / "native_snapshots.npz")
-    adapter = ReachPolicy(model, data, args.onnx)
+    adapter = ReachPolicy(model, data, args.onnx, expected_endpoint_contract=expected_contract)
     session = ort.InferenceSession(str(args.onnx), providers=["CPUExecutionProvider"])
     input_name = session.get_inputs()[0].name
     observed, actions_onnx, actions_deploy = [], [], []
@@ -277,6 +443,8 @@ def verify_deployment(args: argparse.Namespace) -> dict:
             reference = adapter.references[side]
             for destination, source in fields.items():
                 getattr(reference, destination)[:] = samples[f"{side}_{source}"][index]
+        if samples["episode_start"][index]:
+            seed_reset_history_from_current_state(adapter, data)
         observation = np.asarray(
             adapter.observe(data, advance_reference=False, update_history=True), dtype=np.float32
         ).reshape(1, -1)
@@ -304,9 +472,14 @@ def verify_deployment(args: argparse.Namespace) -> dict:
         "actions_same_native_observation": action_report,
         "end_to_end_actions": end_to_end,
     }
+    if args.task == PAYLOAD_TASK:
+        checks["payload_bindings"] = metadata["payload_bindings"]
     report = {
         "passed": all(item["passed"] for item in checks.values()),
-        "task": TASK,
+        "task": args.task,
+        "endpoint_contract": adapter.endpoint_contract,
+        "quaternion_order": "wxyz",
+        "speed_reference_point": "wrist" if expected_contract == "wrist_world_v2" else "tcp",
         "checkpoint_path": str(args.checkpoint.resolve()),
         "checkpoint_sha256": sha256(args.checkpoint),
         "checkpoint_iter": metadata["checkpoint_iter"],
@@ -322,12 +495,23 @@ def verify_deployment(args: argparse.Namespace) -> dict:
         "coverage": (
             "Actual native ManagerBasedRlEnv play rollouts: two resets, symmetric/asymmetric 6D goals, "
             "changing joint states/velocities, previous actions, world-frame reference pose/twist, "
-            "and all 24 term-major ten-frame histories. CPU MuJoCo forward kinematics from identical qpos/qvel."
+            "and all 24 term-major ten-frame histories. CPU MuJoCo forward kinematics from identical qpos/qvel. "
+            "Reset padding is independently rebuilt by deployment after synchronizing the same reset reference; "
+            "no native observation/history vectors are injected into the deployment observer."
         ),
         "native_mujoco_version": metadata["native_mujoco_version"],
         "deployment_mujoco_version": mujoco.__version__,
-        "limitations": "This is numerical interface parity on the OLD training robot, not new-model standing or grasp validation.",
+        "limitations": (
+            "Numerical interface parity on the selected task's exact training scene only. "
+            "For wrist_world_v2 the hands are frozen open as trained; deployment has independent finger actuators. "
+            "This is not free-standing, table collision, grasp, or load-carrying validation."
+        ),
     }
+    if args.task == PAYLOAD_TASK:
+        report.update(path_contract=PAYLOAD_PATH_CONTRACT,
+            path_trajectory_sha256=metadata["payload_bindings"]["path_trajectory_sha256"],
+            path_manifest_sha256=metadata["payload_bindings"]["path_manifest_sha256"],
+            payload_runtime=metadata["payload_runtime"])
     np.savez_compressed(args.output / "deployment_comparison.npz", observation=np.asarray(observed),
                         action_onnx_native=np.asarray(actions_onnx), action_onnx_deployment=np.asarray(actions_deploy))
     _dump(args.output / "report.json", report)
@@ -337,14 +521,25 @@ def verify_deployment(args: argparse.Namespace) -> dict:
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--training-root", type=Path, default=ROOT.parent / "AMO_R2")
+    parser.add_argument("--task", choices=(TASK, WRIST_TASK, PATH_TASK, PAYLOAD_TASK), default=TASK)
+    parser.add_argument("--device", help="Native training runtime device, e.g. cpu or cuda:0")
     parser.add_argument("--checkpoint", type=Path)
     parser.add_argument("--onnx", type=Path)
+    parser.add_argument("--path-manifest", type=Path, help="Required exact training path for payload-v2 parity")
     parser.add_argument("--output", type=Path, default=DEFAULT_OUTPUT)
     parser.add_argument("--frames", type=int, default=120, help="Frames per episode; two episodes")
     parser.add_argument("--seed", type=int, default=42)
     parser.add_argument("--reuse-snapshots", action="store_true")
     parser.add_argument("--collect-native", action="store_true", help=argparse.SUPPRESS)
     args = parser.parse_args()
+    if args.task in (WRIST_TASK, PATH_TASK, PAYLOAD_TASK) and (args.checkpoint is None or args.onnx is None or args.output == DEFAULT_OUTPUT):
+        parser.error("wrist_world_v2 requires explicit --checkpoint, --onnx, and a separate --output")
+    if args.task == PAYLOAD_TASK and args.path_manifest is None:
+        parser.error("payload-v2 requires explicit --path-manifest")
+    if args.path_manifest is not None:
+        args.path_manifest = args.path_manifest.resolve()
+        if not args.path_manifest.is_file():
+            parser.error(f"Missing path manifest: {args.path_manifest}")
     run_path = args.training_root / RUN
     args.checkpoint = (args.checkpoint or run_path / "model_12000.pt").resolve()
     args.onnx = (args.onnx or run_path / f"{run_path.name}.onnx").resolve()
@@ -374,9 +569,14 @@ def main() -> int:
             command = [
                 str(args.training_root / ".venv/bin/python"), str(Path(__file__).resolve()),
                 "--collect-native", "--training-root", str(args.training_root.resolve()),
+                "--task", args.task,
                 "--checkpoint", str(args.checkpoint), "--onnx", str(args.onnx),
                 "--output", str(args.output), "--frames", str(args.frames), "--seed", str(args.seed),
             ]
+            if args.device:
+                command += ["--device", args.device]
+            if args.path_manifest:
+                command += ["--path-manifest", str(args.path_manifest)]
             subprocess.run(command, check=True, cwd=ROOT)
         report = verify_deployment(args)
     except Exception as exc:

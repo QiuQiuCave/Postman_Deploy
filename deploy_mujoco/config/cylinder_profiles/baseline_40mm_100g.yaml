@@ -1,0 +1,15 @@
+# Frozen original simulation/grasp baseline. Default behavior stays unchanged.
+schema_version: 1
+profile_id: baseline_40mm_100g
+radius_m: 0.020
+height_m: 0.120
+mass_kg: 0.100
+nominal_capacity_ml: null
+geometry_source: Original 40 mm x 120 mm simulation cylinder, not a commercial can specification.
+mass_provenance: simulation_baseline
+mass_notes: Original 100 g simulation setting, not a measured beverage-can mass.
+grasp_calibration_status: baseline_verified
+grasp_calibration_notes: >-
+  Recorded thumb75_cylinder40mm_100g fixed-wrist baseline only; this does not
+  certify whole-body Reach precision, robustness or another object profile.
+simulation_only: true

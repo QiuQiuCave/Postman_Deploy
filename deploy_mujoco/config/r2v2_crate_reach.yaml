@@ -1,0 +1,14 @@
+# Full new robot + frozen dual-arm ONNX policy. No wrist fixtures, IK or training.
+warmup_standing_s: 2.0
+table_above_waist_m: 0.10
+# This reset placement clears the already-open hands after standing warmup.
+crate_center_xy: [0.48, 0.0]
+table_center_xy: [0.48, 0.0]
+table_half_size: [0.22, 0.35, 0.02]
+phase_timeout_s: 10.0
+prealign_position_m: 0.020
+prealign_orientation_deg: 10.0
+insertion_position_m: 0.005
+insertion_orientation_deg: 3.0
+motion_speed_mps: 0.025
+motion_stable_s: 0.3

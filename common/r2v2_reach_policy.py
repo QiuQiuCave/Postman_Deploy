@@ -6,7 +6,9 @@ in oldest-to-newest order. Fingers are never observed or actuated here.
 
 Positions and reference twists use world coordinates internally; the policy's
 position errors/twists use base-yaw coordinates, whereas IMU observations use
-the full base orientation. Orientation errors are inv(TCP) * target, wxyz.
+the full base orientation. Orientation errors are inv(endpoint) * target, wxyz.
+Versioned metadata selects the legacy virtual TCP or wrist_world_v2's true
+hand_roll_link origin; equal tensor sizes do not imply compatible semantics.
 The reference stepping equations mirror AMO_R2/tasks/reach/trajectory.py,
 including its final-step snap; reference bounds are not hard physical bounds.
 """
@@ -39,6 +41,34 @@ TCP_WRIST_POSITIONS = {
     "right": np.array([0.1735, 0.0000004, -0.0317504]),
 }
 TCP_WRIST_QUATERNION = np.array([1.0, 0.0, 0.0, 0.0])
+LEGACY_ENDPOINT_CONTRACT = "legacy_tcp_v1"
+WRIST_ENDPOINT_CONTRACT = "wrist_world_v2"
+ENDPOINT_CONTRACTS = (LEGACY_ENDPOINT_CONTRACT, WRIST_ENDPOINT_CONTRACT)
+WRIST_BODY_NAMES = tuple(f"{side}_hand_roll_link" for side in SIDES)
+
+
+def validate_endpoint_metadata(metadata, expected=None):
+    """Legacy exports predate endpoint metadata; v2 must be explicit and complete.
+
+    Tensor dimensions alone cannot distinguish the two incompatible observation
+    meanings. A caller with a configured scene should also pass ``expected``.
+    """
+    contract = metadata.get("endpoint_contract", LEGACY_ENDPOINT_CONTRACT)
+    if contract not in ENDPOINT_CONTRACTS:
+        raise ValueError(f"Unsupported Reach endpoint_contract: {contract}")
+    if expected is not None and (expected not in ENDPOINT_CONTRACTS or contract != expected):
+        raise ValueError(f"Reach endpoint contract mismatch: ONNX={contract}, scene={expected}")
+    if contract == WRIST_ENDPOINT_CONTRACT:
+        for key, value in (
+            ("quaternion_order", "wxyz"),
+            ("speed_reference_point", "wrist"),
+            ("endpoint_body_names", ",".join(WRIST_BODY_NAMES)),
+        ):
+            if metadata.get(key) != value:
+                raise ValueError(f"wrist_world_v2 requires ONNX {key}={value}")
+    elif metadata.get("speed_reference_point", "tcp") != "tcp":
+        raise ValueError("Legacy TCP export cannot declare wrist speed semantics")
+    return contract
 
 TERM_DIMS = {
     "base_lin_vel": 3,
@@ -179,7 +209,7 @@ class ReachPolicy:
 
     dt = POLICY_DT
 
-    def __init__(self, model, data, onnx_path):
+    def __init__(self, model, data, onnx_path, *, expected_endpoint_contract=None):
         import onnxruntime as ort
 
         self.model = model
@@ -202,6 +232,7 @@ class ReachPolicy:
                 or outputs[0].type != "tensor(float)"):
             raise ValueError("Expected dual-arm ONNX output actions float32[1,28]")
         self.metadata = dict(self.session.get_modelmeta().custom_metadata_map)
+        self.endpoint_contract = validate_endpoint_metadata(self.metadata, expected_endpoint_contract)
         for key, expected in (
             ("joint_names", BODY_JOINTS),
             ("observation_names", tuple(TERM_DIMS)),
@@ -223,7 +254,16 @@ class ReachPolicy:
         # mjlab's original model; deployment continues to use plain names.
         self.prefix = "" if mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_BODY, "base_link") >= 0 else "robot/"
         self.base_id = self._named_id(mujoco.mjtObj.mjOBJ_BODY, "base_link")
-        self.site_ids = {side: self._named_id(mujoco.mjtObj.mjOBJ_SITE, f"{side}_tcp") for side in SIDES}
+        suffix = "wrist" if self.endpoint_contract == WRIST_ENDPOINT_CONTRACT else "tcp"
+        self.site_ids = {side: self._named_id(mujoco.mjtObj.mjOBJ_SITE, f"{side}_{suffix}") for side in SIDES}
+        self.wrist_ids = {side: self._named_id(mujoco.mjtObj.mjOBJ_BODY, f"{side}_hand_roll_link")
+                          for side in SIDES}
+        if self.endpoint_contract == WRIST_ENDPOINT_CONTRACT:
+            for side, site in self.site_ids.items():
+                if (model.site_bodyid[site] != self.wrist_ids[side]
+                        or not np.allclose(model.site_pos[site], 0, atol=1e-10, rtol=0)
+                        or not np.allclose(np.abs(model.site_quat[site]), [1, 0, 0, 0], atol=1e-10, rtol=0)):
+                    raise ValueError(f"{side}_wrist must be exactly the hand_roll_link origin and axes")
         self.body_map = JointMap.create(model, tuple(self.prefix+n for n in BODY_JOINTS))
         acts = self.body_map.actuators
         gear = model.actuator_gear[acts]
@@ -265,13 +305,48 @@ class ReachPolicy:
             raise ValueError(f"Missing/invalid ONNX metadata {key}") from exc
         return _finite_vector(values, ACTION_DIM, f"ONNX {key}")
 
-    def tcp_pose(self, data, side):
+    def endpoint_pose(self, data, side):
+        """Policy endpoint pose: legacy virtual TCP or v2 physical wrist origin."""
         if side not in SIDES:
             raise ValueError(f"Unknown side: {side}")
         site = self.site_ids[side]
         quat = np.empty(4)
         mujoco.mju_mat2Quat(quat, data.site_xmat[site])
         return data.site_xpos[site].copy(), _quaternion(quat)
+
+    def tcp_pose(self, data, side):
+        """Backward-compatible alias; new code should use ``endpoint_pose``."""
+        return self.endpoint_pose(data, side)
+
+    def wrist_pose(self, data, side):
+        if side not in SIDES:
+            raise ValueError(f"Unknown side: {side}")
+        body = self.wrist_ids[side]
+        return data.xpos[body].copy(), _quaternion(data.xquat[body])
+
+    def wrist_twist(self, data, side):
+        """World twist of the wrist link origin, never its inertial COM."""
+        if side not in SIDES:
+            raise ValueError(f"Unknown side: {side}")
+        mujoco.mj_jacBody(self.model, data, self._jacp, self._jacr, self.wrist_ids[side])
+        return self._jacp @ data.qvel, self._jacr @ data.qvel
+
+    def endpoint_target_from_wrist(self, side, position, quaternion):
+        """Explicit conversion for task code that always specifies a real wrist."""
+        if side not in SIDES:
+            raise ValueError(f"Unknown side: {side}")
+        position = _finite_vector(position, 3, "World wrist position")
+        quaternion = _quaternion(quaternion)
+        if self.endpoint_contract == LEGACY_ENDPOINT_CONTRACT:
+            rotation = np.empty(9)
+            mujoco.mju_quat2Mat(rotation, quaternion)
+            position += rotation.reshape(3, 3) @ TCP_WRIST_POSITIONS[side]
+        return position, quaternion
+
+    def set_wrist_target_world(self, side, position, quaternion):
+        """Wrist-world helper for both versions; v2 applies no legacy offset."""
+        position, quaternion = self.endpoint_target_from_wrist(side, position, quaternion)
+        self.set_target_world(side, position, quaternion)
 
     def reset(self, data):
         self.last_action = np.zeros(ACTION_DIM, dtype=np.float32)
@@ -303,6 +378,12 @@ class ReachPolicy:
                 ref.angular_velocity = np.zeros(3)
 
     def set_target_world(self, side, position, quaternion):
+        """Set the configured endpoint world goal without restarting its trajectory.
+
+        For wrist_world_v2 this is the hand_roll_link origin. Legacy policies
+        retain their virtual-TCP interface; use set_wrist_target_world when a
+        task supplies physical wrist poses independent of policy version.
+        """
         if side not in SIDES:
             raise ValueError(f"Unknown side: {side}")
         position = _finite_vector(position, 3, "World goal position")

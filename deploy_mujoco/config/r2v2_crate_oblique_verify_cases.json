@@ -1,0 +1,5 @@
+{
+  "pair_down20_repeat1": {"tip_up_deg": -20, "seating_m": 0.030, "active_sides": ["left", "right"]},
+  "pair_down20_repeat2": {"tip_up_deg": -20, "seating_m": 0.030, "active_sides": ["left", "right"]},
+  "pair_down20_open_control": {"tip_up_deg": -20, "seating_m": 0.030, "closed_curl_rad": 0.0, "active_sides": ["left", "right"]}
+}

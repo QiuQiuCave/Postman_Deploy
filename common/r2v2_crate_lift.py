@@ -92,9 +92,9 @@ def _blend(value):
 class CrateLiftExperiment:
     """Support-driven dynamic wrists, torque-limited fingers and a free crate."""
 
-    def __init__(self, params=None):
+    def __init__(self, params=None, crate_params=None):
         self.params = params or load_lift_config()
-        self.crate_params = load_crate_config()
+        self.crate_params = load_crate_config() if crate_params is None else crate_params
         p = self.params
         self.model, cfg, self.layout = build_crate_lift_model(
             self.crate_params, p.insertion_m, p.start_palm_clearance_m, p.table_height)

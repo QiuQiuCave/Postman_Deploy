@@ -1,0 +1,98 @@
+# Three-can pickup scene with a distant dropoff table and the shared shelf asset.
+# SI units; world +Z is up. All positions are WORLD coordinates.
+# No policy, motion controller or FSM. Robot is a static neutral-pose reference.
+schema_version: 1
+robot:
+  mode: static_neutral
+  # Base-link origin; height puts the source neutral foot collision soles at z=0.
+  position_xyz: [0.0, 0.0, 0.826056]
+table:
+  # Full board dimensions, NOT MuJoCo half sizes. Both tables share this structure.
+  board_size_xyz: [0.39, 0.52, 0.04]
+  leg_width: 0.024
+  friction: [1.0, 0.005, 0.0001]
+  board_rgba: [0.48, 0.34, 0.22, 1.0]
+  leg_rgba: [0.25, 0.28, 0.30, 1.0]
+tables:
+  # Positions refer to BOARD CENTRES. Legs end at ground and board underside.
+  pickup_table: [0.65, 0.50, 1.09]
+  dropoff_table: [0.65, -2.50, 1.09]
+crate:
+  # Origin is the OUTSIDE BOTTOM centre; start 0.2 mm above the pickup tabletop.
+  position_xyz: [0.65, 0.50, 1.1102]
+  quaternion_wxyz: [1.0, 0.0, 0.0, 0.0]
+  # Explicit snapshot of r2v2_crate.yaml; this scene config owns these values.
+  parameters:
+    depth: 0.24
+    width: 0.36
+    height: 0.16
+    bottom_thickness: 0.005
+    wall_thickness: 0.004
+    handle_opening_width: 0.120
+    handle_opening_height: 0.055
+    handle_beam_height: 0.020
+    handle_beam_thickness: 0.010
+    handle_rounding_radius: 0.002
+    handle_rounding_segments: 6
+    mass: 0.4
+    friction: [1.0, 0.005, 0.0001]
+    condim: 3
+    solref: [0.008, 1.0]
+    solimp: [0.95, 0.99, 0.001]
+    rgba: [0.12, 0.28, 0.45, 1.0]
+can:
+  # World centre of the whole grid. Each can centre is generated from this origin.
+  # Each bottom starts 0.2 mm above the interior floor.
+  position_xyz: [0.615, 0.50, 1.1754]
+  quaternion_wxyz: [1.0, 0.0, 0.0, 0.0]
+  # baseline_40mm_100g.yaml simulation values, not a commercial can specification.
+  radius: 0.020
+  height: 0.120
+  mass: 0.100
+  friction: [1.0, 0.005, 0.0001]
+  solref: [0.008, 1.0]
+  solimp: [0.95, 0.99, 0.001]
+  label: r2v2_description/visuals/cola_can/label.png
+simulation:
+  timestep: 0.001
+  duration_s: 10.0
+  stable_window_s: 2.0
+validation:
+  initial_penetration_tolerance_m: 0.000001
+  max_contact_penetration_m: 0.0005
+  max_linear_speed_mps: 0.005
+  max_angular_speed_radps: 0.02
+  max_position_drift_m: 0.0005
+  max_tilt_deg: 0.5
+  support_force_relative_tolerance: 0.05
+  reload_state_atol: 0.000000001
+cameras:
+  overview:
+    width: 3840
+    height: 2160
+    lookat: [0.60, -1.70, 1.00]
+    distance: 6.8
+    azimuth: 180
+    elevation: -24
+  crate_closeup:
+    width: 1920
+    height: 1080
+    lookat: [0.65, 0.50, 1.18]
+    distance: 0.65
+    azimuth: 125
+    elevation: -62
+
+# One row across Y, shifted 35 mm toward the -X approach side.
+# 100 mm centre pitch, 60 mm surface gaps; no rear row obscures a can.
+cargo_grid:
+  rows: 1
+  columns: 3
+  gap_m: 0.060
+  minimum_wall_clearance_m: 0.040
+
+# Shelf and dropoff table share a -X approach aisle. The asset is unchanged.
+# Rotation maps the asset's local front (-Y) to world -X.
+shelf:
+  asset: assets/shelf/shelf.xml
+  position_xyz: [0.65, -3.65, 0.0]
+  yaw_rad: -1.5707963267948966

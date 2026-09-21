@@ -1,0 +1,6 @@
+# No Torch, CUDA toolkit, ONNX, Ruckig or robot SDK required.
+mujoco==3.3.7
+numpy==1.26.4
+PyYAML==6.0.3
+Pillow>=10,<13
+pytest>=8,<9

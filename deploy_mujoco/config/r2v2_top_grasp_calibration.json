@@ -1,0 +1,698 @@
+{
+  "schema_version": 1,
+  "reference_kind": "commanded_wrist_goals_anchored_to_initial_object",
+  "side": "left",
+  "object_profile_id": "baseline_40mm_100g",
+  "object_profile": {
+    "schema_version": 1,
+    "profile_id": "baseline_40mm_100g",
+    "radius_m": 0.02,
+    "height_m": 0.12,
+    "mass_kg": 0.1,
+    "nominal_capacity_ml": null,
+    "geometry_source": "Original 40 mm x 120 mm simulation cylinder, not a commercial can specification.",
+    "mass_provenance": "simulation_baseline",
+    "mass_notes": "Original 100 g simulation setting, not a measured beverage-can mass.",
+    "grasp_calibration_status": "baseline_verified",
+    "grasp_calibration_notes": "Recorded thumb75_cylinder40mm_100g fixed-wrist baseline only; this does not certify whole-body Reach precision, robustness or another object profile.",
+    "simulation_only": true
+  },
+  "hand_candidate": {
+    "side": "left",
+    "depth_m": -0.045,
+    "yaw_deg": 0.0,
+    "tilt_deg": 0.0,
+    "spread_tilt_deg": 60.0,
+    "lateral_m": -0.015,
+    "across_m": -0.03,
+    "open_curl_rad": 0.03
+  },
+  "source_run_name": "upper_pick_place_final",
+  "source_success": true,
+  "source_scope": "Pure hand top-grasp probe: externally driven dynamic wrist fixture; NOT full-body policy",
+  "source_artifacts": {
+    "report.json": {
+      "sha256": "290dbfaaedb1ef8957ec26371b17136e69ee5189d18c6c9a9313b494618d1865",
+      "bytes": 43010
+    },
+    "targets.json": {
+      "sha256": "20e97df8ce9c50b8cb6e80d75d02bafa5dbffdafeacdd0d0c8b1a0e9720e7353",
+      "bytes": 1526066
+    },
+    "trace.json": {
+      "sha256": "85840cc4516fae5084e1c9294919b9aa16baf7abd885616b69867b32b864b81c",
+      "bytes": 34021298
+    }
+  },
+  "source_initial_object_pose": [
+    [
+      1.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      1.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      1.0,
+      0.461
+    ],
+    [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ]
+  ],
+  "source_table_top_m": 0.4,
+  "source_initial_table_gap_m": 0.0010000000000000009,
+  "source_place_target_xy_m": [
+    0.1,
+    0.0
+  ],
+  "waypoint_pose_frame": "initial_object_not_current_object",
+  "quaternion_convention": "wxyz",
+  "is_whole_body_validation": false,
+  "is_collision_free_certificate": false,
+  "waypoints": [
+    {
+      "name": "hover",
+      "source_phase": "READY",
+      "source_phase_occurrence": 0,
+      "source_target_index": 49,
+      "source_time_s": 0.4900000000000004,
+      "source_T_initial_object_wrist_goal": [
+        [
+          -0.8660254037844385,
+          0.0,
+          0.5000000000000001,
+          0.1216387440701162
+        ],
+        [
+          0.0,
+          0.9999999999999999,
+          0.0,
+          0.035
+        ],
+        [
+          -0.5000000000000001,
+          0.0,
+          -0.8660254037844385,
+          0.2395871454813921
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "derived_waypoint": false,
+      "source_world_offset_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "T_initial_object_wrist_goal": [
+        [
+          -0.8660254037844385,
+          0.0,
+          0.5000000000000001,
+          0.1216387440701162
+        ],
+        [
+          0.0,
+          0.9999999999999999,
+          0.0,
+          0.035
+        ],
+        [
+          -0.5000000000000001,
+          0.0,
+          -0.8660254037844385,
+          0.2395871454813921
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "nominal_hand_command": 0,
+      "contact_feedback_required": false,
+      "meaning": "Recorded commanded wrist endpoint; advance only after actual state gate"
+    },
+    {
+      "name": "approach",
+      "source_phase": "SETTLE",
+      "source_phase_occurrence": 0,
+      "source_target_index": 399,
+      "source_time_s": 3.9899999999996716,
+      "source_T_initial_object_wrist_goal": [
+        [
+          -0.8660254037844386,
+          0.0,
+          0.5000000000000003,
+          0.1216387440701162
+        ],
+        [
+          0.0,
+          1.0000000000000002,
+          0.0,
+          0.035
+        ],
+        [
+          -0.5000000000000003,
+          0.0,
+          -0.8660254037844386,
+          0.13958714551841062
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "derived_waypoint": true,
+      "source_world_offset_m": [
+        0.0,
+        0.0,
+        0.03
+      ],
+      "T_initial_object_wrist_goal": [
+        [
+          -0.8660254037844386,
+          0.0,
+          0.5000000000000003,
+          0.1216387440701162
+        ],
+        [
+          0.0,
+          1.0000000000000002,
+          0.0,
+          0.035
+        ],
+        [
+          -0.5000000000000003,
+          0.0,
+          -0.8660254037844386,
+          0.16958714551841064
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "nominal_hand_command": 0,
+      "contact_feedback_required": false,
+      "meaning": "Derived pre-approach 3 cm above recorded grasp target; advance only after actual state gate"
+    },
+    {
+      "name": "grasp",
+      "source_phase": "CLOSE",
+      "source_phase_occurrence": 0,
+      "source_target_index": 679,
+      "source_time_s": 6.790000000000602,
+      "source_T_initial_object_wrist_goal": [
+        [
+          -0.8660254037844386,
+          0.0,
+          0.5000000000000003,
+          0.1216387440701162
+        ],
+        [
+          0.0,
+          1.0000000000000002,
+          0.0,
+          0.035
+        ],
+        [
+          -0.5000000000000003,
+          0.0,
+          -0.8660254037844386,
+          0.13958714551841062
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "derived_waypoint": false,
+      "source_world_offset_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "T_initial_object_wrist_goal": [
+        [
+          -0.8660254037844386,
+          0.0,
+          0.5000000000000003,
+          0.1216387440701162
+        ],
+        [
+          0.0,
+          1.0000000000000002,
+          0.0,
+          0.035
+        ],
+        [
+          -0.5000000000000003,
+          0.0,
+          -0.8660254037844386,
+          0.13958714551841062
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "nominal_hand_command": 1,
+      "contact_feedback_required": false,
+      "meaning": "Recorded commanded wrist endpoint; advance only after actual state gate"
+    },
+    {
+      "name": "probe",
+      "source_phase": "VERIFY",
+      "source_phase_occurrence": 0,
+      "source_target_index": 930,
+      "source_time_s": 9.300000000000285,
+      "source_T_initial_object_wrist_goal": [
+        [
+          -0.8660254037844386,
+          0.0,
+          0.5000000000000003,
+          0.1216387440701162
+        ],
+        [
+          0.0,
+          1.0000000000000002,
+          0.0,
+          0.035
+        ],
+        [
+          -0.5000000000000003,
+          0.0,
+          -0.8660254037844386,
+          0.15958714545921054
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "derived_waypoint": false,
+      "source_world_offset_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "T_initial_object_wrist_goal": [
+        [
+          -0.8660254037844386,
+          0.0,
+          0.5000000000000003,
+          0.1216387440701162
+        ],
+        [
+          0.0,
+          1.0000000000000002,
+          0.0,
+          0.035
+        ],
+        [
+          -0.5000000000000003,
+          0.0,
+          -0.8660254037844386,
+          0.15958714545921054
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "nominal_hand_command": 1,
+      "contact_feedback_required": false,
+      "meaning": "Recorded commanded wrist endpoint; advance only after actual state gate"
+    },
+    {
+      "name": "upright",
+      "source_phase": "VERIFY",
+      "source_phase_occurrence": 1,
+      "source_target_index": 1231,
+      "source_time_s": 12.309999999998617,
+      "source_T_initial_object_wrist_goal": [
+        [
+          -0.9740223642146892,
+          0.15232676529760247,
+          0.16756190075192345,
+          0.16532742984936338
+        ],
+        [
+          0.14674397029431274,
+          0.9881374241280105,
+          -0.04528397310222783,
+          0.015490017139527091
+        ],
+        [
+          -0.17247214613348488,
+          -0.019518903955667494,
+          -0.9848209843400375,
+          0.11729970539419271
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "derived_waypoint": false,
+      "source_world_offset_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "T_initial_object_wrist_goal": [
+        [
+          -0.9740223642146892,
+          0.15232676529760247,
+          0.16756190075192345,
+          0.16532742984936338
+        ],
+        [
+          0.14674397029431274,
+          0.9881374241280105,
+          -0.04528397310222783,
+          0.015490017139527091
+        ],
+        [
+          -0.17247214613348488,
+          -0.019518903955667494,
+          -0.9848209843400375,
+          0.11729970539419271
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "nominal_hand_command": 1,
+      "contact_feedback_required": true,
+      "meaning": "Nominal unloaded reference only; recompute from measured held wrist/object relation in contact"
+    },
+    {
+      "name": "lift",
+      "source_phase": "HOLD_LIFT",
+      "source_phase_occurrence": 0,
+      "source_target_index": 1532,
+      "source_time_s": 15.319999999996949,
+      "source_T_initial_object_wrist_goal": [
+        [
+          -0.9740223642146886,
+          0.15232676529760242,
+          0.16756190075192337,
+          0.16532742984936338
+        ],
+        [
+          0.1467439702943127,
+          0.9881374241280099,
+          -0.045283973102227815,
+          0.015490017139527091
+        ],
+        [
+          -0.1724721461334848,
+          -0.019518903955667483,
+          -0.9848209843400368,
+          0.17729970531924905
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "derived_waypoint": false,
+      "source_world_offset_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "T_initial_object_wrist_goal": [
+        [
+          -0.9740223642146886,
+          0.15232676529760242,
+          0.16756190075192337,
+          0.16532742984936338
+        ],
+        [
+          0.1467439702943127,
+          0.9881374241280099,
+          -0.045283973102227815,
+          0.015490017139527091
+        ],
+        [
+          -0.1724721461334848,
+          -0.019518903955667483,
+          -0.9848209843400368,
+          0.17729970531924905
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "nominal_hand_command": 1,
+      "contact_feedback_required": false,
+      "meaning": "Recorded commanded wrist endpoint; advance only after actual state gate"
+    },
+    {
+      "name": "translate",
+      "source_phase": "HOLD_MOVED",
+      "source_phase_occurrence": 0,
+      "source_target_index": 1883,
+      "source_time_s": 18.83000000000003,
+      "source_T_initial_object_wrist_goal": [
+        [
+          -0.9740223642146888,
+          0.15232676529760247,
+          0.16756190075192343,
+          0.26532742978540186
+        ],
+        [
+          0.14674397029431274,
+          0.9881374241280101,
+          -0.04528397310222782,
+          0.015490017139527091
+        ],
+        [
+          -0.17247214613348485,
+          -0.019518903955667487,
+          -0.9848209843400371,
+          0.17729970531924905
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "derived_waypoint": false,
+      "source_world_offset_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "T_initial_object_wrist_goal": [
+        [
+          -0.9740223642146888,
+          0.15232676529760247,
+          0.16756190075192343,
+          0.26532742978540186
+        ],
+        [
+          0.14674397029431274,
+          0.9881374241280101,
+          -0.04528397310222782,
+          0.015490017139527091
+        ],
+        [
+          -0.17247214613348485,
+          -0.019518903955667487,
+          -0.9848209843400371,
+          0.17729970531924905
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "nominal_hand_command": 1,
+      "contact_feedback_required": false,
+      "meaning": "Recorded commanded wrist endpoint; advance only after actual state gate"
+    },
+    {
+      "name": "place",
+      "source_phase": "PLACE_SETTLE",
+      "source_phase_occurrence": 0,
+      "source_target_index": 2170,
+      "source_time_s": 21.700000000003538,
+      "source_T_initial_object_wrist_goal": [
+        [
+          -0.9781665169298487,
+          0.1614335102194744,
+          0.1308796658597012,
+          0.2434495437142058
+        ],
+        [
+          0.15815545808875323,
+          0.9867889331499887,
+          -0.03513477606935464,
+          0.006958623924292489
+        ],
+        [
+          -0.13482253607637265,
+          -0.013668328022326827,
+          -0.9907754844438822,
+          0.09407074627789586
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "derived_waypoint": false,
+      "source_world_offset_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "T_initial_object_wrist_goal": [
+        [
+          -0.9781665169298487,
+          0.1614335102194744,
+          0.1308796658597012,
+          0.2434495437142058
+        ],
+        [
+          0.15815545808875323,
+          0.9867889331499887,
+          -0.03513477606935464,
+          0.006958623924292489
+        ],
+        [
+          -0.13482253607637265,
+          -0.013668328022326827,
+          -0.9907754844438822,
+          0.09407074627789586
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "nominal_hand_command": 1,
+      "contact_feedback_required": true,
+      "meaning": "Nominal unloaded reference only; recompute from measured held wrist/object relation in contact"
+    },
+    {
+      "name": "retreat",
+      "source_phase": "FINAL_HOLD",
+      "source_phase_occurrence": 0,
+      "source_target_index": 2751,
+      "source_time_s": 27.51000000001064,
+      "source_T_initial_object_wrist_goal": [
+        [
+          -0.9781665169298487,
+          0.1614335102194744,
+          0.1308796658597012,
+          0.2434495437142058
+        ],
+        [
+          0.15815545808875323,
+          0.9867889331499887,
+          -0.03513477606935464,
+          0.006958623924292489
+        ],
+        [
+          -0.13482253607637265,
+          -0.013668328022326827,
+          -0.9907754844438822,
+          0.19407074615298953
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "derived_waypoint": false,
+      "source_world_offset_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "T_initial_object_wrist_goal": [
+        [
+          -0.9781665169298487,
+          0.1614335102194744,
+          0.1308796658597012,
+          0.2434495437142058
+        ],
+        [
+          0.15815545808875323,
+          0.9867889331499887,
+          -0.03513477606935464,
+          0.006958623924292489
+        ],
+        [
+          -0.13482253607637265,
+          -0.013668328022326827,
+          -0.9907754844438822,
+          0.19407074615298953
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "nominal_hand_command": 0,
+      "contact_feedback_required": false,
+      "meaning": "Recorded commanded wrist endpoint; advance only after actual state gate"
+    }
+  ],
+  "content_sha256": "103f85a998d3278403236f22fb25a37e2bf941c071f36e31ae87fc20b2cf8c94"
+}

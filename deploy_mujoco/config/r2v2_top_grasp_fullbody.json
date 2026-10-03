@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "reach_config": "/root/autodl-tmp/Postman_Deploy/wrist_payload_contact_20260913/policy/reach_config.yaml",
+  "parity_report": "/root/autodl-tmp/Postman_Deploy/wrist_payload_contact_20260913/parity/report.json",
+  "calibration_path": "deploy_mujoco/config/r2v2_top_grasp_calibration.json",
+  "profile": "baseline_40mm_100g",
+  "table_height_m": 0.8,
+  "can_xy_m": [0.36, 0.18],
+  "yaw_deg": 180.0,
+  "table_center_xy_m": [0.48, 0.08],
+  "table_half_size_m": [0.27, 0.30, 0.02],
+  "stage_timeout_s": 10.0,
+  "air_continue_on_precision_failure": true,
+  "air_evidence": null
+}

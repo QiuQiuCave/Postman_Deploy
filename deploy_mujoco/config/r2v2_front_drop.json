@@ -1,0 +1,9 @@
+{
+  "schema_version": 1,
+  "reach_config": "/root/autodl-tmp/Postman_Deploy/front_drop_20260927/policy/reach_config.yaml",
+  "parity_report": "/root/autodl-tmp/Postman_Deploy/front_drop_20260927/parity/report.json",
+  "path_manifest": "/root/autodl-tmp/Postman_Deploy/front_drop_20260927/policy/path_manifest.json",
+  "air_evidence": null,
+  "stage_timeout_s": 10.0,
+  "startup_mode": "hold_home"
+}

@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "grasp_style": "front",
+  "reach_config": "/root/autodl-tmp/Postman_Deploy/wrist_payload_contact_20260913/policy/reach_config.yaml",
+  "parity_report": "/root/autodl-tmp/Postman_Deploy/wrist_payload_contact_20260913/parity/report.json",
+  "calibration_path": "reference_motion_bank/r2v2_grasp/thumb75_cylinder40mm_100g/left/grasp_record.json",
+  "profile": "baseline_40mm_100g",
+  "table_height_m": 0.98,
+  "can_xy_m": [0.40, 0.13],
+  "yaw_deg": 0.0,
+  "table_center_xy_m": [0.555, 0.16],
+  "table_half_size_m": [0.195, 0.26, 0.02],
+  "stage_timeout_s": 10.0,
+  "air_continue_on_precision_failure": true,
+  "air_evidence": null
+}

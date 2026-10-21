@@ -1,0 +1,4 @@
+-r requirements-r2v2-sim.txt
+# CPU inference in the isolated deploy venv; no Torch/GPU dependency here.
+onnxruntime==1.23.2; python_version < '3.11'
+onnxruntime==1.29.0; python_version >= '3.11'

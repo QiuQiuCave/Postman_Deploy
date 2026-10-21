@@ -1,283 +1,62 @@
-<div align="center">
-  <h1 align="center">RoboMimic Deploy - Enhanced Edition</h1>
-  <p align="center">
-    <a href="README_zh.md">🇨🇳 中文</a> | <span>🌎 English</span>
-  </p>
-</div>
+# R2V2 Bottle Delivery
 
-<p align="center">
-  <strong>A multi-policy robot deployment framework based on state-switching mechanism for Unitree G1 robot (29-DoF), with enhanced GAE_Mimic motion tracking capabilities.</strong>
-</p>
+Single-network CONTACT simulation: box pickup → transfer → adjacent-table
+placement → finger release → arm withdrawal. Model asset `reach-delivery-3191`
+uses 1461 observations and 28 body actions at 50 Hz. Fingers have an independent
+dynamic controller; body PD, torque limits and native history remain unchanged.
 
----
+## Install
 
-## Current Deployment-Machine Entry Point
-
-For a fresh experiment/deployment computer where an agent will clone this repo
-and configure the runtime, start from:
-
-```text
-refer/NewMachine-Agent-Setup-And-SmokeTest.zh.md
-```
-
-That guide covers the `uv` environment, CycloneDDS, Unitree SDK, artifact
-validation, MuJoCo smoke tests, and the future `git pull` update workflow. The
-current key bindings should be taken from that guide and the runtime terminal
-output.
-
----
-
-## 📢 About This Fork
-
-This repository is an enhanced version based on the excellent work from [ccrpRepo/RoboMimic_Deploy](https://github.com/ccrpRepo/RoboMimic_Deploy). 
-
-### 🙏 Acknowledgments
-
-We sincerely thank the original authors for their outstanding contribution to the robotics community. Their work has provided a solid foundation for multi-policy deployment on humanoid robots.
-
-**Original Repository**: [https://github.com/ccrpRepo/RoboMimic_Deploy](https://github.com/ccrpRepo/RoboMimic_Deploy)
-
----
-
-## ✨ What's New - GAE_Mimic Integration
-
-We have integrated **GAE_Mimic** (Generalized Action Encoding Mimic), a state-of-the-art motion tracking and imitation learning policy, into this deployment framework.
-
-### 🎯 GAE_Mimic Features
-
-- **Motion Retargeting**: Advanced motion tracking from reference trajectories
-- **Generalized Encoding**: Robust motion representation using quaternion-based transformations
-- **Real-time Execution**: ONNX model inference for efficient deployment
-- **Multi-motion Support**: Compatible with various motion datasets (LAFAN1, etc.)
-
-### 🚀 Quick Start - GAE_Mimic
-
-#### 1. File Preparation
-
-Before running GAE_Mimic, you need to manually place the following files:
-
-**ONNX Model**:
-- Location: `policy/gae_mimic/model/`
-- Default filename: `policy.onnx`
-
-**Motion Data**:
-- Location: `policy/gae_mimic/motion/lafan1/`
-- Default filename: `walk1_subject2.npz`
-- Required data format:
-  - `joint_pos`: (num_frames, num_joints)
-  - `joint_vel`: (num_frames, num_joints)
-  - `body_pos_w`: (num_frames, num_bodies, 3)
-  - `body_quat_w`: (num_frames, num_bodies, 4)
-  - `body_lin_vel_w`: (num_frames, num_bodies, 3)
-  - `body_ang_vel_w`: (num_frames, num_bodies, 3)
-
-#### 2. Triggering GAE_Mimic
-
-**In MuJoCo Simulation**:
-```bash
-python deploy_mujoco/deploy_mujoco.py
-# Press B + L1 on Xbox controller
-```
-
-**Keyboard Control (No Joystick)**:
-```bash
-python deploy_mujoco/deploy_mujoco_keyboard_input.py
-# Type command: b+l1
-```
-
-**On Real Robot**:
-```bash
-python deploy_real/deploy_real.py
-# Press B + L1 on controller
-```
-
-#### 3. Keyboard Commands Reference
-
-| Command | Function | Description |
-|---------|----------|-------------|
-| `l3` | Passive mode | Damping protection |
-| `start` | Position reset | Reset to default pose |
-| `a+r1` | Locomotion mode | Walking mode |
-| `x+r1` | Skill 1 | Dance |
-| `y+r1` | Skill 2 | KungFu |
-| `b+r1` | Skill 3 | Kick |
-| `y+l1` | Skill 4 | BeyondMimic |
-| `b+l1` | **Skill GAE** | **GAE_Mimic** ⭐ |
-| `vel x y z` | Set velocity | e.g., `vel 0.5 0 0.2` |
-| `exit` | Exit program | Quit simulation |
-
----
-
-## 📚 Documentation
-
-For detailed installation, configuration, and usage instructions, please refer to:
-
-- **[English Tutorial](TUTORIAL.md)** - Complete setup and operation guide
-- **[中文教程](TUTORIAL_zh.md)** - 完整安装和使用指南
-- **[GAE_Mimic Migration Notes](policy/gae_mimic/MIGRATION_NOTES.md)** - Technical details of GAE_Mimic integration
-
----
-
-## 🏗️ Project Structure
-
-```
-RoboMimic_Deploy/
-├── policy/
-│   ├── passive/              # Passive damping mode
-│   ├── fixedpose/            # Fixed position reset
-│   ├── loco_mode/            # Locomotion policy
-│   ├── dance/                # Charleston dance
-│   ├── kungfu/               # Martial arts motion
-│   ├── kungfu2/              # Alternative kungfu
-│   ├── kick/                 # Kick motion
-│   ├── beyond_mimic/         # BeyondMimic tracking
-│   └── gae_mimic/            # ⭐ GAE_Mimic tracking (NEW)
-│       ├── config/           # Configuration files
-│       ├── model/            # ONNX models (user-provided)
-│       └── motion/           # Motion data (user-provided)
-├── FSM/                      # Finite State Machine controller
-├── deploy_mujoco/            # MuJoCo simulation deployment
-├── deploy_real/              # Real robot deployment
-└── common/                   # Shared utilities
-```
-
----
-
-## 🛠️ Supported Policies
-
-| Policy Name | Description | Status |
-|-------------|-------------|--------|
-| **PassiveMode** | Damping protection mode | ✅ Stable |
-| **FixedPose** | Position control reset | ✅ Stable |
-| **LocoMode** | Stable walking | ✅ Stable |
-| **Dance** | Charleston dance | ✅ Verified on real robot |
-| **KungFu** | Martial arts | ⚠️ Simulation only |
-| **KungFu2** | Alternative kungfu | ⚠️ Simulation only |
-| **Kick** | Kick motion | ⚠️ Simulation only |
-| **BeyondMimic** | Motion tracking | ⚠️ Experimental |
-| **GAE_Mimic** | Advanced motion tracking | ⭐ NEW |
-
----
-
-## ⚠️ Important Notes
-
-### Robot Compatibility
-- This framework is designed for **Unitree G1 robots with 3-DOF waist**
-- If waist fixing bracket is installed, unlock it following official instructions
-- **Remove hands** to avoid collision during dance movements
-
-### Safety Guidelines
-
-⚠️ **CRITICAL WARNING**: 
-- **ALWAYS test in simulation (Sim2Sim) thoroughly before real robot deployment**
-- **Ensure proper safety measures are in place** (emergency stop, safety harness, clear workspace)
-- **This code comes with NO SAFETY GUARANTEES** - use at your own risk
-- The developers assume no liability for any damage or injury resulting from the use of this software
-
-1. **Test in simulation first** before deploying on real robot
-2. Press `F1` or `Select` for emergency stop (Passive Mode)
-3. Charleston Dance (R1+X) is the most stable policy for real robot
-4. Other motions are **recommended for simulation only**
-
-### Known Limitations
-- Not compatible with Orin NX platform directly (use unitree_sdk2 + ROS instead)
-- Mimic policies may not guarantee 100% success on complex terrains
-- Manual stabilization may be needed at dance start/end
-
----
-
-## 🔧 Installation
-
-### Recommended: uv (新)
-
-部署环境由 `pyproject.toml` + `uv.lock` 管理,一条命令装齐(Python 3.10 + CPU torch + mujoco + onnxruntime + Unitree SDK)。完整步骤(含系统 apt 依赖、Unitree SDK editable 路径 patch 的原因)见
-**[refer/UV-Deploy-Setup.md](refer/UV-Deploy-Setup.md)**。最短路径:
+Python 3.12. Use the pinned evaluation environment; simulation needs no robot SDK.
 
 ```bash
-# 1) 装 uv (一次性,无需 sudo)
-curl -LsSf https://astral.sh/uv/install.sh | sh
-
-# 2) Build cyclonedds native 库到用户目录(unitree_sdk2py 依赖,uv 不能管)
-#    详见 refer/UV-Deploy-Setup.md §1.2
-git clone --depth 1 --branch releases/0.10.x https://github.com/eclipse-cyclonedds/cyclonedds.git ~/cyclonedds
-(cd ~/cyclonedds && mkdir -p build install && cd build && \
-  cmake .. -DCMAKE_INSTALL_PREFIX="$HOME/cyclonedds/install" -DBUILD_EXAMPLES=OFF && \
-  cmake --build . --target install --parallel $(nproc))
-echo 'export CYCLONEDDS_HOME="$HOME/cyclonedds/install"' >> ~/.bashrc
-echo 'export LD_LIBRARY_PATH="$CYCLONEDDS_HOME/lib:${LD_LIBRARY_PATH:-}"' >> ~/.bashrc
-source ~/.bashrc
-
-# 3) 拉仓库 + Unitree SDK (必须放 external/ 走 editable,见文档解释)
-git clone <this-repo-url> FSMDeploy_G1 && cd FSMDeploy_G1
-mkdir -p external && git clone https://github.com/unitreerobotics/unitree_sdk2_python.git external/unitree_sdk2_python
-
-# 4) 同步环境 (uv 自己拉 Python 3.10 + 全部 pinned 包)
-uv sync
-
-# 5) 拷贝策略 artifact(.onnx / .pt / .npz)到 policy/*/model/ 和 policy/*/motion/
-
-# 6) 运行:所有 `python xxx` 换成 `uv run python xxx`
-uv run python deploy_mujoco/deploy_mujoco_keyboard_input.py
+python -m pip install -c constraints-preserved-eval.txt -e '.[sim,visualization,test]'
+python -m pytest -q
+r2v2-delivery --help
 ```
 
-### Legacy: conda (老流程,保留作参考)
+Models, robot descriptions/meshes and target-reference data are supplied
+separately. Set `R2V2_RESOURCE_ROOT` **before importing the package** to the full
+resource root containing `r2v2_description/`, `assets/` and `deploy_mujoco/config/`.
+The source includes scene builders and default hand/geometry configurations,
+not permission to redistribute externally supplied resources.
+
+## Run and render
 
 ```bash
-# Create virtual environment
-conda create -n robomimic python=3.8
-conda activate robomimic
-
-# Install PyTorch
-conda install pytorch==2.3.1 torchvision==0.18.1 torchaudio==2.3.1 pytorch-cuda=12.1 -c pytorch -c nvidia
-
-# Clone repository
-git clone https://github.com/YOUR_USERNAME/RoboMimic_Deploy.git
-cd RoboMimic_Deploy
-
-# Install dependencies
-pip install numpy==1.20.0
-pip install onnx onnxruntime
-
-# Install Unitree SDK
-git clone https://github.com/unitreerobotics/unitree_sdk2_python.git
-cd unitree_sdk2_python
-pip install -e .
+r2v2-delivery --assets /data/reach/assets.local.json --check-only
+r2v2-delivery --assets /data/reach/assets.local.json --output /data/runs/contact --record
+MUJOCO_GL=egl python -m r2v2_deploy.visualization.contact --source /data/runs/contact --output /data/videos/contact
 ```
 
-For detailed instructions, see [TUTORIAL.md](TUTORIAL.md).
+Output paths must be new. Video uses actual physical states at normal speed,
+H.264/yuv420p, without terminal-frame hold. Use `--view side` for a side view.
+Rendering is not another physics validation run.
 
----
+The asset manifest pins checkpoint/ONNX/parity, the fixed wrist/finger program,
+scene settings and a compact 50 Hz target stream. It does **not** require full
+demonstration episodes or historical training reports for inference. Runtime
+source/resource hashes and explicit model identities reject unknown pairings.
+See [asset schema](configs/assets.example.json), [compatibility](docs/COMPATIBILITY.md).
+For the example, set `R2V2_ASSET_ROOT` to the separately supplied native model
+bundle; its relative layout is `model/`, `program.json`, `reference.json`,
+`reference.npz`, `scene.json`, `scene_manifest.json` and `reach.yaml`.
 
-## 🎥 Video Tutorial
+## Modules
 
-[Watch the video tutorial](https://www.bilibili.com/video/BV1VTKHzSE6C/?vd_source=713b35f59bdf42930757aea07a44e7cb#reply114743994027967)
+`control`: native observations, PD, fingers; `simulation`: scene and contact
+measurements; `tasks`: wrist/finger reference clock and physical conditions;
+`data`: exact reset/history interfaces; `evaluation`: full/local CONTACT;
+`visualization`: recording renderer; `cli`: public run entry.
+No runtime teacher or IK controller is constructed. The companion HALO-mj
+package provides Reach PPO, export and bounded checkpoint retention.
 
----
+## Verified scope
 
-## 📝 License
+The fixed nominal task completes in 78.32 simulated seconds with one body
+network, real table support, release and withdrawal. This does not establish
+unseen-scene generalization or hardware readiness. No welded bottle, fixed
+robot base, extra support forces or runtime state replay is used.
 
-This project maintains the same license as the original repository.
-
----
-
-## 🤝 Contributing
-
-We welcome contributions! If you find issues or want to add new features, please:
-
-1. Fork the repository
-2. Create your feature branch
-3. Submit a pull request
-
----
-
-## 📧 Contact
-
-For questions or support regarding:
-- **Original framework**: Refer to [ccrpRepo/RoboMimic_Deploy](https://github.com/ccrpRepo/RoboMimic_Deploy)
-- **GAE_Mimic enhancement**: Open an issue in this repository
-
----
-
-<div align="center">
-  <sub>Built with ❤️ based on the outstanding work from ccrpRepo</sub>
-</div>
+[中文说明](README_zh.md) · [acceptance](docs/ACCEPTANCE.md) ·
+[validation](docs/VALIDATION.md) · [source/resource notices](NOTICES.md)

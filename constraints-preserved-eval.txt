@@ -1,0 +1,8 @@
+# Observed preserved AutoDL runtime, not an engine upgrade recommendation.
+# Training/BC Torch and G1 hardware SDKs are deliberately not bundled here.
+mujoco==3.7.0
+numpy==2.4.4
+scipy==1.17.1
+onnxruntime==1.23.2
+onnx==1.21.0
+ruckig==0.12.2

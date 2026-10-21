@@ -1,0 +1,50 @@
+<mujoco model="r2v2_storage_shelf">
+  <compiler angle="radian"/>
+
+  <asset>
+    <material name="shelf_frame_material" rgba="0.03 0.18 0.75 1" reflectance="0.15" shininess="0.25"/>
+    <material name="shelf_deck_material" rgba="0.10 0.28 0.78 1" reflectance="0.10" shininess="0.20"/>
+  </asset>
+
+  <worldbody>
+    <!-- Five-level fixed shelf built from simple collision boxes. -->
+    <body name="shelf">
+      <!-- Four 2.70 m uprights. -->
+      <geom name="front_left_upright" type="box" pos="-0.65 -0.24 1.05" size="0.04 0.04 1.05" material="shelf_frame_material"/>
+      <geom name="front_right_upright" type="box" pos="0.65 -0.24 1.05" size="0.04 0.04 1.05" material="shelf_frame_material"/>
+      <geom name="rear_left_upright" type="box" pos="-0.65 0.24 1.05" size="0.04 0.04 1.05" material="shelf_frame_material"/>
+      <geom name="rear_right_upright" type="box" pos="0.65 0.24 1.05" size="0.04 0.04 1.05" material="shelf_frame_material"/>
+
+      <!-- Five decks, spaced 0.42 m apart. -->
+      <geom name="level_1_deck" type="box" pos="0 0 0.18" size="0.65 0.24 0.035" material="shelf_deck_material"/>
+      <geom name="level_2_deck" type="box" pos="0 0 0.60" size="0.65 0.24 0.035" material="shelf_deck_material"/>
+      <geom name="level_3_deck" type="box" pos="0 0 1.02" size="0.65 0.24 0.035" material="shelf_deck_material"/>
+      <geom name="level_4_deck" type="box" pos="0 0 1.44" size="0.65 0.24 0.035" material="shelf_deck_material"/>
+      <geom name="level_5_deck" type="box" pos="0 0 1.86" size="0.65 0.24 0.035" material="shelf_deck_material"/>
+
+      <!-- Front and rear retaining rails. -->
+      <geom name="level_1_front_rail" type="box" pos="0 -0.24 0.18" size="0.65 0.025 0.055" material="shelf_frame_material"/>
+      <geom name="level_1_rear_rail" type="box" pos="0 0.24 0.18" size="0.65 0.025 0.055" material="shelf_frame_material"/>
+      <geom name="level_2_front_rail" type="box" pos="0 -0.24 0.60" size="0.65 0.025 0.055" material="shelf_frame_material"/>
+      <geom name="level_2_rear_rail" type="box" pos="0 0.24 0.60" size="0.65 0.025 0.055" material="shelf_frame_material"/>
+      <geom name="level_3_front_rail" type="box" pos="0 -0.24 1.02" size="0.65 0.025 0.055" material="shelf_frame_material"/>
+      <geom name="level_3_rear_rail" type="box" pos="0 0.24 1.02" size="0.65 0.025 0.055" material="shelf_frame_material"/>
+      <geom name="level_4_front_rail" type="box" pos="0 -0.24 1.44" size="0.65 0.025 0.055" material="shelf_frame_material"/>
+      <geom name="level_4_rear_rail" type="box" pos="0 0.24 1.44" size="0.65 0.025 0.055" material="shelf_frame_material"/>
+      <geom name="level_5_front_rail" type="box" pos="0 -0.24 1.86" size="0.65 0.025 0.055" material="shelf_frame_material"/>
+      <geom name="level_5_rear_rail" type="box" pos="0 0.24 1.86" size="0.65 0.025 0.055" material="shelf_frame_material"/>
+
+      <!-- Side rails. -->
+      <geom name="level_1_left_rail" type="box" pos="-0.65 0 0.18" size="0.025 0.24 0.055" material="shelf_frame_material"/>
+      <geom name="level_1_right_rail" type="box" pos="0.65 0 0.18" size="0.025 0.24 0.055" material="shelf_frame_material"/>
+      <geom name="level_2_left_rail" type="box" pos="-0.65 0 0.60" size="0.025 0.24 0.055" material="shelf_frame_material"/>
+      <geom name="level_2_right_rail" type="box" pos="0.65 0 0.60" size="0.025 0.24 0.055" material="shelf_frame_material"/>
+      <geom name="level_3_left_rail" type="box" pos="-0.65 0 1.02" size="0.025 0.24 0.055" material="shelf_frame_material"/>
+      <geom name="level_3_right_rail" type="box" pos="0.65 0 1.02" size="0.025 0.24 0.055" material="shelf_frame_material"/>
+      <geom name="level_4_left_rail" type="box" pos="-0.65 0 1.44" size="0.025 0.24 0.055" material="shelf_frame_material"/>
+      <geom name="level_4_right_rail" type="box" pos="0.65 0 1.44" size="0.025 0.24 0.055" material="shelf_frame_material"/>
+      <geom name="level_5_left_rail" type="box" pos="-0.65 0 1.86" size="0.025 0.24 0.055" material="shelf_frame_material"/>
+      <geom name="level_5_right_rail" type="box" pos="0.65 0 1.86" size="0.025 0.24 0.055" material="shelf_frame_material"/>
+    </body>
+  </worldbody>
+</mujoco>

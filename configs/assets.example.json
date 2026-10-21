@@ -1,0 +1,95 @@
+{
+  "schema": "contact_reach_delivery_assets_v2",
+  "model_asset_id": "reach-delivery-3191",
+  "environment": {
+    "R2V2_RESOURCE_ROOT": "${R2V2_RESOURCE_ROOT}"
+  },
+  "configuration": {
+    "learning_protocol": "contact_reach_neighborhood_v1",
+    "execution_protocol": "contact_reach_demonstration_clock_v2",
+    "critic_profile": "reach_program_contact_context_v2",
+    "late_continuous_motion_s": 8,
+    "late_episode_s": 10,
+    "reach_finger_condition_protocol": "continuous_reference_closure_v2",
+    "placement_profile": "native_contact_reach_v1",
+    "program": "${R2V2_ASSET_ROOT}/program.json",
+    "goal_manifest": "${R2V2_ASSET_ROOT}/reference.json",
+    "scene_configuration": "${R2V2_ASSET_ROOT}/scene.json"
+  },
+  "candidate": {
+    "actor_architecture": "conditional_complementary_open_features_v1",
+    "execution_profile": "native_contact_reach_v1",
+    "execution_task_sha256": "419d6ddbe5b842d61d630c9a6220fbc41cd32841e1b521394f323f9824088841",
+    "learning_protocol": "contact_reach_neighborhood_v1",
+    "reach_configuration_sha256": "4897d684de62c7d6b5fe103222023293959e8ff343fab771e787dad5ed0637c3",
+    "reach_execution_protocol": "contact_reach_demonstration_clock_v2",
+    "reach_finger_condition_protocol": "continuous_reference_closure_v2",
+    "checkpoint": "${R2V2_ASSET_ROOT}/model/policy.pt",
+    "onnx": "${R2V2_ASSET_ROOT}/model/policy.onnx",
+    "parity": "${R2V2_ASSET_ROOT}/model/policy.parity.json",
+    "migration_record": "${R2V2_ASSET_ROOT}/model/policy.migration.json",
+    "migration_record_sha256": "e11c75647271fc7965616520a0775d5e6ca86d80d6b64da6f551208fdf924d15"
+  },
+  "assets": [
+    {
+      "id": "model/policy.pt",
+      "path": "${R2V2_ASSET_ROOT}/model/policy.pt",
+      "sha256": "de6ea90c4e37f037f71d10485f3cf53b0692461ef8d7944c365b99c4a6d3dccf"
+    },
+    {
+      "id": "model/policy.onnx",
+      "path": "${R2V2_ASSET_ROOT}/model/policy.onnx",
+      "sha256": "093c3bcb0149ee5f8d05af8c362a125c6b4f7c1ca8ec9bfe4281ff031c2e3fb4"
+    },
+    {
+      "id": "model/policy.resume.pt",
+      "path": "${R2V2_ASSET_ROOT}/model/policy.resume.pt",
+      "sha256": "bc8f638c04b97bacbc76187ecc41ae2d495e046295e67802f7ce2e726d7a3a59"
+    },
+    {
+      "id": "program.json",
+      "path": "${R2V2_ASSET_ROOT}/program.json",
+      "sha256": "ddd5f7084409ebe1e5abe4d871eaf3f19e887eb464cf065978ca79779ca1f2c0"
+    },
+    {
+      "id": "reference.json",
+      "path": "${R2V2_ASSET_ROOT}/reference.json",
+      "sha256": "814b5aee92ffd12ee2c1a42984224500cd3a3bd46e1ef6018bfa0c8e86df75fe"
+    },
+    {
+      "id": "reference.npz",
+      "path": "${R2V2_ASSET_ROOT}/reference.npz",
+      "sha256": "5cd55e5f7a0b7f46e227c3688898c600d8e343a1c3a3cb2517d13f4a19a1877b"
+    },
+    {
+      "id": "scene.json",
+      "path": "${R2V2_ASSET_ROOT}/scene.json",
+      "sha256": "e616dbed4781d166eaaf09237d77ba7eb6e7888da83776b5c4b72f200923f38e"
+    },
+    {
+      "id": "scene_manifest.json",
+      "path": "${R2V2_ASSET_ROOT}/scene_manifest.json",
+      "sha256": "e9070f2cfb331bf1f36ffc4b1d3e284327a966192bf60a7e4b7390077c6f189e"
+    },
+    {
+      "id": "reach.yaml",
+      "path": "${R2V2_ASSET_ROOT}/reach.yaml",
+      "sha256": "d6c6633220f4b54868996e5a2a16a140ec4a3f466b31bf2bb17d8f5450c46968"
+    },
+    {
+      "id": "model/policy.migration.json",
+      "path": "${R2V2_ASSET_ROOT}/model/policy.migration.json",
+      "sha256": "e11c75647271fc7965616520a0775d5e6ca86d80d6b64da6f551208fdf924d15"
+    },
+    {
+      "id": "model/policy.parity.json",
+      "path": "${R2V2_ASSET_ROOT}/model/policy.parity.json",
+      "sha256": "6d8fe8a59545c13fa54119f78b50eafe2390f9b12e8cda880765eaa88a76dc20"
+    },
+    {
+      "id": "model/policy.candidate.json",
+      "path": "${R2V2_ASSET_ROOT}/model/policy.candidate.json",
+      "sha256": "ab56cea05aac165ccc408d2aa1d718c3fc6e62bfbb4aefff9128f2c813223c55"
+    }
+  ]
+}

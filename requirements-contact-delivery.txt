@@ -1,0 +1,8 @@
+# Python 3.12; install ONLY in a separate CONTACT environment.
+# Do not install these into .venv-r2v2 or use the legacy root pyproject.toml.
+-r constraints-preserved-eval.txt
+PyYAML>=6,<7
+imageio>=2.37,<3
+imageio-ffmpeg>=0.6,<1
+Pillow>=10
+pytest>=8,<9

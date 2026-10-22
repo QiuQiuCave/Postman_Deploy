@@ -39,3 +39,14 @@ documented placement. Full-body standing, Reach transfer, general grasping,
 and hardware use are not validated.
 
 See [the run guide](../docs/r2v2_hand_validation.md).
+
+## Native CONTACT integration (2026-10-23)
+
+The provenance and early validation limits above describe the original hand
+integration. Later Loco/Reach two-table results are recorded separately in
+[the closed-loop guide](../docs/r2v2_loco_cola.md).
+The new `src/r2v2_deploy/simulation/robot.py` uses these same original assets
+under an independent, hash-pinned CONTACT runtime. Its 96 resource hashes match
+this checkout; that check is not a full policy rollout. Keep the legacy model
+builder and its environment unchanged. See [integration scope and asset
+requirements](../docs/contact_delivery_integration.md).

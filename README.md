@@ -13,6 +13,13 @@
 
 ## Current Deployment-Machine Entry Point
 
+The verified **Loco → Reach → cola pickup → carry → second-table placement**
+baseline is documented in [the Loco/Reach guide](docs/r2v2_loco_cola.md).
+The new native CONTACT code is integrated **alongside**, not in place of, that FSM.
+See [CONTACT integration and separate environments](docs/contact_delivery_integration.md)
+before installing or running it. The root `pyproject.toml` remains the legacy G1
+environment; do not use it to install the CONTACT dependencies.
+
 On the `r2v2-fsm` branch, use the standalone [R2V2 hand validation guide](docs/r2v2_hand_validation.md)
 for the new model. It requires neither G1 policies nor the Unitree SDK. The legacy
 G1 deployment entrypoints have not yet been wired to R2V2.

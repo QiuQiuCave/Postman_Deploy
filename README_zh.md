@@ -13,6 +13,12 @@
 
 ## 当前部署电脑入口
 
+已跑通的 **Loco 行走 → Reach 抓可乐 → 持物后退 → 第二桌放置** 见
+[闭环说明](docs/r2v2_loco_cola.md)。新 CONTACT 分支以独立模块并行接入，
+不替换该 FSM、策略或环境。安装前先读
+[CONTACT 整合与双环境说明](docs/contact_delivery_integration.md)。
+根目录 `pyproject.toml` 仍是旧 G1 环境，不能用它安装 CONTACT。
+
 **`r2v2-fsm` 分支的灵巧手测试请先看 [R2V2 手部验证说明](docs/r2v2_hand_validation.md)。**
 该入口不需要 G1 策略或 Unitree SDK；原有 G1 入口尚未完成 R2V2 接线。
 75° 手型的轨迹、圆柱相对位姿及后续全身接入约定见

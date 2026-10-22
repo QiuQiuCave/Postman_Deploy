@@ -99,3 +99,13 @@ logs/
 .venv-r2v2/
 artifacts/
 external/
+
+# Separately supplied simulation resources and generated run assets.
+/r2v2_description/source/
+/r2v2_description/visuals/
+*.pt
+*.onnx
+*.npz
+*.mp4
+*.webm
+/output/

@@ -1,0 +1,108 @@
+{
+  "schema": "native_contact_regression_v1",
+  "checkpoint_sha256": "de6ea90c4e37f037f71d10485f3cf53b0692461ef8d7944c365b99c4a6d3dccf",
+  "program_sha256": "ddd5f7084409ebe1e5abe4d871eaf3f19e887eb464cf065978ca79779ca1f2c0",
+  "native_graph_migration": {
+    "schema": "native_contact_model_migration_v1",
+    "source_checkpoint_sha256": "de6ea90c4e37f037f71d10485f3cf53b0692461ef8d7944c365b99c4a6d3dccf",
+    "source_onnx_sha256": "6417995cad0ce79383582562ab57f986525d4a3e6ccf5d09c12983ae351e1293",
+    "original_parity_sha256": "7e522b425b125b9d7e305cf00a6827f620c02472c4e308d6bdc59553684fdd78",
+    "target_onnx_sha256": "093c3bcb0149ee5f8d05af8c362a125c6b4f7c1ca8ec9bfe4281ff031c2e3fb4",
+    "target_runtime_profile_sha256": "9cfd9d926428df331fa24c6b49a3dfc2e6d8230346be53b8af784e8d4ea26de9",
+    "graph_and_initializer_bytes_unchanged": true,
+    "optimizer_updates": 0,
+    "raw_native_samples": 64,
+    "old_vs_new_onnx_max_abs_error": 0.0,
+    "original_torch_vs_onnx_max_abs_error": 4.887580871582031e-06
+  },
+  "full_contact": {
+    "full_success": true,
+    "duration_s": 78.32000000000991,
+    "actual_table_touch": true,
+    "actual_stable_touch": true,
+    "actual_release": true,
+    "actual_withdrawal": true,
+    "report_sha256": "9ad3bf0396e35a693e72601575fdf696a816ef9ca09a9982364d8dcb96e650eb"
+  },
+  "comparison_samples": 3917,
+  "physical_and_native_observation_comparison": {
+    "time_s": {
+      "shape": [
+        3917
+      ],
+      "exact_equal": true,
+      "max_abs_error": 0.0
+    },
+    "phase": {
+      "shape": [
+        3917
+      ],
+      "exact_equal": true
+    },
+    "qpos": {
+      "shape": [
+        3917,
+        71
+      ],
+      "exact_equal": true,
+      "max_abs_error": 0.0
+    },
+    "qvel": {
+      "shape": [
+        3917,
+        68
+      ],
+      "exact_equal": true,
+      "max_abs_error": 0.0
+    },
+    "action": {
+      "shape": [
+        3917,
+        28
+      ],
+      "exact_equal": true,
+      "max_abs_error": 0.0
+    },
+    "observation": {
+      "shape": [
+        3917,
+        1461
+      ],
+      "exact_equal": true,
+      "max_abs_error": 0.0
+    },
+    "wrist_world": {
+      "shape": [
+        3917,
+        2,
+        4,
+        4
+      ],
+      "exact_equal": true,
+      "max_abs_error": 0.0
+    },
+    "object_position": {
+      "shape": [
+        3917,
+        3
+      ],
+      "exact_equal": true,
+      "max_abs_error": 0.0
+    }
+  },
+  "reach_reward_and_gpu_core_ast_unchanged": [
+    "contact_reach_env.py:reach_reward",
+    "contact_reach_env.py:terminal_reach_reward",
+    "delivery_gpu.py:preserved_options",
+    "delivery_gpu.py:NativeContactPhysics",
+    "delivery_gpu.py:NativeReachObservation"
+  ],
+  "safety_ast_unchanged": true,
+  "compact_reference_array_equivalence": true,
+  "fresh_gpu_training_run": false,
+  "source_counts": {
+    "HALO-mj": 18,
+    "Postman_Deploy": 44
+  },
+  "interpretation": "One nominal full CONTACT regression; not independent generalization or fresh end-to-end retraining"
+}

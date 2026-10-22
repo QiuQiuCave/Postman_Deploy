@@ -1,0 +1,20 @@
+{
+  "reach_root": "/root/key_checkpoints/r2v2_20261003/01_front_drop_10000",
+  "loco_root": "/root/key_checkpoints/r2v2_loco_10000_20261017",
+  "loco_pitch_deg": 15.0,
+  "blend_in_s": 0.8,
+  "blend_out_s": 1.2,
+  "entry_side_fraction": 0.15,
+  "entry_back_m": 0.02,
+  "entry_down_m": 0.06,
+  "initial_robot_x_m": -0.63,
+  "approach_distance_m": 0.60,
+  "table_center_xyz": [0.595, 0.20, 0.96],
+  "table_half_size": [0.195, 0.16, 0.02],
+  "cylinder_position_xyz": [0.45, 0.13, 1.041],
+  "lift_m": 0.15,
+  "carry_distance_m": 0.30,
+  "destination_offset_y_m": 0.55,
+  "side_speed_mps": 0.15,
+  "stage_timeout_s": 10.0
+}

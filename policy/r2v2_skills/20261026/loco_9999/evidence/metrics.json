@@ -1,0 +1,355 @@
+{
+  "checkpoint": "/root/autodl-tmp/HALO-mj/logs/rsl_rl/r2v2_velocity/2026-10-16_20-28-39_loco-flat-fixedarms-payload-reproduce/model_9999.pt",
+  "phases": [
+    {
+      "sequence": "walking",
+      "phase": 0,
+      "name": "Stand",
+      "target_velocity": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "target_height": 0.7,
+      "target_pitch": 0.0,
+      "terminated": false,
+      "duration": 5.0,
+      "last_2s_mean": {
+        "vx": -0.0001132161667192122,
+        "vy": 0.00015150027247727848,
+        "wz": -0.002035737761761993,
+        "height": 0.6853353434801102,
+        "pitch": -0.003887136417906731
+      }
+    },
+    {
+      "sequence": "walking",
+      "phase": 1,
+      "name": "Forward",
+      "target_velocity": [
+        0.3,
+        0.0,
+        0.0
+      ],
+      "target_height": 0.7,
+      "target_pitch": 0.0,
+      "terminated": false,
+      "duration": 8.0,
+      "last_2s_mean": {
+        "vx": 0.3134904643893242,
+        "vy": -0.02708105057477951,
+        "wz": 0.0023820610967231915,
+        "height": 0.7047699630260468,
+        "pitch": 0.003425727268186165
+      },
+      "xy_displacement_since_first_change_m": 2.432838201522827
+    },
+    {
+      "sequence": "walking",
+      "phase": 2,
+      "name": "Stop",
+      "target_velocity": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "target_height": 0.7,
+      "target_pitch": 0.0,
+      "terminated": false,
+      "duration": 5.0,
+      "last_2s_mean": {
+        "vx": -0.0008410059218294919,
+        "vy": -0.0005396255906089209,
+        "wz": -0.004999346607364714,
+        "height": 0.6825188523530961,
+        "pitch": -0.004087887303903699
+      },
+      "xy_displacement_since_first_change_m": 2.516303300857544
+    },
+    {
+      "sequence": "walking",
+      "phase": 3,
+      "name": "Backward",
+      "target_velocity": [
+        -0.2,
+        0.0,
+        0.0
+      ],
+      "target_height": 0.7,
+      "target_pitch": 0.0,
+      "terminated": false,
+      "duration": 6.0,
+      "last_2s_mean": {
+        "vx": -0.2201382975280285,
+        "vy": -0.012695148922502994,
+        "wz": 0.055175951919518414,
+        "height": 0.7029261684417725,
+        "pitch": 7.232747248053784e-05
+      },
+      "xy_displacement_since_first_change_m": 1.3630752563476562
+    },
+    {
+      "sequence": "walking",
+      "phase": 4,
+      "name": "Sideways left",
+      "target_velocity": [
+        0.0,
+        0.1,
+        0.0
+      ],
+      "target_height": 0.7,
+      "target_pitch": 0.0,
+      "terminated": false,
+      "duration": 6.0,
+      "last_2s_mean": {
+        "vx": 0.0003433248493820429,
+        "vy": 0.10179522128775716,
+        "wz": 5.115579580888152e-05,
+        "height": 0.6988059842586517,
+        "pitch": -0.0007875572524790186
+      },
+      "xy_displacement_since_first_change_m": 1.1780775785446167
+    },
+    {
+      "sequence": "walking",
+      "phase": 5,
+      "name": "Turn left",
+      "target_velocity": [
+        0.0,
+        0.0,
+        0.15
+      ],
+      "target_height": 0.7,
+      "target_pitch": 0.0,
+      "terminated": false,
+      "duration": 6.0,
+      "last_2s_mean": {
+        "vx": -0.0008408350741956383,
+        "vy": 0.001470854375511408,
+        "wz": -0.008611037619411946,
+        "height": 0.6835824167728424,
+        "pitch": -0.0019749901827890424
+      },
+      "xy_displacement_since_first_change_m": 1.2001752853393555
+    },
+    {
+      "sequence": "walking",
+      "phase": 6,
+      "name": "Stop",
+      "target_velocity": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "target_height": 0.7,
+      "target_pitch": 0.0,
+      "terminated": false,
+      "duration": 5.0,
+      "last_2s_mean": {
+        "vx": -0.0005236481287283823,
+        "vy": 0.0006535267317667603,
+        "wz": -0.005787052102386951,
+        "height": 0.6819980025291443,
+        "pitch": -0.0035055257705971597
+      },
+      "xy_displacement_since_first_change_m": 1.1959224939346313
+    },
+    {
+      "sequence": "standing_height_pitch",
+      "phase": 0,
+      "name": "Settle standing",
+      "target_velocity": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "target_height": 0.7,
+      "target_pitch": 0.0,
+      "terminated": false,
+      "duration": 6.0,
+      "last_2s_mean": {
+        "vx": -0.0007371513167163357,
+        "vy": 0.0011371635226532816,
+        "wz": -0.008682985212653876,
+        "height": 0.6792131036520004,
+        "pitch": -0.0009443307982292026
+      }
+    },
+    {
+      "sequence": "standing_height_pitch",
+      "phase": 1,
+      "name": "Lower to 0.60 m",
+      "target_velocity": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "target_height": 0.6,
+      "target_pitch": 0.0,
+      "terminated": false,
+      "duration": 6.0,
+      "last_2s_mean": {
+        "vx": -0.0006829300516983494,
+        "vy": 0.0011480575578752905,
+        "wz": -0.0038614558847621084,
+        "height": 0.596064777970314,
+        "pitch": -0.002165611539967358
+      },
+      "xy_displacement_since_first_change_m": 0.0025221877731382847
+    },
+    {
+      "sequence": "standing_height_pitch",
+      "phase": 2,
+      "name": "Lower to 0.50 m",
+      "target_velocity": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "target_height": 0.5,
+      "target_pitch": 0.0,
+      "terminated": false,
+      "duration": 6.0,
+      "last_2s_mean": {
+        "vx": 5.296251547406428e-05,
+        "vy": 0.00048336510139051825,
+        "wz": 0.0008217048202641308,
+        "height": 0.5503866046667099,
+        "pitch": -0.021200221087783574
+      },
+      "xy_displacement_since_first_change_m": 0.015992794185876846
+    },
+    {
+      "sequence": "standing_height_pitch",
+      "phase": 3,
+      "name": "Return to 0.70 m",
+      "target_velocity": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "target_height": 0.7,
+      "target_pitch": 0.0,
+      "terminated": false,
+      "duration": 6.0,
+      "last_2s_mean": {
+        "vx": -0.000641639570822008,
+        "vy": 0.00025711188704008236,
+        "wz": -0.0034823353285901248,
+        "height": 0.6844023382663726,
+        "pitch": -0.0034838875313289463
+      },
+      "xy_displacement_since_first_change_m": 0.011249799281358719
+    },
+    {
+      "sequence": "standing_height_pitch",
+      "phase": 4,
+      "name": "Forward pitch 0.15 rad",
+      "target_velocity": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "target_height": 0.7,
+      "target_pitch": 0.15,
+      "terminated": false,
+      "duration": 6.0,
+      "last_2s_mean": {
+        "vx": -0.0002427674712089356,
+        "vy": 0.00014474528506980278,
+        "wz": -0.001849343740614131,
+        "height": 0.698879731297493,
+        "pitch": 0.14375682905316353
+      },
+      "xy_displacement_since_first_change_m": 0.023992305621504784
+    },
+    {
+      "sequence": "standing_height_pitch",
+      "phase": 5,
+      "name": "Forward pitch 0.30 rad",
+      "target_velocity": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "target_height": 0.7,
+      "target_pitch": 0.3,
+      "terminated": false,
+      "duration": 6.0,
+      "last_2s_mean": {
+        "vx": 0.00025212423541233877,
+        "vy": -4.558942760922946e-05,
+        "wz": 0.001868994201067835,
+        "height": 0.7211990833282471,
+        "pitch": 0.28686227053403857
+      },
+      "xy_displacement_since_first_change_m": 0.03567828983068466
+    },
+    {
+      "sequence": "standing_height_pitch",
+      "phase": 6,
+      "name": "Backward pitch -0.15 rad",
+      "target_velocity": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "target_height": 0.7,
+      "target_pitch": -0.15,
+      "terminated": false,
+      "duration": 6.0,
+      "last_2s_mean": {
+        "vx": -3.087760509515647e-05,
+        "vy": 8.430512054474092e-05,
+        "wz": 0.0024836059124208987,
+        "height": 0.6823912757635117,
+        "pitch": -0.15719286039471625
+      },
+      "xy_displacement_since_first_change_m": 0.022079486399888992
+    },
+    {
+      "sequence": "standing_height_pitch",
+      "phase": 7,
+      "name": "Lower + forward pitch",
+      "target_velocity": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "target_height": 0.55,
+      "target_pitch": 0.2,
+      "terminated": false,
+      "duration": 6.0,
+      "last_2s_mean": {
+        "vx": -0.0015387227904284373,
+        "vy": 0.0005855720228282735,
+        "wz": -0.010027829837054015,
+        "height": 0.6091506457328797,
+        "pitch": 0.16006902158260344
+      },
+      "xy_displacement_since_first_change_m": 0.05155877023935318
+    },
+    {
+      "sequence": "standing_height_pitch",
+      "phase": 8,
+      "name": "Return upright",
+      "target_velocity": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "target_height": 0.7,
+      "target_pitch": 0.0,
+      "terminated": false,
+      "duration": 6.0,
+      "last_2s_mean": {
+        "vx": -0.0007119442586554215,
+        "vy": 7.282792183104902e-05,
+        "wz": -0.002570989823434502,
+        "height": 0.6855015671253204,
+        "pitch": -0.0036822850769385696
+      },
+      "xy_displacement_since_first_change_m": 0.04102284088730812
+    }
+  ]
+}

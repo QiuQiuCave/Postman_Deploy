@@ -109,3 +109,14 @@ external/
 *.mp4
 *.webm
 /output/
+
+# Intentionally published, immutable R2V2 handoff weights (not all checkpoints).
+!/policy/r2v2_skills/20261026/loco_9999/model_9999.pt
+!/policy/r2v2_skills/20261026/loco_9999/policy.onnx
+!/policy/r2v2_skills/20261026/front_drop_9999/model_9999.pt
+!/policy/r2v2_skills/20261026/front_drop_9999/policy_front_manipulation_v1.onnx
+!/policy/r2v2_skills/20261026/dual_wrist_vertical_grip_stop4/model_stop_4.pt
+!/policy/r2v2_skills/20261026/dual_wrist_vertical_grip_stop4/policy_wrist_payload_v2.onnx
+!/policy/r2v2_skills/20261026/dual_wrist_vertical_grip_stop4/path_snapshot/planned_path.npz
+!/policy/r2v2_skills/20261026/legacy_dual_reach_12000/model_12000.pt
+!/policy/r2v2_skills/20261026/legacy_dual_reach_12000/policy.onnx

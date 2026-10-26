@@ -1,0 +1,16 @@
+{
+  "checkpoint": "/root/autodl-tmp/HALO-mj/vertical_grip_20261025/train_v2/model_stop_4.pt",
+  "checkpoint_sha256": "2a0e2729c945db1e1fd9ca78e80ec674a3cca52ecc5455aa3d7a3e55755cc835",
+  "endpoint_body_names": "left_hand_roll_link,right_hand_roll_link",
+  "endpoint_contract": "wrist_world_v2",
+  "onnx_sha256": "79cd28d34813fab0b687f287aad7600f18721b296c9f393d0e4bcde32c6c94cc",
+  "passed": true,
+  "path_contract": "wrist_payload_path_v2",
+  "quaternion_order": "wxyz",
+  "same_observation_max_action_error": 2.205371856689453e-06,
+  "samples": 8,
+  "scene_profile": "vertical_grip_crate_36_v1",
+  "scope": "native/ONNX same-observation export; deployment observation parity is separate",
+  "speed_reference_point": "wrist",
+  "task_id": "R2V2-Reach-CrateVerticalGrip36Payload-v1-28DoF"
+}

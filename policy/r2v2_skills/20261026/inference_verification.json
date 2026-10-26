@@ -1,0 +1,67 @@
+{
+  "passed": true,
+  "checked_files": 39,
+  "models": {
+    "loco_9999": {
+      "passed": true,
+      "status": "selected_fixed_scene_baseline",
+      "input_shape": [
+        1,
+        560
+      ],
+      "output_shape": [
+        1,
+        14
+      ],
+      "synthetic_samples": 33,
+      "max_action_abs_error": 0.0000026226043701171875,
+      "normalization_epsilon": 0.01
+    },
+    "dual_wrist_vertical_grip_stop4": {
+      "passed": true,
+      "status": "experimental_failed_standing_gate",
+      "input_shape": [
+        1,
+        1460
+      ],
+      "output_shape": [
+        1,
+        28
+      ],
+      "synthetic_samples": 33,
+      "max_action_abs_error": 0.00006103515625,
+      "normalization_epsilon": 0.01
+    },
+    "front_drop_9999": {
+      "passed": true,
+      "status": "fixed_scene_cola_recovery_baseline",
+      "input_shape": [
+        1,
+        1460
+      ],
+      "output_shape": [
+        1,
+        28
+      ],
+      "synthetic_samples": 33,
+      "max_action_abs_error": 0.0000457763671875,
+      "normalization_epsilon": 0.01
+    },
+    "legacy_dual_reach_12000": {
+      "passed": true,
+      "status": "old_body_reference_not_wrist_v2",
+      "input_shape": [
+        1,
+        1460
+      ],
+      "output_shape": [
+        1,
+        28
+      ],
+      "synthetic_samples": 33,
+      "max_action_abs_error": 0.0000209808349609375,
+      "normalization_epsilon": 0.01
+    }
+  },
+  "scope": "File integrity and inference only; not physical acceptance"
+}

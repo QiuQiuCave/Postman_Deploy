@@ -1,0 +1,204 @@
+{
+  "schema_version": 5,
+  "scene_profile": "vertical_grip_crate_36_v1",
+  "samples": 2451,
+  "duration_s": 24.50000000000696,
+  "sample_dt_s": 0.01,
+  "trajectory_file": "planned_path.npz",
+  "trajectory_sha256": "9b3294cde866e73d49956648aeb93f15ad6f42189cee206afbcdbfc9dac2073c",
+  "frame": "fixed task world; add task_origin_in_beverage_world_m for deployment",
+  "task_origin_in_beverage_world_m": [
+    0.12,
+    0.44,
+    0.0
+  ],
+  "scene": {
+    "tabletop_height_m": 0.98,
+    "crate_base_world_m": [
+      0.45,
+      0.44,
+      0.98
+    ],
+    "crate_dimensions_depth_width_height_m": [
+      0.24,
+      0.36,
+      0.16
+    ],
+    "can_initial_world_m": [
+      0.4,
+      0.13,
+      1.041
+    ],
+    "can_dimensions_diameter_height_mass": [
+      0.04,
+      0.12,
+      0.1
+    ],
+    "grasp_can_in_wrist_position_m": [
+      0.145,
+      -0.035,
+      0.0
+    ],
+    "grasp_can_in_wrist_quaternion_wxyz": [
+      1,
+      0,
+      0,
+      0
+    ],
+    "table_center_world_m": [
+      0.545,
+      0.255,
+      0.96
+    ],
+    "table_half_size_m": [
+      0.195,
+      0.365,
+      0.02
+    ],
+    "crate_quaternion_wxyz": [
+      1,
+      0,
+      0,
+      0
+    ],
+    "crate_bottom_thickness_m": 0.005,
+    "crate_wall_thickness_m": 0.004,
+    "crate_mass_kg": 0.4,
+    "can_initial_quaternion_wxyz": [
+      1,
+      0,
+      0,
+      0
+    ],
+    "recorded_held_can_in_wrist": {
+      "position_m": [
+        0.13527430676095184,
+        -0.03014014599668864,
+        -0.00025718449563127965
+      ],
+      "quaternion_wxyz": [
+        0.9845354113314597,
+        -0.03179859194706666,
+        0.13558708798441885,
+        -0.10627800786843568
+      ]
+    },
+    "nominal_release_wrist_world_m": [
+      0.305,
+      0.475,
+      1.235
+    ],
+    "nominal_release_wrist_quaternion_wxyz": [
+      1,
+      0,
+      0,
+      0
+    ],
+    "clearance_summary": {
+      "nominal_drop_freefall_bottom_to_box_floor_m": 0.19000000000000006,
+      "min_heldcan_orientation_independent_rim_clearance_m": 0.02164690920907919,
+      "min_release_enclosing_sphere_xy_margin_m": 0.037527557442742096,
+      "min_hand_bottom_to_rim_m": 0.04649717798573216
+    },
+    "grasp_record_source": "/root/code/amo/Postman_Deploy/reference_motion_bank/r2v2_grasp/thumb75_cylinder40mm_100g/left/grasp_record.json",
+    "grasp_record_sha256": "e7e879c35d9cf88e1bd250f6b517ee8fd3dc8a46b223880340f86f347821a27e",
+    "handle_kind": "external_vertical_cylinder",
+    "grip_diameter_m": 0.04,
+    "grip_axis_y_m": [
+      -0.24,
+      0.24
+    ],
+    "grip_z_range_m": [
+      0.02,
+      0.14
+    ],
+    "grip_wall_clear_gap_m": 0.04,
+    "outside_width_m": 0.52
+  },
+  "source_bindings": [
+    {
+      "path": "/root/autodl-tmp/Postman_Deploy/vertical_grip_ik_20261025/path_verified/report.json",
+      "sha256": "f51a4f36074b693d41c1324e0e02cbf9dcbe37b66f2310e709120a8646e30726"
+    },
+    {
+      "path": "/root/autodl-tmp/Postman_Deploy/vertical_grip_ik_20261025/path_verified/dense_metrics.json",
+      "sha256": "a23e690747cd68a9996b20b6e0c84a148f416e50706de41a492053b64c849357"
+    },
+    {
+      "path": "/root/autodl-tmp/Postman_Deploy/vertical_grip_ik_20261025/path_verified/scene.xml",
+      "sha256": "c5690f4df241350f866fba9241f707de1e113424abd185ccb4bd30dfa7e87de7"
+    },
+    {
+      "path": "/root/autodl-tmp/Postman_Deploy/vertical_grip_grasp_20261025/pitch_m15_video/trajectory.npz",
+      "sha256": "056d396dcedd680a79a83ba73e9b0e0676106698144e9d657414a5f5a3bbe79f"
+    },
+    {
+      "path": "/root/autodl-tmp/Postman_Deploy/vertical_grip_grasp_20261025/pitch_m15_video/report.json",
+      "sha256": "b301a88f83437dd95d068d51cf9c427899c000f20f8eb0db7c3e5abe8822a78a"
+    },
+    {
+      "path": "/root/autodl-tmp/Postman_Deploy/vertical_grip_grasp_20261025/pitch_m15_video/scene.xml",
+      "sha256": "38b7c5062ab93f94e226c777e05cec4183c03bf66d7fad11262ade6343233f6b"
+    }
+  ],
+  "scope": "measured fixture wrist goals, sampled whole-body IK; virtual-prop PPO",
+  "path_metadata": {
+    "world_anchor": [
+      [
+        1.0,
+        0.0,
+        0.0,
+        0.33
+      ],
+      [
+        0.0,
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0,
+        0.98
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "table_top_m": 0.98,
+    "crate_center_xy_m": [
+      0.33,
+      0.0
+    ],
+    "scene_profile": "vertical_grip_crate_36_v1",
+    "fixture_grasp_verified": true,
+    "wholebody_dynamic_grasp_verified": false,
+    "standing_to_outside_collision_certified": false
+  },
+  "payload_training": {
+    "contract": "wrist_payload_path_v2",
+    "loaded_phases": [
+      "PROBE_LIFT",
+      "HOLD_PROBE",
+      "LIFT_HIGHER",
+      "HOLD_HIGHER",
+      "LOWER"
+    ],
+    "neighborhood": {
+      "position_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rpy_rad": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    }
+  }
+}

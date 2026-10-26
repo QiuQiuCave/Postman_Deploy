@@ -1,0 +1,10 @@
+endpoint_contract: wrist_world_v2
+policy_path: /root/autodl-tmp/Postman_Deploy/front_drop_20260927/policy/policy_front_manipulation_v1.onnx
+checkpoint_path: /root/autodl-tmp/Postman_Deploy/front_drop_20260927/policy/model_9999.pt
+simulation_dt: 0.001
+policy_dt: 0.02
+hand_dt: 0.01
+foot_clearance_m: 0.001
+reset_settle_s: 0.4
+standing_duration_s: 20.0
+phase_timeout_s: 10.0

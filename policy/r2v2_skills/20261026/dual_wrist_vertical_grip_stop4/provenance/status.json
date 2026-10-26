@@ -1,0 +1,156 @@
+{
+  "budget_progress_label": 5,
+  "completed_new_updates": 5,
+  "curriculum": {
+    "completed": 2048.0,
+    "contract": {
+      "angle_tolerances": [
+        0.08726646259971647,
+        0.08726646259971647,
+        0.05235987755982989
+      ],
+      "duration_s": 39.90000000000696,
+      "evaluation_interval_updates": 250,
+      "finger_control": "rigid_open_no_policy_action",
+      "loaded_phases": [
+        "PROBE_LIFT",
+        "HOLD_PROBE",
+        "LIFT_HIGHER",
+        "HOLD_HIGHER",
+        "LOWER"
+      ],
+      "local_cycle_s": 8.0,
+      "local_motion_s": 2.0,
+      "maximum_path_phase": null,
+      "maximum_path_time_s": null,
+      "mixture_probabilities": [
+        0.5,
+        0.3,
+        0.2
+      ],
+      "neighborhood_ramp": "CLOSE_SEAT smoothstep; fixed thereafter; shared rigid world transform",
+      "path_contract": "wrist_payload_path_v2",
+      "path_sha256": "9b3294cde866e73d49956648aeb93f15ad6f42189cee206afbcdbfc9dac2073c",
+      "payload": {
+        "angular_speed_gate_radps": 1.2,
+        "enabled": true,
+        "gravity_mps2": 9.81,
+        "left_share_range": [
+          0.45,
+          0.55
+        ],
+        "linear_speed_gate_mps": 0.3,
+        "loaded_phase_names": [
+          "PROBE_LIFT",
+          "HOLD_PROBE",
+          "LIFT_HIGHER",
+          "HOLD_HIGHER",
+          "LOWER"
+        ],
+        "mass_range_kg": [
+          0.0,
+          0.6
+        ],
+        "orientation_gate_deg": 25.0,
+        "pose_gate_enabled": true,
+        "position_gate_m": 0.04,
+        "ramp_duration_range_s": [
+          0.5,
+          1.0
+        ],
+        "reference_mass_kg": 0.4,
+        "reference_mass_probability": 0.2,
+        "seed": 170421,
+        "wrist_body_names": [
+          "left_hand_roll_link",
+          "right_hand_roll_link"
+        ],
+        "zero_mass_probability": 0.2
+      },
+      "payload_local_fraction": 0.6,
+      "payload_position_jitter_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "payload_rpy_jitter_rad": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "phase_count": 16,
+      "phase_names": [
+        "STAND",
+        "HOME",
+        "SAFE_WAIT",
+        "START_HOLD",
+        "READY",
+        "APPROACH",
+        "SETTLE",
+        "CLOSE_SEAT",
+        "PROBE_LIFT",
+        "HOLD_PROBE",
+        "LIFT_HIGHER",
+        "HOLD_HIGHER",
+        "LOWER",
+        "TABLE_SETTLE",
+        "OPEN",
+        "RETRACT"
+      ],
+      "position_tolerances": [
+        0.02,
+        0.01,
+        0.005
+      ],
+      "promotion_success_rate": 0.7,
+      "required_evaluations": 3,
+      "stage_fractions": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "stage_position_jitter_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "stage_yaw_jitter_rad": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    "endpoint_contract": "wrist_world_v2",
+    "evaluation_streak": 0,
+    "evaluations": [],
+    "last_evaluation_iteration": -1,
+    "last_evaluation_success_rate": 0.0,
+    "path_contract": "wrist_payload_path_v2",
+    "per_environment_episodes_saved": false,
+    "promotions": [],
+    "schema_version": 3,
+    "stage": 0,
+    "successes": 0.0
+  },
+  "endpoint_body_names": "left_hand_roll_link,right_hand_roll_link",
+  "endpoint_contract": "wrist_world_v2",
+  "evaluation": "smoke_local_0p6kg",
+  "free_bytes": 49838096384,
+  "fresh_optimizer": true,
+  "iteration": 4,
+  "local_final_iteration": 5999,
+  "path_contract": "wrist_payload_path_v2",
+  "pid": 497359,
+  "planned_updates": 6000,
+  "quaternion_order": "wxyz",
+  "reason": "Smoke safety gate failed; subsequent updates withheld",
+  "scene_profile": "vertical_grip_crate_36_v1",
+  "smoke_updates": 5,
+  "source_iteration": 9999,
+  "speed_reference_point": "wrist",
+  "started_at": "2026-10-25T04:39:46.873380+00:00",
+  "state": "stopped",
+  "stopped_at": "2026-10-25T04:54:09.649332+00:00",
+  "task_id": "R2V2-Reach-CrateVerticalGrip36Payload-v1-28DoF",
+  "updated_at": "2026-10-25T04:51:09.351454+00:00"
+}

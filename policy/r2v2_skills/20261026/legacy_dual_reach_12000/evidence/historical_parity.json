@@ -1,0 +1,180 @@
+{
+  "passed": true,
+  "task": "R2V2-Reach-DualArm-SpeedLimited-28DoF",
+  "checkpoint_path": "/root/code/amo/AMO_R2/logs/rsl_rl/r2v2_reach_dual_arm_speed_limited_28dof/2026-08-30_00-45-04_dual-arm-speed-limited-v1-from-13250/model_12000.pt",
+  "checkpoint_sha256": "88b746c958e255bd33984100f876f07d808aab6e03d5f77c10566a06452cda53",
+  "checkpoint_iter": 12000,
+  "onnx_path": "/root/code/amo/AMO_R2/logs/rsl_rl/r2v2_reach_dual_arm_speed_limited_28dof/2026-08-30_00-45-04_dual-arm-speed-limited-v1-from-13250/2026-08-30_00-45-04_dual-arm-speed-limited-v1-from-13250.onnx",
+  "onnx_sha256": "a2a5eed7c99cccead33d30ede3becda862ecf92c60d02894067af60ac956da8f",
+  "adapter_path": "/root/code/amo/Postman_Deploy/common/r2v2_reach_policy.py",
+  "adapter_sha256": "be6e855a18245fd86dc000c427edbc079e6e37d984a026f73c60d4d79d25fe04",
+  "snapshot_sha256": "6cce9ddaf645412b97e7937b1b6d109172fb3326a6f5e4e2b1c3a4e2bb5fe4c6",
+  "sample_count": 240,
+  "episodes": 2,
+  "checks": {
+    "weights": {
+      "passed": true,
+      "tensor_max_abs_error": {
+        "obs_normalizer._mean": 0.0,
+        "mlp.0.weight": 0.0,
+        "mlp.0.bias": 0.0,
+        "mlp.2.weight": 0.0,
+        "mlp.2.bias": 0.0,
+        "mlp.4.weight": 0.0,
+        "mlp.4.bias": 0.0,
+        "mlp.6.weight": 0.0,
+        "mlp.6.bias": 0.0
+      },
+      "normalization_epsilon": 0.01,
+      "normalization_divisor_initializer": "onnx::Div_24",
+      "normalization_divisor_max_abs_error": 0.0,
+      "comparison": "All eight MLP tensors, normalization mean and std + epsilon; exact equality"
+    },
+    "observations": {
+      "passed": true,
+      "max_abs_error": 3.5762786865234375e-07,
+      "tolerance": 5e-05
+    },
+    "history": {
+      "passed": true,
+      "max_abs_error": 3.5762786865234375e-07,
+      "tolerance": 5e-05
+    },
+    "actions_same_native_observation": {
+      "passed": true,
+      "max_abs_error": 3.337860107421875e-06,
+      "tolerance": 0.0001
+    },
+    "end_to_end_actions": {
+      "passed": true,
+      "max_abs_error": 1.4066696166992188e-05,
+      "tolerance": 0.0002
+    }
+  },
+  "observation_terms": {
+    "base_lin_vel": {
+      "passed": true,
+      "max_abs_error": 2.384185791015625e-07,
+      "tolerance": 5e-05
+    },
+    "base_ang_vel": {
+      "passed": true,
+      "max_abs_error": 3.5762786865234375e-07,
+      "tolerance": 5e-05
+    },
+    "projected_gravity": {
+      "passed": true,
+      "max_abs_error": 5.960464477539063e-08,
+      "tolerance": 5e-05
+    },
+    "joint_pos": {
+      "passed": true,
+      "max_abs_error": 2.9802322387695312e-08,
+      "tolerance": 5e-05
+    },
+    "joint_vel": {
+      "passed": true,
+      "max_abs_error": 0.0,
+      "tolerance": 5e-05
+    },
+    "actions": {
+      "passed": true,
+      "max_abs_error": 0.0,
+      "tolerance": 5e-05
+    },
+    "command": {
+      "passed": true,
+      "max_abs_error": 0.0,
+      "tolerance": 5e-05
+    },
+    "base_pose_command": {
+      "passed": true,
+      "max_abs_error": 0.0,
+      "tolerance": 5e-05
+    },
+    "reach_position_error": {
+      "passed": true,
+      "max_abs_error": 3.501772880554199e-07,
+      "tolerance": 5e-05
+    },
+    "reach_orientation_error": {
+      "passed": true,
+      "max_abs_error": 2.980232238769531e-07,
+      "tolerance": 5e-05
+    },
+    "active_arm_mask": {
+      "passed": true,
+      "max_abs_error": 0.0,
+      "tolerance": 5e-05
+    },
+    "final_reach_position_error": {
+      "passed": true,
+      "max_abs_error": 3.501772880554199e-07,
+      "tolerance": 5e-05
+    },
+    "final_reach_orientation_error": {
+      "passed": true,
+      "max_abs_error": 2.384185791015625e-07,
+      "tolerance": 5e-05
+    },
+    "reach_reference_linear_velocity": {
+      "passed": true,
+      "max_abs_error": 7.450580596923828e-08,
+      "tolerance": 5e-05
+    },
+    "reach_reference_angular_velocity": {
+      "passed": true,
+      "max_abs_error": 1.9371509552001953e-07,
+      "tolerance": 5e-05
+    },
+    "reach_speed_limits": {
+      "passed": true,
+      "max_abs_error": 0.0,
+      "tolerance": 5e-05
+    },
+    "right_reach_position_error": {
+      "passed": true,
+      "max_abs_error": 3.073364496231079e-07,
+      "tolerance": 5e-05
+    },
+    "right_reach_orientation_error": {
+      "passed": true,
+      "max_abs_error": 2.384185791015625e-07,
+      "tolerance": 5e-05
+    },
+    "right_active_arm_mask": {
+      "passed": true,
+      "max_abs_error": 0.0,
+      "tolerance": 5e-05
+    },
+    "right_final_reach_position_error": {
+      "passed": true,
+      "max_abs_error": 3.0640512704849243e-07,
+      "tolerance": 5e-05
+    },
+    "right_final_reach_orientation_error": {
+      "passed": true,
+      "max_abs_error": 2.384185791015625e-07,
+      "tolerance": 5e-05
+    },
+    "right_reach_reference_linear_velocity": {
+      "passed": true,
+      "max_abs_error": 8.940696716308594e-08,
+      "tolerance": 5e-05
+    },
+    "right_reach_reference_angular_velocity": {
+      "passed": true,
+      "max_abs_error": 1.7881393432617188e-07,
+      "tolerance": 5e-05
+    },
+    "right_reach_speed_limits": {
+      "passed": true,
+      "max_abs_error": 0.0,
+      "tolerance": 5e-05
+    }
+  },
+  "coverage": "Actual native ManagerBasedRlEnv play rollouts: two resets, symmetric/asymmetric 6D goals, changing joint states/velocities, previous actions, world-frame reference pose/twist, and all 24 term-major ten-frame histories. CPU MuJoCo forward kinematics from identical qpos/qvel.",
+  "native_mujoco_version": "3.7.0",
+  "deployment_mujoco_version": "3.3.7",
+  "limitations": "This is numerical interface parity on the OLD training robot, not new-model standing or grasp validation."
+}

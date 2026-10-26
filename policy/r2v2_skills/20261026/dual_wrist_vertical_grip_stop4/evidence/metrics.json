@@ -1,0 +1,1649 @@
+{
+  "task": "R2V2-Reach-CrateVerticalGrip36Payload-v1-28DoF",
+  "checkpoint": "/root/autodl-tmp/HALO-mj/vertical_grip_20261025/train_v2/model_stop_4.pt",
+  "checkpoint_sha256": "2a0e2729c945db1e1fd9ca78e80ec674a3cca52ecc5455aa3d7a3e55755cc835",
+  "scene_profile": "vertical_grip_crate_36_v1",
+  "scene": {
+    "tabletop_height_m": 0.98,
+    "crate_base_world_m": [
+      0.45,
+      0.44,
+      0.98
+    ],
+    "crate_dimensions_depth_width_height_m": [
+      0.24,
+      0.36,
+      0.16
+    ],
+    "can_initial_world_m": [
+      0.4,
+      0.13,
+      1.041
+    ],
+    "can_dimensions_diameter_height_mass": [
+      0.04,
+      0.12,
+      0.1
+    ],
+    "grasp_can_in_wrist_position_m": [
+      0.145,
+      -0.035,
+      0.0
+    ],
+    "grasp_can_in_wrist_quaternion_wxyz": [
+      1,
+      0,
+      0,
+      0
+    ],
+    "table_center_world_m": [
+      0.545,
+      0.255,
+      0.96
+    ],
+    "table_half_size_m": [
+      0.195,
+      0.365,
+      0.02
+    ],
+    "crate_quaternion_wxyz": [
+      1,
+      0,
+      0,
+      0
+    ],
+    "crate_bottom_thickness_m": 0.005,
+    "crate_wall_thickness_m": 0.004,
+    "crate_mass_kg": 0.4,
+    "can_initial_quaternion_wxyz": [
+      1,
+      0,
+      0,
+      0
+    ],
+    "recorded_held_can_in_wrist": {
+      "position_m": [
+        0.13527430676095184,
+        -0.03014014599668864,
+        -0.00025718449563127965
+      ],
+      "quaternion_wxyz": [
+        0.9845354113314597,
+        -0.03179859194706666,
+        0.13558708798441885,
+        -0.10627800786843568
+      ]
+    },
+    "nominal_release_wrist_world_m": [
+      0.305,
+      0.475,
+      1.235
+    ],
+    "nominal_release_wrist_quaternion_wxyz": [
+      1,
+      0,
+      0,
+      0
+    ],
+    "clearance_summary": {
+      "nominal_drop_freefall_bottom_to_box_floor_m": 0.19000000000000006,
+      "min_heldcan_orientation_independent_rim_clearance_m": 0.02164690920907919,
+      "min_release_enclosing_sphere_xy_margin_m": 0.037527557442742096,
+      "min_hand_bottom_to_rim_m": 0.04649717798573216
+    },
+    "grasp_record_source": "/root/code/amo/Postman_Deploy/reference_motion_bank/r2v2_grasp/thumb75_cylinder40mm_100g/left/grasp_record.json",
+    "grasp_record_sha256": "e7e879c35d9cf88e1bd250f6b517ee8fd3dc8a46b223880340f86f347821a27e",
+    "handle_kind": "external_vertical_cylinder",
+    "grip_diameter_m": 0.04,
+    "grip_axis_y_m": [
+      -0.24,
+      0.24
+    ],
+    "grip_z_range_m": [
+      0.02,
+      0.14
+    ],
+    "grip_wall_clear_gap_m": 0.04,
+    "outside_width_m": 0.52
+  },
+  "task_origin_in_beverage_world_m": [
+    0.12,
+    0.44,
+    0.0
+  ],
+  "new_updates": 5,
+  "source_iteration": 9999,
+  "trajectory_sha256": "9b3294cde866e73d49956648aeb93f15ad6f42189cee206afbcdbfc9dac2073c",
+  "path_manifest_sha256": "a389afd8af5ac2e4656d3b7adb0324cca267fe8c73dc7bafc1fd61829811c97d",
+  "seed": 1234,
+  "nominal_single_case": true,
+  "statistical_success_rate": false,
+  "scope": "native policy full path with phase-gated equivalent gravity; no IK, grasp, real prop contact",
+  "reset": "nominal play standing reset; not randomized 18-case evaluation",
+  "physical_table_crate": false,
+  "static_prop_outlines": true,
+  "auto_reset": false,
+  "fingers": "rigid_open",
+  "final_wrist_target_z_minus_insert_m": [
+    0.10000300407409668,
+    0.10000312328338623
+  ],
+  "payload_requested_mass_kg": 0.4,
+  "payload_measurements": {
+    "scope": "external downward gravity-equivalent payload only; no physical crate/inertia/contact/offset torque",
+    "configuration": {
+      "enabled": true,
+      "mass_range_kg": [
+        0.0,
+        0.6
+      ],
+      "reference_mass_kg": 0.4,
+      "zero_mass_probability": 0.2,
+      "reference_mass_probability": 0.2,
+      "left_share_range": [
+        0.45,
+        0.55
+      ],
+      "ramp_duration_range_s": [
+        0.5,
+        1.0
+      ],
+      "loaded_phase_names": [
+        "PROBE_LIFT",
+        "HOLD_PROBE",
+        "LIFT_HIGHER",
+        "HOLD_HIGHER",
+        "LOWER"
+      ],
+      "wrist_body_names": [
+        "left_hand_roll_link",
+        "right_hand_roll_link"
+      ],
+      "gravity_mps2": 9.81,
+      "seed": 170421,
+      "pose_gate_enabled": true,
+      "position_gate_m": 0.04,
+      "orientation_gate_deg": 25.0,
+      "linear_speed_gate_mps": 0.3,
+      "angular_speed_gate_radps": 1.2
+    },
+    "evaluation_enabled": true,
+    "evaluation_mass_kg": 0.4,
+    "physics_step_calls": 41900,
+    "policy_update_calls": 2095,
+    "phase_metrics": {
+      "STAND": {
+        "max_total_downward_force_N": -0.0,
+        "summed_environment_impulse_Ns": 0.0,
+        "nonzero_environment_physics_samples": 0,
+        "nonzero_environment_policy_samples": 0
+      },
+      "HOME": {
+        "max_total_downward_force_N": -0.0,
+        "summed_environment_impulse_Ns": 0.0,
+        "nonzero_environment_physics_samples": 0,
+        "nonzero_environment_policy_samples": 0
+      },
+      "SAFE_WAIT": {
+        "max_total_downward_force_N": -0.0,
+        "summed_environment_impulse_Ns": 0.0,
+        "nonzero_environment_physics_samples": 0,
+        "nonzero_environment_policy_samples": 0
+      },
+      "START_HOLD": {
+        "max_total_downward_force_N": -0.0,
+        "summed_environment_impulse_Ns": 0.0,
+        "nonzero_environment_physics_samples": 0,
+        "nonzero_environment_policy_samples": 0
+      },
+      "READY": {
+        "max_total_downward_force_N": -0.0,
+        "summed_environment_impulse_Ns": 0.0,
+        "nonzero_environment_physics_samples": 0,
+        "nonzero_environment_policy_samples": 0
+      },
+      "APPROACH": {
+        "max_total_downward_force_N": -0.0,
+        "summed_environment_impulse_Ns": 0.0,
+        "nonzero_environment_physics_samples": 0,
+        "nonzero_environment_policy_samples": 0
+      },
+      "SETTLE": {
+        "max_total_downward_force_N": -0.0,
+        "summed_environment_impulse_Ns": 0.0,
+        "nonzero_environment_physics_samples": 0,
+        "nonzero_environment_policy_samples": 0
+      },
+      "CLOSE_SEAT": {
+        "max_total_downward_force_N": -0.0,
+        "summed_environment_impulse_Ns": 0.0,
+        "nonzero_environment_physics_samples": 0,
+        "nonzero_environment_policy_samples": 0
+      },
+      "PROBE_LIFT": {
+        "max_total_downward_force_N": 3.9240002632141113,
+        "summed_environment_impulse_Ns": 6.328885078430176,
+        "nonzero_environment_physics_samples": 1980,
+        "nonzero_environment_policy_samples": 99
+      },
+      "HOLD_PROBE": {
+        "max_total_downward_force_N": 3.9240002632141113,
+        "summed_environment_impulse_Ns": 3.9240002632141113,
+        "nonzero_environment_physics_samples": 1000,
+        "nonzero_environment_policy_samples": 50
+      },
+      "LIFT_HIGHER": {
+        "max_total_downward_force_N": 3.9240002632141113,
+        "summed_environment_impulse_Ns": 11.771977424621582,
+        "nonzero_environment_physics_samples": 3000,
+        "nonzero_environment_policy_samples": 150
+      },
+      "HOLD_HIGHER": {
+        "max_total_downward_force_N": 3.9240002632141113,
+        "summed_environment_impulse_Ns": 11.771977424621582,
+        "nonzero_environment_physics_samples": 3000,
+        "nonzero_environment_policy_samples": 150
+      },
+      "LOWER": {
+        "max_total_downward_force_N": 3.9240002632141113,
+        "summed_environment_impulse_Ns": 10.329103469848633,
+        "nonzero_environment_physics_samples": 3000,
+        "nonzero_environment_policy_samples": 150
+      },
+      "TABLE_SETTLE": {
+        "max_total_downward_force_N": -0.0,
+        "summed_environment_impulse_Ns": 0.0,
+        "nonzero_environment_physics_samples": 0,
+        "nonzero_environment_policy_samples": 0
+      },
+      "OPEN": {
+        "max_total_downward_force_N": -0.0,
+        "summed_environment_impulse_Ns": 0.0,
+        "nonzero_environment_physics_samples": 0,
+        "nonzero_environment_policy_samples": 0
+      },
+      "RETRACT": {
+        "max_total_downward_force_N": -0.0,
+        "summed_environment_impulse_Ns": 0.0,
+        "nonzero_environment_physics_samples": 0,
+        "nonzero_environment_policy_samples": 0
+      }
+    },
+    "forbidden_phase_nonzero_samples": 0,
+    "rehearsal_nonzero_samples": 0,
+    "active_contribution_attached": false,
+    "effective_mass_kg": [
+      0.0
+    ],
+    "sampled_mass_kg": [
+      0.0
+    ],
+    "left_share": [
+      0.508374035358429
+    ],
+    "sampled_segments_per_environment": [
+      1
+    ],
+    "load_entry_pose_gate_latched": true,
+    "no_force_writes_outside_physics_scope": true,
+    "total_weight_is_shared_not_applied_twice": true
+  },
+  "payload_external_load_applied": true,
+  "payload_observed_phases": [
+    "PROBE_LIFT",
+    "HOLD_PROBE",
+    "LIFT_HIGHER",
+    "HOLD_HIGHER",
+    "LOWER"
+  ],
+  "payload_near_nominal_weight_phases": [
+    "PROBE_LIFT",
+    "HOLD_PROBE",
+    "LIFT_HIGHER",
+    "HOLD_HIGHER",
+    "LOWER"
+  ],
+  "payload_phase_exposure_fraction": 1.0,
+  "payload_phase_exposure_definition": "Measured peak >=90% requested weight; not precision/grasp success",
+  "payload_timing": "Sampled wrench is the just-completed physics interval; target phase may advance by one 20ms tick",
+  "foot_anchor_definition": "Native sampler live foot_anchor, re-anchored after STAND settling; reset drift reported separately",
+  "source_safety_terminations_preserved": [
+    "time_out",
+    "fell_over",
+    "base_height",
+    "nonfoot_floor",
+    "hard_joint_limit",
+    "deep_self_penetration",
+    "nonfinite_physics"
+  ],
+  "failure_terms": [],
+  "full_playback_completed": true,
+  "normalizer_frozen_verified": true,
+  "simulation_duration_s": 41.9,
+  "fps": 25,
+  "video_frames": 1047,
+  "video_duration_s": 41.88,
+  "video": "/root/autodl-tmp/HALO-mj/vertical_grip_20261025/render_stop4_0p4kg/wrist_payload_model_stop_4_0.4kg.mp4",
+  "cameras": [
+    {
+      "distance": 3.05,
+      "azimuth": 90.0,
+      "elevation": 0.0,
+      "lookat": [
+        0.13,
+        0.0,
+        0.89
+      ]
+    },
+    {
+      "distance": 1.35,
+      "azimuth": 135.0,
+      "elevation": -30.0,
+      "lookat": [
+        0.315,
+        0.0,
+        1.1099999999999999
+      ]
+    }
+  ],
+  "transitions": [
+    {
+      "time_s": 0.02,
+      "phase": "STAND"
+    },
+    {
+      "time_s": 0.42,
+      "phase": "HOME"
+    },
+    {
+      "time_s": 5.44,
+      "phase": "SAFE_WAIT"
+    },
+    {
+      "time_s": 13.42,
+      "phase": "START_HOLD"
+    },
+    {
+      "time_s": 15.42,
+      "phase": "READY"
+    },
+    {
+      "time_s": 16.42,
+      "phase": "APPROACH"
+    },
+    {
+      "time_s": 18.42,
+      "phase": "SETTLE"
+    },
+    {
+      "time_s": 18.92,
+      "phase": "CLOSE_SEAT"
+    },
+    {
+      "time_s": 21.92,
+      "phase": "PROBE_LIFT"
+    },
+    {
+      "time_s": 23.92,
+      "phase": "HOLD_PROBE"
+    },
+    {
+      "time_s": 24.92,
+      "phase": "LIFT_HIGHER"
+    },
+    {
+      "time_s": 27.92,
+      "phase": "HOLD_HIGHER"
+    },
+    {
+      "time_s": 30.92,
+      "phase": "LOWER"
+    },
+    {
+      "time_s": 33.92,
+      "phase": "TABLE_SETTLE"
+    },
+    {
+      "time_s": 34.92,
+      "phase": "OPEN"
+    },
+    {
+      "time_s": 37.92,
+      "phase": "RETRACT"
+    }
+  ],
+  "phase_summaries": [
+    {
+      "phase": "STAND",
+      "duration_s": 0.4,
+      "tail_duration_s": 0.4,
+      "strict_achieved": false,
+      "arms": {
+        "left": {
+          "wrist_error_m": 0.0,
+          "orientation_error_deg": 9.827285630606059e-06,
+          "wrist_speed_mps": 0.35845880284905435
+        },
+        "right": {
+          "wrist_error_m": 0.0,
+          "orientation_error_deg": 7.557116850457964e-06,
+          "wrist_speed_mps": 0.33298365101218225
+        }
+      },
+      "endpoint_arms": {
+        "left": {
+          "wrist_position_m": [
+            0.28845325112342834,
+            0.16305537521839142,
+            1.056918740272522
+          ],
+          "wrist_quaternion_wxyz": [
+            0.9995546340942383,
+            -0.025601312518119812,
+            -0.005586749408394098,
+            0.014280631206929684
+          ],
+          "goal_wrist_position_m": [
+            0.28845325112342834,
+            0.16305537521839142,
+            1.056918740272522
+          ],
+          "goal_quaternion_wxyz": [
+            0.9995546340942383,
+            -0.025601312518119812,
+            -0.005586749408394098,
+            0.014280631206929684
+          ],
+          "wrist_error_m": 0.0,
+          "orientation_error_deg": 8.86226255288401e-06,
+          "wrist_speed_mps": 0.16548624634742737,
+          "angular_speed_radps": 0.6770437955856323
+        },
+        "right": {
+          "wrist_position_m": [
+            0.28469517827033997,
+            -0.2440430223941803,
+            1.0439443588256836
+          ],
+          "wrist_quaternion_wxyz": [
+            0.9972485899925232,
+            0.025255873799324036,
+            -0.06661125272512436,
+            0.02050788514316082
+          ],
+          "goal_wrist_position_m": [
+            0.28469517827033997,
+            -0.2440430223941803,
+            1.0439443588256836
+          ],
+          "goal_quaternion_wxyz": [
+            0.9972485899925232,
+            0.025255873799324036,
+            -0.06661125272512436,
+            0.02050788514316082
+          ],
+          "wrist_error_m": 0.0,
+          "orientation_error_deg": 5.302372020115447e-06,
+          "wrist_speed_mps": 0.2276006042957306,
+          "angular_speed_radps": 1.0673677921295166
+        }
+      },
+      "tail_effective_mass_kg": 0.0
+    },
+    {
+      "phase": "HOME",
+      "duration_s": 5.0200000000000005,
+      "tail_duration_s": 2.0,
+      "strict_achieved": true,
+      "arms": {
+        "left": {
+          "wrist_error_m": 0.002186371546704322,
+          "orientation_error_deg": 0.4583067066304519,
+          "wrist_speed_mps": 6.0329201314743844e-05
+        },
+        "right": {
+          "wrist_error_m": 0.0018465767207089812,
+          "orientation_error_deg": 0.6267893318319008,
+          "wrist_speed_mps": 5.2204420944690356e-05
+        }
+      },
+      "endpoint_arms": {
+        "left": {
+          "wrist_position_m": [
+            0.2475956380367279,
+            0.19849775731563568,
+            1.0878071784973145
+          ],
+          "wrist_quaternion_wxyz": [
+            0.9999923706054688,
+            0.0012528735678642988,
+            0.002978401957079768,
+            0.0021971764508634806
+          ],
+          "goal_wrist_position_m": [
+            0.2460000067949295,
+            0.19697999954223633,
+            1.0879020690917969
+          ],
+          "goal_quaternion_wxyz": [
+            1.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "wrist_error_m": 0.002204230288043618,
+          "orientation_error_deg": 0.4477581203212105,
+          "wrist_speed_mps": 3.581367855076678e-05,
+          "angular_speed_radps": 0.0001364845084026456
+        },
+        "right": {
+          "wrist_position_m": [
+            0.24612382054328918,
+            -0.19778260588645935,
+            1.0891289710998535
+          ],
+          "wrist_quaternion_wxyz": [
+            0.9999847412109375,
+            0.004596096929162741,
+            -0.0005065963487140834,
+            -0.0030490760691463947
+          ],
+          "goal_wrist_position_m": [
+            0.2460000067949295,
+            -0.1964299976825714,
+            1.0879020690917969
+          ],
+          "goal_quaternion_wxyz": [
+            1.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "wrist_error_m": 0.001830346300266683,
+          "orientation_error_deg": 0.6346989571614314,
+          "wrist_speed_mps": 3.3130054362118244e-05,
+          "angular_speed_radps": 0.00010336052218917757
+        }
+      },
+      "tail_effective_mass_kg": 0.0
+    },
+    {
+      "phase": "SAFE_WAIT",
+      "duration_s": 7.98,
+      "tail_duration_s": 2.0,
+      "strict_achieved": false,
+      "arms": {
+        "left": {
+          "wrist_error_m": 0.005679339431226254,
+          "orientation_error_deg": 1.1692036090222175,
+          "wrist_speed_mps": 0.013587968724314123
+        },
+        "right": {
+          "wrist_error_m": 0.011288224309682847,
+          "orientation_error_deg": 1.956209985417441,
+          "wrist_speed_mps": 0.010452438474167138
+        }
+      },
+      "endpoint_arms": {
+        "left": {
+          "wrist_position_m": [
+            0.19216293096542358,
+            0.35088443756103516,
+            1.0188632011413574
+          ],
+          "wrist_quaternion_wxyz": [
+            0.9902124404907227,
+            -0.0016579987714067101,
+            -0.1394827663898468,
+            0.0045952098444104195
+          ],
+          "goal_wrist_position_m": [
+            0.18994179368019104,
+            0.35499706864356995,
+            1.0224723815917969
+          ],
+          "goal_quaternion_wxyz": [
+            0.9914451837539673,
+            0.0,
+            -0.13052381575107574,
+            0.0
+          ],
+          "wrist_error_m": 0.005905367434024811,
+          "orientation_error_deg": 1.1778335722484357,
+          "wrist_speed_mps": 0.0007337821880355477,
+          "angular_speed_radps": 0.006923827808350325
+        },
+        "right": {
+          "wrist_position_m": [
+            0.19044530391693115,
+            -0.3442436754703522,
+            1.0316327810287476
+          ],
+          "wrist_quaternion_wxyz": [
+            0.9916032552719116,
+            -0.006608300842344761,
+            -0.12833130359649658,
+            0.014503015205264091
+          ],
+          "goal_wrist_position_m": [
+            0.18994179368019104,
+            -0.35499706864356995,
+            1.0224723815917969
+          ],
+          "goal_quaternion_wxyz": [
+            0.9914451837539673,
+            0.0,
+            -0.13052381575107574,
+            0.0
+          ],
+          "wrist_error_m": 0.014135129749774933,
+          "orientation_error_deg": 1.8436234437900594,
+          "wrist_speed_mps": 0.0028355508111417294,
+          "angular_speed_radps": 0.009395013563334942
+        }
+      },
+      "tail_effective_mass_kg": 0.0
+    },
+    {
+      "phase": "START_HOLD",
+      "duration_s": 2.0,
+      "tail_duration_s": 2.0,
+      "strict_achieved": false,
+      "arms": {
+        "left": {
+          "wrist_error_m": 0.005644004382193088,
+          "orientation_error_deg": 1.1527820605427568,
+          "wrist_speed_mps": 0.00036186930134135764
+        },
+        "right": {
+          "wrist_error_m": 0.01331557024270296,
+          "orientation_error_deg": 1.801932418394683,
+          "wrist_speed_mps": 0.0007500345709559042
+        }
+      },
+      "endpoint_arms": {
+        "left": {
+          "wrist_position_m": [
+            0.192165806889534,
+            0.3508433997631073,
+            1.0195021629333496
+          ],
+          "wrist_quaternion_wxyz": [
+            0.9902842044830322,
+            0.0006923197652213275,
+            -0.13895761966705322,
+            0.005242016166448593
+          ],
+          "goal_wrist_position_m": [
+            0.18994075059890747,
+            0.35499998927116394,
+            1.0224711894989014
+          ],
+          "goal_quaternion_wxyz": [
+            0.9914448857307434,
+            0.0,
+            -0.13052621483802795,
+            0.0
+          ],
+          "wrist_error_m": 0.0055716452188789845,
+          "orientation_error_deg": 1.1481713413435395,
+          "wrist_speed_mps": 0.0002515391679480672,
+          "angular_speed_radps": 0.001063887495547533
+        },
+        "right": {
+          "wrist_position_m": [
+            0.19050940871238708,
+            -0.3454766571521759,
+            1.0312457084655762
+          ],
+          "wrist_quaternion_wxyz": [
+            0.9916873574256897,
+            -0.006360518280416727,
+            -0.1277681291103363,
+            0.013823471032083035
+          ],
+          "goal_wrist_position_m": [
+            0.18994075059890747,
+            -0.35499998927116394,
+            1.0224711894989014
+          ],
+          "goal_quaternion_wxyz": [
+            0.9914448857307434,
+            0.0,
+            -0.13052621483802795,
+            0.0
+          ],
+          "wrist_error_m": 0.012961843982338905,
+          "orientation_error_deg": 1.772332490554405,
+          "wrist_speed_mps": 0.00014663244655821472,
+          "angular_speed_radps": 0.0005111330538056791
+        }
+      },
+      "tail_effective_mass_kg": 0.0
+    },
+    {
+      "phase": "READY",
+      "duration_s": 1.0,
+      "tail_duration_s": 1.0,
+      "strict_achieved": false,
+      "arms": {
+        "left": {
+          "wrist_error_m": 0.005509298983961344,
+          "orientation_error_deg": 1.1465205187720933,
+          "wrist_speed_mps": 0.0013000233186176047
+        },
+        "right": {
+          "wrist_error_m": 0.012958580814301967,
+          "orientation_error_deg": 1.7840986418597402,
+          "wrist_speed_mps": 0.0012209473302937112
+        }
+      },
+      "endpoint_arms": {
+        "left": {
+          "wrist_position_m": [
+            0.19212648272514343,
+            0.3507525324821472,
+            1.0196727514266968
+          ],
+          "wrist_quaternion_wxyz": [
+            0.9903796911239624,
+            0.0008671552641317248,
+            -0.13825491070747375,
+            0.005741456523537636
+          ],
+          "goal_wrist_position_m": [
+            0.18994075059890747,
+            0.35499998927116394,
+            1.0224628448486328
+          ],
+          "goal_quaternion_wxyz": [
+            0.991509199142456,
+            3.141164779663086e-05,
+            -0.13003668189048767,
+            -4.112720489501953e-06
+          ],
+          "wrist_error_m": 0.005531991831958294,
+          "orientation_error_deg": 1.1602954607288412,
+          "wrist_speed_mps": 0.00021202192874625325,
+          "angular_speed_radps": 0.001662850845605135
+        },
+        "right": {
+          "wrist_position_m": [
+            0.1905893236398697,
+            -0.34554705023765564,
+            1.0311328172683716
+          ],
+          "wrist_quaternion_wxyz": [
+            0.9917712211608887,
+            -0.006409292109310627,
+            -0.12712132930755615,
+            0.013750361278653145
+          ],
+          "goal_wrist_position_m": [
+            0.18994075059890747,
+            -0.35499998927116394,
+            1.0224628448486328
+          ],
+          "goal_quaternion_wxyz": [
+            0.9915092587471008,
+            -3.1948089599609375e-05,
+            -0.13003632426261902,
+            4.231929779052734e-06
+          ],
+          "wrist_error_m": 0.012843173928558826,
+          "orientation_error_deg": 1.768574392407017,
+          "wrist_speed_mps": 0.00014950345212128013,
+          "angular_speed_radps": 0.0005508231115527451
+        }
+      },
+      "tail_effective_mass_kg": 0.0
+    },
+    {
+      "phase": "APPROACH",
+      "duration_s": 2.0,
+      "tail_duration_s": 2.0,
+      "strict_achieved": false,
+      "arms": {
+        "left": {
+          "wrist_error_m": 0.005305219464935363,
+          "orientation_error_deg": 1.0174114485872403,
+          "wrist_speed_mps": 0.041372870527266056
+        },
+        "right": {
+          "wrist_error_m": 0.011479424135759473,
+          "orientation_error_deg": 1.5121265196763023,
+          "wrist_speed_mps": 0.0385575930243067
+        }
+      },
+      "endpoint_arms": {
+        "left": {
+          "wrist_position_m": [
+            0.19068220257759094,
+            0.27209538221359253,
+            1.0211020708084106
+          ],
+          "wrist_quaternion_wxyz": [
+            0.9905617833137512,
+            0.009818268939852715,
+            -0.13670071959495544,
+            0.0019685509614646435
+          ],
+          "goal_wrist_position_m": [
+            0.18994075059890747,
+            0.27500325441360474,
+            1.0224628448486328
+          ],
+          "goal_quaternion_wxyz": [
+            0.991509199142456,
+            3.1828880310058594e-05,
+            -0.13003665208816528,
+            -5.364418029785156e-06
+          ],
+          "wrist_error_m": 0.003295023227110505,
+          "orientation_error_deg": 1.379770889824213,
+          "wrist_speed_mps": 0.00969013199210167,
+          "angular_speed_radps": 0.03758281469345093
+        },
+        "right": {
+          "wrist_position_m": [
+            0.18960171937942505,
+            -0.27240926027297974,
+            1.02597975730896
+          ],
+          "wrist_quaternion_wxyz": [
+            0.9918308258056641,
+            -0.0015785250579938293,
+            -0.12734320759773254,
+            0.007272918242961168
+          ],
+          "goal_wrist_position_m": [
+            0.18994061648845673,
+            -0.27500662207603455,
+            1.0224632024765015
+          ],
+          "goal_quaternion_wxyz": [
+            0.9915055632591248,
+            6.377696990966797e-05,
+            -0.13006404042243958,
+            -0.0002281665802001953
+          ],
+          "wrist_error_m": 0.004384893923997879,
+          "orientation_error_deg": 0.9342751095830104,
+          "wrist_speed_mps": 0.007566695101559162,
+          "angular_speed_radps": 0.03532510995864868
+        }
+      },
+      "tail_effective_mass_kg": 0.0
+    },
+    {
+      "phase": "SETTLE",
+      "duration_s": 0.5,
+      "tail_duration_s": 0.5,
+      "strict_achieved": false,
+      "arms": {
+        "left": {
+          "wrist_error_m": 0.003562538353726268,
+          "orientation_error_deg": 1.6487525673588173,
+          "wrist_speed_mps": 0.0027976071869488806
+        },
+        "right": {
+          "wrist_error_m": 0.0035340692568570377,
+          "orientation_error_deg": 1.0945360685274368,
+          "wrist_speed_mps": 0.005327969118952751
+        }
+      },
+      "endpoint_arms": {
+        "left": {
+          "wrist_position_m": [
+            0.19189795851707458,
+            0.27249494194984436,
+            1.020870327949524
+          ],
+          "wrist_quaternion_wxyz": [
+            0.9901646971702576,
+            0.010723014362156391,
+            -0.13944488763809204,
+            0.003749897237867117
+          ],
+          "goal_wrist_position_m": [
+            0.18994075059890747,
+            0.2750000059604645,
+            1.0224628448486328
+          ],
+          "goal_quaternion_wxyz": [
+            0.991509199142456,
+            3.141164779663086e-05,
+            -0.13003669679164886,
+            -4.112720489501953e-06
+          ],
+          "wrist_error_m": 0.003555575618520379,
+          "orientation_error_deg": 1.6947500793195227,
+          "wrist_speed_mps": 0.00034917177981697023,
+          "angular_speed_radps": 0.011730468831956387
+        },
+        "right": {
+          "wrist_position_m": [
+            0.19052724540233612,
+            -0.273831844329834,
+            1.024780035018921
+          ],
+          "wrist_quaternion_wxyz": [
+            0.9924217462539673,
+            8.868813893059269e-05,
+            -0.12266167998313904,
+            0.007296984549611807
+          ],
+          "goal_wrist_position_m": [
+            0.18994075059890747,
+            -0.27500036358833313,
+            1.0224628448486328
+          ],
+          "goal_quaternion_wxyz": [
+            0.9915091395378113,
+            -1.8358230590820312e-05,
+            -0.13003702461719513,
+            -2.2411346435546875e-05
+          ],
+          "wrist_error_m": 0.002660598373040557,
+          "orientation_error_deg": 1.1953607981540404,
+          "wrist_speed_mps": 0.0034644200932234526,
+          "angular_speed_radps": 0.007231120020151138
+        }
+      },
+      "tail_effective_mass_kg": 0.0
+    },
+    {
+      "phase": "CLOSE_SEAT",
+      "duration_s": 3.0,
+      "tail_duration_s": 2.0,
+      "strict_achieved": false,
+      "arms": {
+        "left": {
+          "wrist_error_m": 0.0030871262052096426,
+          "orientation_error_deg": 1.6445260857874442,
+          "wrist_speed_mps": 0.0005627703588470468
+        },
+        "right": {
+          "wrist_error_m": 0.0022784308809787033,
+          "orientation_error_deg": 1.110823647115196,
+          "wrist_speed_mps": 0.0010394162188458722
+        }
+      },
+      "endpoint_arms": {
+        "left": {
+          "wrist_position_m": [
+            0.19161206483840942,
+            0.2725812792778015,
+            1.021496295928955
+          ],
+          "wrist_quaternion_wxyz": [
+            0.990166962146759,
+            0.009766421280801296,
+            -0.13945206999778748,
+            0.005221045110374689
+          ],
+          "goal_wrist_position_m": [
+            0.18994192779064178,
+            0.2749919891357422,
+            1.0224673748016357
+          ],
+          "goal_quaternion_wxyz": [
+            0.9914708733558655,
+            0.00018858909606933594,
+            -0.13032659888267517,
+            -0.0007064938545227051
+          ],
+          "wrist_error_m": 0.0030893159564584494,
+          "orientation_error_deg": 1.6678756328130495,
+          "wrist_speed_mps": 6.275291525525972e-05,
+          "angular_speed_radps": 0.0008740562479943037
+        },
+        "right": {
+          "wrist_position_m": [
+            0.18994195759296417,
+            -0.2734152674674988,
+            1.024205207824707
+          ],
+          "wrist_quaternion_wxyz": [
+            0.9924670457839966,
+            -0.0004199123359285295,
+            -0.12235409021377563,
+            0.006200884468853474
+          ],
+          "goal_wrist_position_m": [
+            0.1899418830871582,
+            -0.274991899728775,
+            1.0224676132202148
+          ],
+          "goal_quaternion_wxyz": [
+            0.9914674758911133,
+            -0.00018393993377685547,
+            -0.13035263121128082,
+            0.0007138848304748535
+          ],
+          "wrist_error_m": 0.0023462744429707527,
+          "orientation_error_deg": 1.1177216109716823,
+          "wrist_speed_mps": 0.00010977769852615893,
+          "angular_speed_radps": 0.00042137442505918443
+        }
+      },
+      "tail_effective_mass_kg": 0.0
+    },
+    {
+      "phase": "PROBE_LIFT",
+      "duration_s": 2.0,
+      "tail_duration_s": 2.0,
+      "strict_achieved": false,
+      "arms": {
+        "left": {
+          "wrist_error_m": 0.0030216094898059963,
+          "orientation_error_deg": 1.8282934801354938,
+          "wrist_speed_mps": 0.009715336078952532
+        },
+        "right": {
+          "wrist_error_m": 0.0014676915697054939,
+          "orientation_error_deg": 1.312843621719318,
+          "wrist_speed_mps": 0.010201602943416219
+        }
+      },
+      "endpoint_arms": {
+        "left": {
+          "wrist_position_m": [
+            0.19126825034618378,
+            0.2739998400211334,
+            1.0403615236282349
+          ],
+          "wrist_quaternion_wxyz": [
+            0.9902312755584717,
+            0.011955968104302883,
+            -0.1388547569513321,
+            0.004289848264306784
+          ],
+          "goal_wrist_position_m": [
+            0.18994075059890747,
+            0.2749927043914795,
+            1.0424652099609375
+          ],
+          "goal_quaternion_wxyz": [
+            0.991489589214325,
+            0.000232696533203125,
+            -0.1301845759153366,
+            -0.0006508827209472656
+          ],
+          "wrist_error_m": 0.0026783449575304985,
+          "orientation_error_deg": 1.770082796996532,
+          "wrist_speed_mps": 0.0008333876030519605,
+          "angular_speed_radps": 0.0030930491629987955
+        },
+        "right": {
+          "wrist_position_m": [
+            0.1895025670528412,
+            -0.27401071786880493,
+            1.043558120727539
+          ],
+          "wrist_quaternion_wxyz": [
+            0.9926937818527222,
+            0.002362902043387294,
+            -0.12046350538730621,
+            0.006478871684521437
+          ],
+          "goal_wrist_position_m": [
+            0.18994075059890747,
+            -0.2749926745891571,
+            1.0424652099609375
+          ],
+          "goal_quaternion_wxyz": [
+            0.9914880990982056,
+            -0.0002307295799255371,
+            -0.13019558787345886,
+            0.0006554126739501953
+          ],
+          "wrist_error_m": 0.0015331985196098685,
+          "orientation_error_deg": 1.340329642296857,
+          "wrist_speed_mps": 0.0007741255685687065,
+          "angular_speed_radps": 0.001390094286762178
+        }
+      },
+      "tail_effective_mass_kg": 0.31857345183205327
+    },
+    {
+      "phase": "HOLD_PROBE",
+      "duration_s": 1.0,
+      "tail_duration_s": 1.0,
+      "strict_achieved": false,
+      "arms": {
+        "left": {
+          "wrist_error_m": 0.0027748751640319824,
+          "orientation_error_deg": 1.769833360622477,
+          "wrist_speed_mps": 0.00021402677070000208
+        },
+        "right": {
+          "wrist_error_m": 0.001476428268942982,
+          "orientation_error_deg": 1.3119746412972098,
+          "wrist_speed_mps": 0.0003412477278834558
+        }
+      },
+      "endpoint_arms": {
+        "left": {
+          "wrist_position_m": [
+            0.1913914829492569,
+            0.2739624083042145,
+            1.040340542793274
+          ],
+          "wrist_quaternion_wxyz": [
+            0.9902140498161316,
+            0.01172952726483345,
+            -0.13899165391921997,
+            0.004452667199075222
+          ],
+          "goal_wrist_position_m": [
+            0.18994075059890747,
+            0.2749927341938019,
+            1.0424659252166748
+          ],
+          "goal_quaternion_wxyz": [
+            0.991489589214325,
+            0.00023186206817626953,
+            -0.13018429279327393,
+            -0.0006476640701293945
+          ],
+          "wrist_error_m": 0.0027719030622392893,
+          "orientation_error_deg": 1.7656414664887312,
+          "wrist_speed_mps": 0.00015741161769255996,
+          "angular_speed_radps": 0.0008029053569771349
+        },
+        "right": {
+          "wrist_position_m": [
+            0.18973392248153687,
+            -0.27403607964515686,
+            1.0436002016067505
+          ],
+          "wrist_quaternion_wxyz": [
+            0.9926557540893555,
+            0.0024217565078288317,
+            -0.12079059332609177,
+            0.006199902389198542
+          ],
+          "goal_wrist_position_m": [
+            0.18994075059890747,
+            -0.2749927043914795,
+            1.0424659252166748
+          ],
+          "goal_quaternion_wxyz": [
+            0.9914887547492981,
+            -0.00023126602172851562,
+            -0.13019080460071564,
+            0.0006502866744995117
+          ],
+          "wrist_error_m": 0.0014981627464294434,
+          "orientation_error_deg": 1.2942459290799577,
+          "wrist_speed_mps": 0.0002356848563067615,
+          "angular_speed_radps": 0.00036818828084506094
+        }
+      },
+      "tail_effective_mass_kg": 0.4000000059604645
+    },
+    {
+      "phase": "LIFT_HIGHER",
+      "duration_s": 3.0,
+      "tail_duration_s": 2.0,
+      "strict_achieved": false,
+      "arms": {
+        "left": {
+          "wrist_error_m": 0.002237340590218082,
+          "orientation_error_deg": 2.55356437102764,
+          "wrist_speed_mps": 0.03082444588886574
+        },
+        "right": {
+          "wrist_error_m": 0.0034600066218990833,
+          "orientation_error_deg": 1.7792834417378114,
+          "wrist_speed_mps": 0.03395498268073425
+        }
+      },
+      "endpoint_arms": {
+        "left": {
+          "wrist_position_m": [
+            0.191375732421875,
+            0.2767656445503235,
+            1.1196681261062622
+          ],
+          "wrist_quaternion_wxyz": [
+            0.9909608364105225,
+            0.01014669332653284,
+            -0.1337677538394928,
+            0.0002232213446404785
+          ],
+          "goal_wrist_position_m": [
+            0.18994075059890747,
+            0.2749927341938019,
+            1.122464895248413
+          ],
+          "goal_quaternion_wxyz": [
+            0.9914897084236145,
+            0.00023299455642700195,
+            -0.13018351793289185,
+            -0.0006456971168518066
+          ],
+          "wrist_error_m": 0.003608919680118561,
+          "orientation_error_deg": 1.2136168265884266,
+          "wrist_speed_mps": 0.0017824587412178516,
+          "angular_speed_radps": 0.002734467852860689
+        },
+        "right": {
+          "wrist_position_m": [
+            0.1883973777294159,
+            -0.27438586950302124,
+            1.1247345209121704
+          ],
+          "wrist_quaternion_wxyz": [
+            0.9923533797264099,
+            0.003894644323736429,
+            -0.12316688895225525,
+            0.007043104153126478
+          ],
+          "goal_wrist_position_m": [
+            0.18994076550006866,
+            -0.2749927043914795,
+            1.122464895248413
+          ],
+          "goal_quaternion_wxyz": [
+            0.9914886951446533,
+            -0.00023114681243896484,
+            -0.13019131124019623,
+            0.0006486773490905762
+          ],
+          "wrist_error_m": 0.0028109599370509386,
+          "orientation_error_deg": 1.1908847830918605,
+          "wrist_speed_mps": 0.0023036166094243526,
+          "angular_speed_radps": 0.009995336644351482
+        }
+      },
+      "tail_effective_mass_kg": 0.4000000059604645
+    },
+    {
+      "phase": "HOLD_HIGHER",
+      "duration_s": 3.0,
+      "tail_duration_s": 2.0,
+      "strict_achieved": false,
+      "arms": {
+        "left": {
+          "wrist_error_m": 0.0033026660489849746,
+          "orientation_error_deg": 1.265422273583193,
+          "wrist_speed_mps": 7.32152177261014e-05
+        },
+        "right": {
+          "wrist_error_m": 0.0024655727040953936,
+          "orientation_error_deg": 1.1931520110259934,
+          "wrist_speed_mps": 0.00014924506804163683
+        }
+      },
+      "endpoint_arms": {
+        "left": {
+          "wrist_position_m": [
+            0.19164055585861206,
+            0.2759784162044525,
+            1.1198198795318604
+          ],
+          "wrist_quaternion_wxyz": [
+            0.9909375905990601,
+            0.010441643185913563,
+            -0.13391432166099548,
+            -0.0007551306043751538
+          ],
+          "goal_wrist_position_m": [
+            0.18994075059890747,
+            0.2749927341938019,
+            1.1224658489227295
+          ],
+          "goal_quaternion_wxyz": [
+            0.9914894104003906,
+            0.0002320408821105957,
+            -0.1301858127117157,
+            -0.0006450414657592773
+          ],
+          "wrist_error_m": 0.0032957640942186117,
+          "orientation_error_deg": 1.2471866727505103,
+          "wrist_speed_mps": 5.951278217253275e-05,
+          "angular_speed_radps": 0.0005128500633873045
+        },
+        "right": {
+          "wrist_position_m": [
+            0.18873590230941772,
+            -0.2748749852180481,
+            1.1246134042739868
+          ],
+          "wrist_quaternion_wxyz": [
+            0.992393434047699,
+            0.00434282748028636,
+            -0.12286735326051712,
+            0.006337692495435476
+          ],
+          "goal_wrist_position_m": [
+            0.18994076550006866,
+            -0.2749927341938019,
+            1.1224658489227295
+          ],
+          "goal_quaternion_wxyz": [
+            0.9914892911911011,
+            -0.0002334117889404297,
+            -0.1301867663860321,
+            0.0006452202796936035
+          ],
+          "wrist_error_m": 0.0024652695283293724,
+          "orientation_error_deg": 1.189424509991653,
+          "wrist_speed_mps": 8.123242150759324e-05,
+          "angular_speed_radps": 0.00034277804661542177
+        }
+      },
+      "tail_effective_mass_kg": 0.4000000059604645
+    },
+    {
+      "phase": "LOWER",
+      "duration_s": 3.0,
+      "tail_duration_s": 2.0,
+      "strict_achieved": false,
+      "arms": {
+        "left": {
+          "wrist_error_m": 0.006545196608640253,
+          "orientation_error_deg": 0.9239560384406138,
+          "wrist_speed_mps": 0.03833904314553365
+        },
+        "right": {
+          "wrist_error_m": 0.008175262522418052,
+          "orientation_error_deg": 0.5587958314437316,
+          "wrist_speed_mps": 0.04246930608991534
+        }
+      },
+      "endpoint_arms": {
+        "left": {
+          "wrist_position_m": [
+            0.19253048300743103,
+            0.27121296525001526,
+            1.0216364860534668
+          ],
+          "wrist_quaternion_wxyz": [
+            0.9901223182678223,
+            0.006494476925581694,
+            -0.13994072377681732,
+            0.005689441692084074
+          ],
+          "goal_wrist_position_m": [
+            0.18994031846523285,
+            0.274992972612381,
+            1.022472858428955
+          ],
+          "goal_quaternion_wxyz": [
+            0.9914133548736572,
+            5.054473876953125e-05,
+            -0.130763977766037,
+            -0.0006055831909179688
+          ],
+          "wrist_error_m": 0.0046579958871006966,
+          "orientation_error_deg": 1.480997174809858,
+          "wrist_speed_mps": 0.003193799639120698,
+          "angular_speed_radps": 0.012430017814040184
+        },
+        "right": {
+          "wrist_position_m": [
+            0.19110693037509918,
+            -0.2727114260196686,
+            1.0249204635620117
+          ],
+          "wrist_quaternion_wxyz": [
+            0.9921426177024841,
+            -0.0007496632752008736,
+            -0.1250234991312027,
+            0.004649178124964237
+          ],
+          "goal_wrist_position_m": [
+            0.18994005024433136,
+            -0.2749931216239929,
+            1.022472858428955
+          ],
+          "goal_quaternion_wxyz": [
+            0.9914106726646423,
+            -3.74913215637207e-05,
+            -0.13078415393829346,
+            0.0005963444709777832
+          ],
+          "wrist_error_m": 0.0035437995102256536,
+          "orientation_error_deg": 0.8155612991663113,
+          "wrist_speed_mps": 0.004093139432370663,
+          "angular_speed_radps": 0.01299144048243761
+        }
+      },
+      "tail_effective_mass_kg": 0.33045066335238515
+    },
+    {
+      "phase": "TABLE_SETTLE",
+      "duration_s": 1.0,
+      "tail_duration_s": 1.0,
+      "strict_achieved": false,
+      "arms": {
+        "left": {
+          "wrist_error_m": 0.0039671391248703005,
+          "orientation_error_deg": 1.5518853091014746,
+          "wrist_speed_mps": 0.0013022860200726427
+        },
+        "right": {
+          "wrist_error_m": 0.0032055423688143493,
+          "orientation_error_deg": 1.0148248089910061,
+          "wrist_speed_mps": 0.0016735526104457677
+        }
+      },
+      "endpoint_arms": {
+        "left": {
+          "wrist_position_m": [
+            0.1918623298406601,
+            0.27198442816734314,
+            1.0216509103775024
+          ],
+          "wrist_quaternion_wxyz": [
+            0.9902724027633667,
+            0.009965055622160435,
+            -0.13866978883743286,
+            0.005658022593706846
+          ],
+          "goal_wrist_position_m": [
+            0.18994063138961792,
+            0.2749921679496765,
+            1.0224679708480835
+          ],
+          "goal_quaternion_wxyz": [
+            0.9914612770080566,
+            0.0001729726791381836,
+            -0.13040000200271606,
+            -0.0006844401359558105
+          ],
+          "wrist_error_m": 0.003661558497697115,
+          "orientation_error_deg": 1.644377220747267,
+          "wrist_speed_mps": 0.0005350978462956846,
+          "angular_speed_radps": 0.002513105748221278
+        },
+        "right": {
+          "wrist_position_m": [
+            0.19019939005374908,
+            -0.2728406488895416,
+            1.024642825126648
+          ],
+          "wrist_quaternion_wxyz": [
+            0.9924939274787903,
+            -0.0005056262598372996,
+            -0.12217225134372711,
+            0.0054344660602509975
+          ],
+          "goal_wrist_position_m": [
+            0.18994057178497314,
+            -0.2749921977519989,
+            1.0224682092666626
+          ],
+          "goal_quaternion_wxyz": [
+            0.9914574027061462,
+            -0.0001634359359741211,
+            -0.13042928278446198,
+            0.0006821751594543457
+          ],
+          "wrist_error_m": 0.0030700331553816795,
+          "orientation_error_deg": 1.098857162092636,
+          "wrist_speed_mps": 0.0005789236165583134,
+          "angular_speed_radps": 0.0028618343640118837
+        }
+      },
+      "tail_effective_mass_kg": 1.5631545102223755e-05
+    },
+    {
+      "phase": "OPEN",
+      "duration_s": 3.0,
+      "tail_duration_s": 2.0,
+      "strict_achieved": false,
+      "arms": {
+        "left": {
+          "wrist_error_m": 0.003505784226581454,
+          "orientation_error_deg": 1.722777156533815,
+          "wrist_speed_mps": 0.00013325374264240962
+        },
+        "right": {
+          "wrist_error_m": 0.0029906782088801264,
+          "orientation_error_deg": 1.1042647797394427,
+          "wrist_speed_mps": 0.0001688433653635002
+        }
+      },
+      "endpoint_arms": {
+        "left": {
+          "wrist_position_m": [
+            0.19183361530303955,
+            0.272177129983902,
+            1.0217022895812988
+          ],
+          "wrist_quaternion_wxyz": [
+            0.9902999401092529,
+            0.010518960654735565,
+            -0.13835354149341583,
+            0.007330535911023617
+          ],
+          "goal_wrist_position_m": [
+            0.18994088470935822,
+            0.27500036358833313,
+            1.0224628448486328
+          ],
+          "goal_quaternion_wxyz": [
+            0.9915094375610352,
+            1.9729137420654297e-05,
+            -0.13003510236740112,
+            2.9027462005615234e-05
+          ],
+          "wrist_error_m": 0.003483033273369074,
+          "orientation_error_deg": 1.7536957857954962,
+          "wrist_speed_mps": 1.6826175851747394e-05,
+          "angular_speed_radps": 0.0006897284183651209
+        },
+        "right": {
+          "wrist_position_m": [
+            0.19031864404678345,
+            -0.2730734348297119,
+            1.024794578552246
+          ],
+          "wrist_quaternion_wxyz": [
+            0.9925472736358643,
+            -0.0006403640727512538,
+            -0.1217634379863739,
+            0.004807626828551292
+          ],
+          "goal_wrist_position_m": [
+            0.18994075059890747,
+            -0.2750000059604645,
+            1.0224628448486328
+          ],
+          "goal_quaternion_wxyz": [
+            0.9915092587471008,
+            -3.1828880310058594e-05,
+            -0.13003624975681305,
+            4.172325134277344e-06
+          ],
+          "wrist_error_m": 0.003048189915716648,
+          "orientation_error_deg": 1.1048485186552064,
+          "wrist_speed_mps": 0.00010096385813085362,
+          "angular_speed_radps": 0.00021106739586684853
+        }
+      },
+      "tail_effective_mass_kg": 0.0
+    },
+    {
+      "phase": "RETRACT",
+      "duration_s": 4.0,
+      "tail_duration_s": 2.0,
+      "strict_achieved": false,
+      "arms": {
+        "left": {
+          "wrist_error_m": 0.005981898163445294,
+          "orientation_error_deg": 1.3617388457042696,
+          "wrist_speed_mps": 0.0013441900848556543
+        },
+        "right": {
+          "wrist_error_m": 0.012581958258524538,
+          "orientation_error_deg": 1.8324625923867073,
+          "wrist_speed_mps": 0.0031035142007749526
+        }
+      },
+      "endpoint_arms": {
+        "left": {
+          "wrist_position_m": [
+            0.19175425171852112,
+            0.3494686782360077,
+            1.0213167667388916
+          ],
+          "wrist_quaternion_wxyz": [
+            0.9907196760177612,
+            0.003311198903247714,
+            -0.13550865650177002,
+            0.010054859332740307
+          ],
+          "goal_wrist_position_m": [
+            0.18994075059890747,
+            0.3549996316432953,
+            1.0224628448486328
+          ],
+          "goal_quaternion_wxyz": [
+            0.991509199142456,
+            3.1113624572753906e-05,
+            -0.13003665208816528,
+            -3.516674041748047e-06
+          ],
+          "wrist_error_m": 0.005932430271059275,
+          "orientation_error_deg": 1.3679049302451967,
+          "wrist_speed_mps": 0.00020137603860348463,
+          "angular_speed_radps": 0.00026334697031416
+        },
+        "right": {
+          "wrist_position_m": [
+            0.1914823055267334,
+            -0.3458061218261719,
+            1.0313079357147217
+          ],
+          "wrist_quaternion_wxyz": [
+            0.9921147227287292,
+            -0.008419240824878216,
+            -0.1245068833231926,
+            0.011644873768091202
+          ],
+          "goal_wrist_position_m": [
+            0.18994075059890747,
+            -0.3549996316432953,
+            1.0224628448486328
+          ],
+          "goal_quaternion_wxyz": [
+            0.9915092587471008,
+            -3.165006637573242e-05,
+            -0.13003632426261902,
+            3.5762786865234375e-06
+          ],
+          "wrist_error_m": 0.01285039447247982,
+          "orientation_error_deg": 1.7634286986410586,
+          "wrist_speed_mps": 0.00027493771631270647,
+          "angular_speed_radps": 0.0013812861870974302
+        }
+      },
+      "tail_effective_mass_kg": 0.0
+    }
+  ]
+}

@@ -1,0 +1,295 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-26",
+  "repository": "QiuQiuCave/Postman_Deploy",
+  "branch": "r2v2-fsm",
+  "scope": "Simulation handoff; no qualified loaded box-walking claim",
+  "normalization": "Already inside ONNX",
+  "history": "10 frames per term, oldest first, then concatenate terms",
+  "models": {
+    "loco_9999": {
+      "checkpoint": "loco_9999/model_9999.pt",
+      "onnx": "loco_9999/policy.onnx",
+      "checkpoint_iteration": 9999,
+      "status": "selected_fixed_scene_baseline",
+      "task_id": "R2V2-Velocity-Flat",
+      "endpoint_contract": "leg_waist_14",
+      "input_shape": [
+        1,
+        560
+      ],
+      "output_shape": [
+        1,
+        14
+      ],
+      "required_metadata": {
+        "action_scale": "0.25",
+        "command_names": "twist,base_pose",
+        "joint_damping": "5.000,5.000,5.000,7.000,3.000,3.000,5.000,5.000,5.000,7.000,3.000,3.000,3.000,3.000",
+        "observation_names": "base_lin_vel,base_ang_vel,projected_gravity,joint_pos,joint_vel,actions,command,base_pose_command",
+        "joint_stiffness": "100.000,100.000,100.000,150.000,30.000,30.000,100.000,100.000,100.000,150.000,30.000,30.000,300.000,300.000",
+        "default_joint_pos": "-0.100,0.000,0.000,0.300,-0.200,0.000,-0.100,0.000,0.000,0.300,-0.200,0.000,0.000,0.000",
+        "joint_names": "left_hip_pitch_joint,left_hip_roll_joint,left_hip_yaw_joint,left_knee_joint,left_ankle_pitch_joint,left_ankle_roll_joint,right_hip_pitch_joint,right_hip_roll_joint,right_hip_yaw_joint,right_knee_joint,right_ankle_pitch_joint,right_ankle_roll_joint,waist_yaw_joint,waist_pitch_joint",
+        "run_path": "local"
+      }
+    },
+    "dual_wrist_vertical_grip_stop4": {
+      "checkpoint": "dual_wrist_vertical_grip_stop4/model_stop_4.pt",
+      "onnx": "dual_wrist_vertical_grip_stop4/policy_wrist_payload_v2.onnx",
+      "checkpoint_iteration": 4,
+      "status": "experimental_failed_standing_gate",
+      "task_id": "R2V2-Reach-CrateVerticalGrip36Payload-v1-28DoF",
+      "endpoint_contract": "wrist_world_v2",
+      "input_shape": [
+        1,
+        1460
+      ],
+      "output_shape": [
+        1,
+        28
+      ],
+      "required_metadata": {
+        "checkpoint_sha256": "2a0e2729c945db1e1fd9ca78e80ec674a3cca52ecc5455aa3d7a3e55755cc835",
+        "scene_profile": "vertical_grip_crate_36_v1",
+        "joint_names": "left_hip_pitch_joint,left_hip_roll_joint,left_hip_yaw_joint,left_knee_joint,left_ankle_pitch_joint,left_ankle_roll_joint,right_hip_pitch_joint,right_hip_roll_joint,right_hip_yaw_joint,right_knee_joint,right_ankle_pitch_joint,right_ankle_roll_joint,waist_yaw_joint,waist_pitch_joint,left_shoulder_pitch_joint,left_shoulder_roll_joint,left_shoulder_yaw_joint,left_arm_pitch_joint,left_arm_yaw_joint,left_hand_pitch_joint,left_hand_roll_joint,right_shoulder_pitch_joint,right_shoulder_roll_joint,right_shoulder_yaw_joint,right_arm_pitch_joint,right_arm_yaw_joint,right_hand_pitch_joint,right_hand_roll_joint",
+        "path_trajectory_sha256": "9b3294cde866e73d49956648aeb93f15ad6f42189cee206afbcdbfc9dac2073c",
+        "default_joint_pos": "-0.100,0.000,0.000,0.300,-0.200,0.000,-0.100,0.000,0.000,0.300,-0.200,0.000,0.000,0.000,0.000,0.000,0.000,0.000,0.000,0.000,0.000,0.000,0.000,0.000,0.000,0.000,0.000,0.000",
+        "observation_names": "base_lin_vel,base_ang_vel,projected_gravity,joint_pos,joint_vel,actions,command,base_pose_command,reach_position_error,reach_orientation_error,active_arm_mask,final_reach_position_error,final_reach_orientation_error,reach_reference_linear_velocity,reach_reference_angular_velocity,reach_speed_limits,right_reach_position_error,right_reach_orientation_error,right_active_arm_mask,right_final_reach_position_error,right_final_reach_orientation_error,right_reach_reference_linear_velocity,right_reach_reference_angular_velocity,right_reach_speed_limits",
+        "endpoint_contract": "wrist_world_v2",
+        "joint_damping": "5.000,5.000,5.000,7.000,3.000,3.000,5.000,5.000,5.000,7.000,3.000,3.000,3.000,3.000,5.000,5.000,5.000,2.000,2.000,2.000,2.000,5.000,5.000,5.000,2.000,2.000,2.000,2.000",
+        "task_id": "R2V2-Reach-CrateVerticalGrip36Payload-v1-28DoF",
+        "run_path": "local",
+        "command_names": "twist,base_pose,reach,reach_right",
+        "joint_stiffness": "100.000,100.000,100.000,150.000,30.000,30.000,100.000,100.000,100.000,150.000,30.000,30.000,300.000,300.000,100.000,100.000,100.000,40.000,40.000,40.000,40.000,100.000,100.000,100.000,40.000,40.000,40.000,40.000",
+        "action_scale": "0.25",
+        "path_contract": "wrist_payload_path_v2",
+        "quaternion_order": "wxyz",
+        "endpoint_body_names": "left_hand_roll_link,right_hand_roll_link",
+        "speed_reference_point": "wrist"
+      }
+    },
+    "front_drop_9999": {
+      "checkpoint": "front_drop_9999/model_9999.pt",
+      "onnx": "front_drop_9999/policy_front_manipulation_v1.onnx",
+      "checkpoint_iteration": 9999,
+      "status": "fixed_scene_cola_recovery_baseline",
+      "task_id": "R2V2-Reach-FrontManipulation-v1-28DoF",
+      "endpoint_contract": "wrist_world_v2",
+      "input_shape": [
+        1,
+        1460
+      ],
+      "output_shape": [
+        1,
+        28
+      ],
+      "required_metadata": {
+        "path_sha256": "bd0f23607eb4836b833d5341c5c673076c6b508b25c6c4d76f677d2704cf221b",
+        "checkpoint_sha256": "9c314ce914e0f0893cd79b355db3de808cedec7e874c548cb577bf43c148edc9",
+        "endpoint_body_names": "left_hand_roll_link,right_hand_roll_link",
+        "joint_names": "left_hip_pitch_joint,left_hip_roll_joint,left_hip_yaw_joint,left_knee_joint,left_ankle_pitch_joint,left_ankle_roll_joint,right_hip_pitch_joint,right_hip_roll_joint,right_hip_yaw_joint,right_knee_joint,right_ankle_pitch_joint,right_ankle_roll_joint,waist_yaw_joint,waist_pitch_joint,left_shoulder_pitch_joint,left_shoulder_roll_joint,left_shoulder_yaw_joint,left_arm_pitch_joint,left_arm_yaw_joint,left_hand_pitch_joint,left_hand_roll_joint,right_shoulder_pitch_joint,right_shoulder_roll_joint,right_shoulder_yaw_joint,right_arm_pitch_joint,right_arm_yaw_joint,right_hand_pitch_joint,right_hand_roll_joint",
+        "default_joint_pos": "-0.100,0.000,0.000,0.300,-0.200,0.000,-0.100,0.000,0.000,0.300,-0.200,0.000,0.000,0.000,0.000,0.000,0.000,0.000,0.000,0.000,0.000,0.000,0.000,0.000,0.000,0.000,0.000,0.000",
+        "observation_names": "base_lin_vel,base_ang_vel,projected_gravity,joint_pos,joint_vel,actions,command,base_pose_command,reach_position_error,reach_orientation_error,active_arm_mask,final_reach_position_error,final_reach_orientation_error,reach_reference_linear_velocity,reach_reference_angular_velocity,reach_speed_limits,right_reach_position_error,right_reach_orientation_error,right_active_arm_mask,right_final_reach_position_error,right_final_reach_orientation_error,right_reach_reference_linear_velocity,right_reach_reference_angular_velocity,right_reach_speed_limits",
+        "endpoint_contract": "wrist_world_v2",
+        "joint_damping": "5.000,5.000,5.000,7.000,3.000,3.000,5.000,5.000,5.000,7.000,3.000,3.000,3.000,3.000,5.000,5.000,5.000,2.000,2.000,2.000,2.000,5.000,5.000,5.000,2.000,2.000,2.000,2.000",
+        "task_id": "R2V2-Reach-FrontManipulation-v1-28DoF",
+        "run_path": "local",
+        "command_names": "twist,base_pose,reach,reach_right",
+        "joint_stiffness": "100.000,100.000,100.000,150.000,30.000,30.000,100.000,100.000,100.000,150.000,30.000,30.000,300.000,300.000,100.000,100.000,100.000,40.000,40.000,40.000,40.000,100.000,100.000,100.000,40.000,40.000,40.000,40.000",
+        "action_scale": "0.25",
+        "path_contract": "front_manipulation_path_v1",
+        "quaternion_order": "wxyz",
+        "task_scope": "tabletop_to_crate_drop_v1",
+        "speed_reference_point": "wrist"
+      }
+    },
+    "legacy_dual_reach_12000": {
+      "checkpoint": "legacy_dual_reach_12000/model_12000.pt",
+      "onnx": "legacy_dual_reach_12000/policy.onnx",
+      "checkpoint_iteration": 12000,
+      "status": "old_body_reference_not_wrist_v2",
+      "task_id": "R2V2-Reach-DualArm-SpeedLimited-28DoF",
+      "endpoint_contract": "legacy_tcp_v1",
+      "input_shape": [
+        1,
+        1460
+      ],
+      "output_shape": [
+        1,
+        28
+      ],
+      "required_metadata": {
+        "action_scale": "0.25",
+        "command_names": "twist,base_pose,reach,reach_right",
+        "joint_damping": "5.000,5.000,5.000,7.000,3.000,3.000,5.000,5.000,5.000,7.000,3.000,3.000,3.000,3.000,5.000,5.000,5.000,2.000,2.000,2.000,2.000,5.000,5.000,5.000,2.000,2.000,2.000,2.000",
+        "observation_names": "base_lin_vel,base_ang_vel,projected_gravity,joint_pos,joint_vel,actions,command,base_pose_command,reach_position_error,reach_orientation_error,active_arm_mask,final_reach_position_error,final_reach_orientation_error,reach_reference_linear_velocity,reach_reference_angular_velocity,reach_speed_limits,right_reach_position_error,right_reach_orientation_error,right_active_arm_mask,right_final_reach_position_error,right_final_reach_orientation_error,right_reach_reference_linear_velocity,right_reach_reference_angular_velocity,right_reach_speed_limits",
+        "joint_stiffness": "100.000,100.000,100.000,150.000,30.000,30.000,100.000,100.000,100.000,150.000,30.000,30.000,300.000,300.000,100.000,100.000,100.000,40.000,40.000,40.000,40.000,100.000,100.000,100.000,40.000,40.000,40.000,40.000",
+        "default_joint_pos": "-0.100,0.000,0.000,0.300,-0.200,0.000,-0.100,0.000,0.000,0.300,-0.200,0.000,0.000,0.000,0.000,0.000,0.000,0.000,0.000,0.000,0.000,0.000,0.000,0.000,0.000,0.000,0.000,0.000",
+        "joint_names": "left_hip_pitch_joint,left_hip_roll_joint,left_hip_yaw_joint,left_knee_joint,left_ankle_pitch_joint,left_ankle_roll_joint,right_hip_pitch_joint,right_hip_roll_joint,right_hip_yaw_joint,right_knee_joint,right_ankle_pitch_joint,right_ankle_roll_joint,waist_yaw_joint,waist_pitch_joint,left_shoulder_pitch_joint,left_shoulder_roll_joint,left_shoulder_yaw_joint,left_arm_pitch_joint,left_arm_yaw_joint,left_hand_pitch_joint,left_hand_roll_joint,right_shoulder_pitch_joint,right_shoulder_roll_joint,right_shoulder_yaw_joint,right_arm_pitch_joint,right_arm_yaw_joint,right_hand_pitch_joint,right_hand_roll_joint",
+        "run_path": "local"
+      }
+    }
+  },
+  "files": {
+    "README.md": {
+      "bytes": 6097,
+      "sha256": "002a8dfd237614f00abbbafe3b476cea268abe2597338810ac0223e9510834c4"
+    },
+    "dual_wrist_vertical_grip_stop4/evidence/0001_smoke_stand_unloaded.json": {
+      "bytes": 18565,
+      "sha256": "d9ce2a5e516cf731c31d462bd9e5dfe93d98aab0e96c81cd9b88dc30aab0fff8"
+    },
+    "dual_wrist_vertical_grip_stop4/evidence/metrics.json": {
+      "bytes": 49006,
+      "sha256": "842e694af1a219664b35628a5cc13fd8c47373a53bfdd496ad8a29a9fe77e77b"
+    },
+    "dual_wrist_vertical_grip_stop4/evidence/policy_wrist_payload_v2.parity.json": {
+      "bytes": 791,
+      "sha256": "db67f51b7ead13016ee15cb64ecc6ede70d74e4e6ab030c88c8c9cbf52868681"
+    },
+    "dual_wrist_vertical_grip_stop4/evidence/smoke_validation.json": {
+      "bytes": 214789,
+      "sha256": "0dacfaadd4534b92a1f4c77646b23f08b20101f1fb2afdd56c7fbc3f2ffc1689"
+    },
+    "dual_wrist_vertical_grip_stop4/model_stop_4.pt": {
+      "bytes": 22742681,
+      "sha256": "2a0e2729c945db1e1fd9ca78e80ec674a3cca52ecc5455aa3d7a3e55755cc835"
+    },
+    "dual_wrist_vertical_grip_stop4/params/agent.yaml": {
+      "bytes": 1345,
+      "sha256": "66fd16ce05c4b0b64b7a59f31999ffd49d25fdf42b3ac5d92b39891aeac5e42f"
+    },
+    "dual_wrist_vertical_grip_stop4/params/env.yaml": {
+      "bytes": 92434,
+      "sha256": "6a54c4a5b5bcb9f38353fcd9a4a4fd7e2dd40c2da6213196172ac45b2bed3f3d"
+    },
+    "dual_wrist_vertical_grip_stop4/path_snapshot/manifest.json": {
+      "bytes": 4929,
+      "sha256": "a389afd8af5ac2e4656d3b7adb0324cca267fe8c73dc7bafc1fd61829811c97d"
+    },
+    "dual_wrist_vertical_grip_stop4/path_snapshot/planned_path.npz": {
+      "bytes": 978433,
+      "sha256": "9b3294cde866e73d49956648aeb93f15ad6f42189cee206afbcdbfc9dac2073c"
+    },
+    "dual_wrist_vertical_grip_stop4/policy_wrist_payload_v2.onnx": {
+      "bytes": 3678968,
+      "sha256": "79cd28d34813fab0b687f287aad7600f18721b296c9f393d0e4bcde32c6c94cc"
+    },
+    "dual_wrist_vertical_grip_stop4/provenance/asset_manifest.json": {
+      "bytes": 9551,
+      "sha256": "81a6d4985198a4db1929555e288b352b69d7f660198a70b280b35f7c3cdc5394"
+    },
+    "dual_wrist_vertical_grip_stop4/provenance/geometry_validation.json": {
+      "bytes": 2575,
+      "sha256": "9b24f4cd492df813da7dd4d8b615efacefc6d5881048fd89012fbb0933564ff3"
+    },
+    "dual_wrist_vertical_grip_stop4/provenance/launcher.json": {
+      "bytes": 3348,
+      "sha256": "7f119a0f6c9be53cabc5d15e01b433a6d25afd175a9c314f7867315255494303"
+    },
+    "dual_wrist_vertical_grip_stop4/provenance/status.json": {
+      "bytes": 3990,
+      "sha256": "664bebdc918237b83aa8f943fdaa61badcdf2acc1e4d379a8edf43c6b058daa1"
+    },
+    "front_drop_9999/evidence/air_final.json": {
+      "bytes": 50457,
+      "sha256": "0b668c96b4ad623929bc40c4f73d00961ced377335c6bf6fba87ed3bd8ca1f18"
+    },
+    "front_drop_9999/evidence/contact_final.json": {
+      "bytes": 123001,
+      "sha256": "08764252db890433736f0f06adedbc276a61e80c07d8968197baf24b821eac18"
+    },
+    "front_drop_9999/evidence/loco_cola_straight_v8.json": {
+      "bytes": 10786,
+      "sha256": "9f6b7dc213d788cf04803cc69d96c9da9c7eaac379a55fbbbf5f3716d53f57b2"
+    },
+    "front_drop_9999/evidence/parity.json": {
+      "bytes": 6428,
+      "sha256": "3ce38fb7cf911efec3dbe0240f9894a371a8c2923dc2131fd577ee95c51bbf08"
+    },
+    "front_drop_9999/model_9999.pt": {
+      "bytes": 22741941,
+      "sha256": "9c314ce914e0f0893cd79b355db3de808cedec7e874c548cb577bf43c148edc9"
+    },
+    "front_drop_9999/path_manifest.json": {
+      "bytes": 8741,
+      "sha256": "e9070f2cfb331bf1f36ffc4b1d3e284327a966192bf60a7e4b7390077c6f189e"
+    },
+    "front_drop_9999/policy_front_manipulation_v1.onnx": {
+      "bytes": 3678950,
+      "sha256": "a395375a663bd67ea1afca19b5df248186cec9e7a7a47e0368dc0ca319ffcb39"
+    },
+    "front_drop_9999/reach_config.yaml": {
+      "bytes": 373,
+      "sha256": "83058578547134e8f32c70ebda25adbd8044f8a62e23bd24c09c509c1cf7ff4d"
+    },
+    "front_drop_9999/training/asset_manifest.json": {
+      "bytes": 9551,
+      "sha256": "81a6d4985198a4db1929555e288b352b69d7f660198a70b280b35f7c3cdc5394"
+    },
+    "front_drop_9999/training/code_manifest.json": {
+      "bytes": 6333,
+      "sha256": "3a3db79ba210bdf7a74b5fc9358f3b5801bd2bce1879b495c2b3da34b5b3d9c1"
+    },
+    "front_drop_9999/training/geometry_report.json": {
+      "bytes": 2158,
+      "sha256": "0ccf7b9dcd9e208d073a2df2cc2ac20a60b3985af4c504d596cfbd81fc2943d4"
+    },
+    "front_drop_9999/training/launcher.json": {
+      "bytes": 2325,
+      "sha256": "d29a355e6335d59ab5a227f9288821953dc2cc042fd8d6fd115bdc585f46ecb6"
+    },
+    "front_drop_9999/training/params/agent.yaml": {
+      "bytes": 1335,
+      "sha256": "ea72f24378a004a5dcac4be263ce7ec7fd6d172e9392a0bbcb46d1f428cfb8d0"
+    },
+    "front_drop_9999/training/params/env.yaml": {
+      "bytes": 90678,
+      "sha256": "a8a1029fde6753a764e2e9dbba647c037b4579222381ba9d29cb5106ec3bbfe2"
+    },
+    "legacy_dual_reach_12000/evidence/historical_parity.json": {
+      "bytes": 5625,
+      "sha256": "5c89a9892af11cdf3182954d0cc352d68057e72812d0f776b6b88457bb281581"
+    },
+    "legacy_dual_reach_12000/model_12000.pt": {
+      "bytes": 22736455,
+      "sha256": "88b746c958e255bd33984100f876f07d808aab6e03d5f77c10566a06452cda53"
+    },
+    "legacy_dual_reach_12000/params/agent.yaml": {
+      "bytes": 1502,
+      "sha256": "f781f93b861d3e8b28c4dbb01fbc18c44257461f68f700fcccfd600dd2e2d33c"
+    },
+    "legacy_dual_reach_12000/params/env.yaml": {
+      "bytes": 79709,
+      "sha256": "1dd6b24902a293a6a42aba2b04e1e68978ae835d8ce6ca678d5acc5ef6599bd9"
+    },
+    "legacy_dual_reach_12000/policy.onnx": {
+      "bytes": 3678486,
+      "sha256": "a2a5eed7c99cccead33d30ede3becda862ecf92c60d02894067af60ac956da8f"
+    },
+    "loco_9999/evidence/metrics.json": {
+      "bytes": 9080,
+      "sha256": "666fb6d24afc383e4e7e6ffaba521a7b6bbebff0740afc5436093b6876915beb"
+    },
+    "loco_9999/model_9999.pt": {
+      "bytes": 11633781,
+      "sha256": "3d88a9a9b77f519ce43d7a0441e4e04bd7f7d2d34943a67bf8dc5e252d78e403"
+    },
+    "loco_9999/params/agent.yaml": {
+      "bytes": 1322,
+      "sha256": "5e973ffb6e646486efdfefd22d8bb567b8b08be20a78556f5aa908e9f784074f"
+    },
+    "loco_9999/params/env.yaml": {
+      "bytes": 55610,
+      "sha256": "e6f1d03a67e1aaf4198431554825e27351cb6315768fc4857f9c78e2ccf22fe4"
+    },
+    "loco_9999/policy.onnx": {
+      "bytes": 1819784,
+      "sha256": "39fdcc23d113e8514bc110790f2a45b0a701755dfef38c8b1e93824d1b3af755"
+    },
+    "inference_verification.json": {
+      "bytes": 1493,
+      "sha256": "d79ada0b20c36830dae5d83f03a8cbed1cf010c7fc9a94418b7f9b0fb04008b6"
+    }
+  }
+}

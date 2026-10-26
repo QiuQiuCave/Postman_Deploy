@@ -1,0 +1,197 @@
+{
+  "passed": true,
+  "task": "R2V2-Reach-FrontManipulation-v1-28DoF",
+  "task_id": "R2V2-Reach-FrontManipulation-v1-28DoF",
+  "endpoint_contract": "wrist_world_v2",
+  "path_contract": "front_manipulation_path_v1",
+  "task_scope": "tabletop_to_crate_drop_v1",
+  "quaternion_order": "wxyz",
+  "speed_reference_point": "wrist",
+  "endpoint_body_names": "left_hand_roll_link,right_hand_roll_link",
+  "checkpoint_iter": 9999,
+  "checkpoint_path": "/root/autodl-tmp/Postman_Deploy/front_drop_20260927/policy/model_9999.pt",
+  "checkpoint_sha256": "9c314ce914e0f0893cd79b355db3de808cedec7e874c548cb577bf43c148edc9",
+  "onnx_path": "/root/autodl-tmp/Postman_Deploy/front_drop_20260927/policy/policy_front_manipulation_v1.onnx",
+  "onnx_sha256": "a395375a663bd67ea1afca19b5df248186cec9e7a7a47e0368dc0ca319ffcb39",
+  "adapter_sha256": "b63a67d3d8cd5a561290a49159263ea1ff706c63380fed0f823760bd262d8253",
+  "verifier_sha256": "395e094af03d665ec75aac1f2d3b623c9a137471bccd30fda125dc8c89bf071a",
+  "snapshot_sha256": "7209904db3e2fcbdb03ca7c0aa9d8ff2ec5084b3a48a59f3c0a80d59c128a3a9",
+  "sample_count": 480,
+  "episodes": 2,
+  "checks": {
+    "weights": {
+      "passed": true,
+      "tensor_max_abs_error": {
+        "obs_normalizer._mean": 0.0,
+        "mlp.0.weight": 0.0,
+        "mlp.0.bias": 0.0,
+        "mlp.2.weight": 0.0,
+        "mlp.2.bias": 0.0,
+        "mlp.4.weight": 0.0,
+        "mlp.4.bias": 0.0,
+        "mlp.6.weight": 0.0,
+        "mlp.6.bias": 0.0
+      },
+      "normalization_epsilon": 0.01,
+      "normalization_divisor_initializer": "onnx::Div_24",
+      "normalization_divisor_max_abs_error": 0.0,
+      "comparison": "All eight MLP tensors, normalization mean and std + epsilon; exact equality"
+    },
+    "bindings": {
+      "passed": true,
+      "task_id": "R2V2-Reach-FrontManipulation-v1-28DoF",
+      "endpoint_contract": "wrist_world_v2",
+      "path_contract": "front_manipulation_path_v1",
+      "task_scope": "tabletop_to_crate_drop_v1",
+      "quaternion_order": "wxyz",
+      "speed_reference_point": "wrist",
+      "endpoint_body_names": "left_hand_roll_link,right_hand_roll_link",
+      "checkpoint_sha256": "9c314ce914e0f0893cd79b355db3de808cedec7e874c548cb577bf43c148edc9",
+      "path_sha256": "bd0f23607eb4836b833d5341c5c673076c6b508b25c6c4d76f677d2704cf221b",
+      "path_manifest_sha256": "e9070f2cfb331bf1f36ffc4b1d3e284327a966192bf60a7e4b7390077c6f189e",
+      "asset_manifest_sha256": "3988455f2c5da9ea0c192b70f561316bebe3fe0dc2d96a27a3fd329395a9be6d",
+      "native_asset_verified": true
+    },
+    "history": {
+      "passed": true,
+      "max_abs_error": 3.5762786865234375e-07,
+      "tolerance": 5e-05
+    },
+    "actions_same_native_observation": {
+      "passed": true,
+      "max_abs_error": 2.86102294921875e-06,
+      "tolerance": 0.0001
+    },
+    "end_to_end_actions": {
+      "passed": true,
+      "max_abs_error": 2.092123031616211e-05,
+      "tolerance": 0.0002
+    }
+  },
+  "observation_terms": {
+    "base_lin_vel": {
+      "passed": true,
+      "max_abs_error": 1.7881393432617188e-07,
+      "tolerance": 5e-05
+    },
+    "base_ang_vel": {
+      "passed": true,
+      "max_abs_error": 3.5762786865234375e-07,
+      "tolerance": 5e-05
+    },
+    "projected_gravity": {
+      "passed": true,
+      "max_abs_error": 5.960464477539063e-08,
+      "tolerance": 5e-05
+    },
+    "joint_pos": {
+      "passed": true,
+      "max_abs_error": 1.4901161193847656e-08,
+      "tolerance": 5e-05
+    },
+    "joint_vel": {
+      "passed": true,
+      "max_abs_error": 0.0,
+      "tolerance": 5e-05
+    },
+    "actions": {
+      "passed": true,
+      "max_abs_error": 0.0,
+      "tolerance": 5e-05
+    },
+    "command": {
+      "passed": true,
+      "max_abs_error": 0.0,
+      "tolerance": 5e-05
+    },
+    "base_pose_command": {
+      "passed": true,
+      "max_abs_error": 0.0,
+      "tolerance": 5e-05
+    },
+    "reach_position_error": {
+      "passed": true,
+      "max_abs_error": 3.4458935260772705e-07,
+      "tolerance": 5e-05
+    },
+    "reach_orientation_error": {
+      "passed": true,
+      "max_abs_error": 2.384185791015625e-07,
+      "tolerance": 5e-05
+    },
+    "active_arm_mask": {
+      "passed": true,
+      "max_abs_error": 0.0,
+      "tolerance": 5e-05
+    },
+    "final_reach_position_error": {
+      "passed": true,
+      "max_abs_error": 3.4458935260772705e-07,
+      "tolerance": 5e-05
+    },
+    "final_reach_orientation_error": {
+      "passed": true,
+      "max_abs_error": 2.384185791015625e-07,
+      "tolerance": 5e-05
+    },
+    "reach_reference_linear_velocity": {
+      "passed": true,
+      "max_abs_error": 7.450580596923828e-09,
+      "tolerance": 5e-05
+    },
+    "reach_reference_angular_velocity": {
+      "passed": true,
+      "max_abs_error": 1.4901161193847656e-08,
+      "tolerance": 5e-05
+    },
+    "reach_speed_limits": {
+      "passed": true,
+      "max_abs_error": 0.0,
+      "tolerance": 5e-05
+    },
+    "right_reach_position_error": {
+      "passed": true,
+      "max_abs_error": 3.424938768148422e-07,
+      "tolerance": 5e-05
+    },
+    "right_reach_orientation_error": {
+      "passed": true,
+      "max_abs_error": 2.384185791015625e-07,
+      "tolerance": 5e-05
+    },
+    "right_active_arm_mask": {
+      "passed": true,
+      "max_abs_error": 0.0,
+      "tolerance": 5e-05
+    },
+    "right_final_reach_position_error": {
+      "passed": true,
+      "max_abs_error": 3.424938768148422e-07,
+      "tolerance": 5e-05
+    },
+    "right_final_reach_orientation_error": {
+      "passed": true,
+      "max_abs_error": 2.384185791015625e-07,
+      "tolerance": 5e-05
+    },
+    "right_reach_reference_linear_velocity": {
+      "passed": true,
+      "max_abs_error": 7.450580596923828e-09,
+      "tolerance": 5e-05
+    },
+    "right_reach_reference_angular_velocity": {
+      "passed": true,
+      "max_abs_error": 1.4901161193847656e-08,
+      "tolerance": 5e-05
+    },
+    "right_reach_speed_limits": {
+      "passed": true,
+      "max_abs_error": 0.0,
+      "tolerance": 5e-05
+    }
+  },
+  "native_mujoco_version": "3.7.0",
+  "deployment_mujoco_version": "3.3.7",
+  "coverage": "Two actual front-task resets; continuously streamed cubic asymmetric 6-D wrist goals; all 24 term-major ten-frame histories independently reconstructed from qpos/qvel and reference state",
+  "limitations": "Numerical interface parity only. Native rigid-open fingers, no object contacts. Not grasp, payload, balance, or deployment dynamics validation."
+}

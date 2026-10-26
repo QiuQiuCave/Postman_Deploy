@@ -1,0 +1,484 @@
+{
+  "anchor_world_m": [
+    0.4,
+    0.13,
+    1.041
+  ],
+  "content_sha256": "bd0f23607eb4836b833d5341c5c673076c6b508b25c6c4d76f677d2704cf221b",
+  "endpoint_contract": "wrist_world_v2",
+  "geometry_validation": {
+    "evidence": "geometry_evidence.json",
+    "passed": true,
+    "scope": "sampled_static_kinematics_not_dynamic_contact_success",
+    "scope_caveat": "Finite geometric samples only; not exhaustive 6-D box, dynamic balance, successful object holding, or policy success."
+  },
+  "path_contract": "front_manipulation_path_v1",
+  "phases": [
+    {
+      "duration_s": 0.4,
+      "loaded": false,
+      "motion_s": 0.0,
+      "name": "STAND",
+      "position_m": [
+        [
+          0.246,
+          0.19698,
+          1.087902013081883
+        ],
+        [
+          0.246,
+          -0.19643,
+          1.087902013081883
+        ]
+      ],
+      "quaternion_wxyz": [
+        [
+          1,
+          0,
+          0,
+          0
+        ],
+        [
+          1,
+          0,
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "duration_s": 2.0,
+      "loaded": false,
+      "motion_s": 0.0,
+      "name": "HOME",
+      "position_m": [
+        [
+          0.246,
+          0.19698,
+          1.087902013081883
+        ],
+        [
+          0.246,
+          -0.19643,
+          1.087902013081883
+        ]
+      ],
+      "quaternion_wxyz": [
+        [
+          1,
+          0,
+          0,
+          0
+        ],
+        [
+          1,
+          0,
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "duration_s": 3.0,
+      "loaded": false,
+      "motion_s": 2.0,
+      "name": "SAFE_OUT",
+      "position_m": [
+        [
+          0.255,
+          0.215,
+          1.087902013081883
+        ],
+        [
+          0.246,
+          -0.19643,
+          1.087902013081883
+        ]
+      ],
+      "quaternion_wxyz": [
+        [
+          1,
+          0,
+          0,
+          0
+        ],
+        [
+          1,
+          0,
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "duration_s": 3.0,
+      "loaded": false,
+      "motion_s": 2.0,
+      "name": "APPROACH",
+      "position_m": [
+        [
+          0.255,
+          0.215,
+          1.041
+        ],
+        [
+          0.246,
+          -0.19643,
+          1.087902013081883
+        ]
+      ],
+      "quaternion_wxyz": [
+        [
+          1,
+          0,
+          0,
+          0
+        ],
+        [
+          1,
+          0,
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "duration_s": 3.0,
+      "loaded": false,
+      "motion_s": 1.0,
+      "name": "GRASP",
+      "position_m": [
+        [
+          0.255,
+          0.165,
+          1.041
+        ],
+        [
+          0.246,
+          -0.19643,
+          1.087902013081883
+        ]
+      ],
+      "quaternion_wxyz": [
+        [
+          1,
+          0,
+          0,
+          0
+        ],
+        [
+          1,
+          0,
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "duration_s": 2.0,
+      "loaded": true,
+      "motion_s": 1.0,
+      "name": "PROBE",
+      "position_m": [
+        [
+          0.255,
+          0.165,
+          1.061
+        ],
+        [
+          0.246,
+          -0.19643,
+          1.087902013081883
+        ]
+      ],
+      "quaternion_wxyz": [
+        [
+          1,
+          0,
+          0,
+          0
+        ],
+        [
+          1,
+          0,
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "duration_s": 4.0,
+      "loaded": true,
+      "motion_s": 3.0,
+      "name": "LIFT_CLEAR",
+      "position_m": [
+        [
+          0.255,
+          0.165,
+          1.2349999999999999
+        ],
+        [
+          0.246,
+          -0.19643,
+          1.087902013081883
+        ]
+      ],
+      "quaternion_wxyz": [
+        [
+          1,
+          0,
+          0,
+          0
+        ],
+        [
+          1,
+          0,
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "duration_s": 4.0,
+      "loaded": true,
+      "motion_s": 3.0,
+      "name": "TRANSFER_ABOVE",
+      "position_m": [
+        [
+          0.30500000000000005,
+          0.475,
+          1.2349999999999999
+        ],
+        [
+          0.246,
+          -0.19643,
+          1.087902013081883
+        ]
+      ],
+      "quaternion_wxyz": [
+        [
+          1,
+          0,
+          0,
+          0
+        ],
+        [
+          1,
+          0,
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "duration_s": 3.0,
+      "loaded": false,
+      "motion_s": 0.0,
+      "name": "DROP_RELEASE",
+      "position_m": [
+        [
+          0.30500000000000005,
+          0.475,
+          1.2349999999999999
+        ],
+        [
+          0.246,
+          -0.19643,
+          1.087902013081883
+        ]
+      ],
+      "quaternion_wxyz": [
+        [
+          1,
+          0,
+          0,
+          0
+        ],
+        [
+          1,
+          0,
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "duration_s": 4.0,
+      "loaded": false,
+      "motion_s": 3.0,
+      "name": "RETREAT_HIGH",
+      "position_m": [
+        [
+          0.255,
+          0.165,
+          1.2349999999999999
+        ],
+        [
+          0.246,
+          -0.19643,
+          1.087902013081883
+        ]
+      ],
+      "quaternion_wxyz": [
+        [
+          1,
+          0,
+          0,
+          0
+        ],
+        [
+          1,
+          0,
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "duration_s": 4.0,
+      "loaded": false,
+      "motion_s": 3.0,
+      "name": "RETURN_HOME",
+      "position_m": [
+        [
+          0.246,
+          0.19698,
+          1.087902013081883
+        ],
+        [
+          0.246,
+          -0.19643,
+          1.087902013081883
+        ]
+      ],
+      "quaternion_wxyz": [
+        [
+          1,
+          0,
+          0,
+          0
+        ],
+        [
+          1,
+          0,
+          0,
+          0
+        ]
+      ]
+    }
+  ],
+  "provenance": {
+    "generator": "/root/autodl-tmp/AMO_R2/front_drop_preflight_20260924/check_front_drop.py",
+    "original_grip": "thumb75_cylinder40mm_100g/left",
+    "scene": {
+      "can_dimensions_diameter_height_mass": [
+        0.04,
+        0.12,
+        0.1
+      ],
+      "can_initial_quaternion_wxyz": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "can_initial_world_m": [
+        0.4,
+        0.13,
+        1.041
+      ],
+      "clearance_summary": {
+        "min_hand_bottom_to_rim_m": 0.04649717798573216,
+        "min_heldcan_orientation_independent_rim_clearance_m": 0.02164690920907919,
+        "min_release_enclosing_sphere_xy_margin_m": 0.037527557442742096,
+        "nominal_drop_freefall_bottom_to_box_floor_m": 0.19000000000000006
+      },
+      "crate_base_world_m": [
+        0.45,
+        0.44,
+        0.98
+      ],
+      "crate_bottom_thickness_m": 0.005,
+      "crate_dimensions_depth_width_height_m": [
+        0.24,
+        0.36,
+        0.16
+      ],
+      "crate_handle_opening_width_height_m": [
+        0.12,
+        0.055
+      ],
+      "crate_mass_kg": 0.4,
+      "crate_quaternion_wxyz": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "crate_wall_thickness_m": 0.004,
+      "grasp_can_in_wrist_position_m": [
+        0.145,
+        -0.035,
+        0.0
+      ],
+      "grasp_can_in_wrist_quaternion_wxyz": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "grasp_record_sha256": "e7e879c35d9cf88e1bd250f6b517ee8fd3dc8a46b223880340f86f347821a27e",
+      "grasp_record_source": "/root/code/amo/Postman_Deploy/reference_motion_bank/r2v2_grasp/thumb75_cylinder40mm_100g/left/grasp_record.json",
+      "nominal_release_wrist_quaternion_wxyz": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "nominal_release_wrist_world_m": [
+        0.305,
+        0.475,
+        1.235
+      ],
+      "recorded_held_can_in_wrist": {
+        "position_m": [
+          0.13527430676095184,
+          -0.03014014599668864,
+          -0.00025718449563127965
+        ],
+        "quaternion_wxyz": [
+          0.9845354113314597,
+          -0.03179859194706666,
+          0.13558708798441885,
+          -0.10627800786843568
+        ]
+      },
+      "table_center_world_m": [
+        0.545,
+        0.255,
+        0.96
+      ],
+      "table_half_size_m": [
+        0.195,
+        0.365,
+        0.02
+      ],
+      "tabletop_height_m": 0.98
+    },
+    "task": "front tabletop reach, clear rim, carry above open crate, release/drop, withdraw; no inside-crate insertion or extraction"
+  },
+  "sampling_neighborhood": {
+    "position_m": [
+      0.005,
+      0.005,
+      0.005
+    ],
+    "rpy_rad": [
+      0.017453292519943295,
+      0.017453292519943295,
+      0.017453292519943295
+    ]
+  },
+  "schema_version": 1,
+  "task_scope": "tabletop_to_crate_drop_v1"
+}

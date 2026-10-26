@@ -1,0 +1,66 @@
+{
+  "center_summary": {
+    "all_passed": true,
+    "continuous_time_certified": false,
+    "dynamics_validated": false,
+    "max_foot_orientation_deg": 0.0014830764546233297,
+    "max_foot_position_mm": 0.0605536192728773,
+    "max_forbidden_penetration_mm": 0.23190306215281772,
+    "max_joint_speed_rad_s": 0.29817346218659907,
+    "max_wrist_orientation_deg": 0.06357690972560676,
+    "max_wrist_position_mm": 0.5706685289851637,
+    "min_com_support_margin_mm": 82.42758416235887,
+    "min_joint_margin_deg": 12.18071019390292,
+    "min_nonhand_prop_clearance_mm": 2.8152335405568776,
+    "passed": 1226,
+    "samples": 1226
+  },
+  "center_verified": true,
+  "ik_report": "/root/autodl-tmp/Postman_Deploy/vertical_grip_ik_20261025/path_verified/report.json",
+  "manifest_sha256": "a389afd8af5ac2e4656d3b7adb0324cca267fe8c73dc7bafc1fd61829811c97d",
+  "scene_profile": "vertical_grip_crate_36_v1",
+  "schema_version": 1,
+  "scope": "sampled_center_IK_not_dynamic_grasp",
+  "source_bindings": [
+    {
+      "path": "/root/autodl-tmp/Postman_Deploy/vertical_grip_ik_20261025/path_verified/report.json",
+      "sha256": "f51a4f36074b693d41c1324e0e02cbf9dcbe37b66f2310e709120a8646e30726"
+    },
+    {
+      "path": "/root/autodl-tmp/Postman_Deploy/vertical_grip_ik_20261025/path_verified/dense_metrics.json",
+      "sha256": "a23e690747cd68a9996b20b6e0c84a148f416e50706de41a492053b64c849357"
+    },
+    {
+      "path": "/root/autodl-tmp/Postman_Deploy/vertical_grip_ik_20261025/path_verified/scene.xml",
+      "sha256": "c5690f4df241350f866fba9241f707de1e113424abd185ccb4bd30dfa7e87de7"
+    },
+    {
+      "path": "/root/autodl-tmp/Postman_Deploy/vertical_grip_grasp_20261025/pitch_m15_video/trajectory.npz",
+      "sha256": "056d396dcedd680a79a83ba73e9b0e0676106698144e9d657414a5f5a3bbe79f"
+    },
+    {
+      "path": "/root/autodl-tmp/Postman_Deploy/vertical_grip_grasp_20261025/pitch_m15_video/report.json",
+      "sha256": "b301a88f83437dd95d068d51cf9c427899c000f20f8eb0db7c3e5abe8822a78a"
+    },
+    {
+      "path": "/root/autodl-tmp/Postman_Deploy/vertical_grip_grasp_20261025/pitch_m15_video/scene.xml",
+      "sha256": "38b7c5062ab93f94e226c777e05cec4183c03bf66d7fad11262ade6343233f6b"
+    }
+  ],
+  "standing_to_outside_collision_certified": false,
+  "training_props_physical": false,
+  "trajectory_sha256": "9b3294cde866e73d49956648aeb93f15ad6f42189cee206afbcdbfc9dac2073c",
+  "validated_envelope": {
+    "global_scene_jitter_enabled": false,
+    "position_xyz_m": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "rpy_rad": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  }
+}

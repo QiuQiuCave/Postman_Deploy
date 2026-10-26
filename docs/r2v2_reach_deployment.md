@@ -2,6 +2,10 @@
 
 日期：2026-09-07；分支：`r2v2-fsm`。仅仿真。
 
+2026-10-26 更新：匹配的旧 `12000` PT/ONNX 已作为历史参考收录到
+[权重交接包](../policy/r2v2_skills/20261026/README.md)。同包另有新手腕策略，
+不可因输入输出维度相同就混用。以下保留当时验收结论及原路径命令。
+
 后续更新：用户另行授权先绕过 Reach 精度门槛做展示，新增了
 [台面抓取展示入口](r2v2_tabletop_demo.md)。本页保留原严格验证结果及命令，
 其失败结论和实现没有被更改。
@@ -59,7 +63,7 @@ uv pip install --python .venv-r2v2/bin/python -r requirements-r2v2-reach-sim.txt
 
 默认模型为训练目录
 `logs/rsl_rl/r2v2_reach_dual_arm_speed_limited_28dof/2026-08-30_00-45-04_dual-arm-speed-limited-v1-from-13250/`
-下的 `model_12000.pt` 和同目录同名 ONNX。它们不复制进 Git。
+下的 `model_12000.pt` 和同目录同名 ONNX。当时它们未复制进 Git；现见上方交接包。
 更换机器后修改 YAML 的两个权重路径，并在对照工具中对应传入
 `--training-root`、`--checkpoint`、`--onnx`。
 相对权重路径始终相对于本仓库根目录解析。

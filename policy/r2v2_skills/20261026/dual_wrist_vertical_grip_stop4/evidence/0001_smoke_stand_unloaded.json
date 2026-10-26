@@ -1,0 +1,1041 @@
+{
+  "accuracy_required_phases": [
+    "STAND"
+  ],
+  "actual_duration_s": 20.42,
+  "assistance_applied": false,
+  "assistance_definition": "No upward assistance/fixtures; downward payload is explicitly reported separately",
+  "body_metrics_exclude_autoreset_and_first_termination_step": true,
+  "cases": 24,
+  "central_case_index": 0,
+  "coarse_success_rate": 0.0,
+  "coarse_tolerance": {
+    "orientation_rad": 0.08726646259971647,
+    "position_m": 0.02
+  },
+  "completed_new_updates": 5,
+  "completed_schedule_phases": [
+    "STAND"
+  ],
+  "coverage_statement": "complete configured evaluation scope",
+  "desired_path_sha256": "9b3294cde866e73d49956648aeb93f15ad6f42189cee206afbcdbfc9dac2073c",
+  "episode_budget_s": 75.0,
+  "expected_total_duration_s": 20.42,
+  "failed_cases": 3,
+  "first_failure_counts": {
+    "base_height": 0,
+    "deep_self_penetration": 0,
+    "fell_over": 0,
+    "hard_joint_limit": 3,
+    "nonfinite_physics": 0,
+    "nonfoot_floor": 0,
+    "time_out": 0
+  },
+  "foot_drift_reference": "initial left_foot/right_foot site world positions",
+  "full_reach_path_evaluated": false,
+  "full_task_evaluated": false,
+  "grasp_attempted": false,
+  "heldout_case_indices": [],
+  "heldout_draws_are_disjoint_samples_not_disjoint_support": true,
+  "heldout_position_bound_m": 0.0,
+  "heldout_scope": "independent seeded draws within current-stage training support; not an OOD gate",
+  "heldout_yaw_bound_rad": 0.0,
+  "hold_required_s": 0.3,
+  "label": "smoke_stand_unloaded",
+  "local_goal_reports": null,
+  "maximum_foot_drift_m": 0.29836711287498474,
+  "maximum_root_angular_speed_radps": 3.6854186058044434,
+  "maximum_root_linear_speed_mps": 0.8698921203613281,
+  "maximum_root_tilt_deg": 10.134964247092373,
+  "maximum_supported_path_time_s": 39.900001525878906,
+  "minimum_joint_hard_limit_margin_rad": -0.0030509531497955322,
+  "minimum_root_height_m": 0.6346510648727417,
+  "mode": "stand",
+  "nominal_full_path_duration_s": 39.90000000000696,
+  "nominal_load_requested_does_not_prove_load_applied": true,
+  "normalizer_frozen": true,
+  "orientation_tolerance_rad": 0.08726646259971647,
+  "path_sequence_completion": 0.875,
+  "path_sequence_completion_rate": 0.875,
+  "payload_expected_phases": [],
+  "payload_external_load_applied": false,
+  "payload_measurements": {
+    "active_contribution_attached": false,
+    "configuration": {
+      "angular_speed_gate_radps": 1.2,
+      "enabled": true,
+      "gravity_mps2": 9.81,
+      "left_share_range": [
+        0.45,
+        0.55
+      ],
+      "linear_speed_gate_mps": 0.3,
+      "loaded_phase_names": [
+        "PROBE_LIFT",
+        "HOLD_PROBE",
+        "LIFT_HIGHER",
+        "HOLD_HIGHER",
+        "LOWER"
+      ],
+      "mass_range_kg": [
+        0.0,
+        0.6
+      ],
+      "orientation_gate_deg": 25.0,
+      "pose_gate_enabled": true,
+      "position_gate_m": 0.04,
+      "ramp_duration_range_s": [
+        0.5,
+        1.0
+      ],
+      "reference_mass_kg": 0.4,
+      "reference_mass_probability": 0.2,
+      "seed": 170421,
+      "wrist_body_names": [
+        "left_hand_roll_link",
+        "right_hand_roll_link"
+      ],
+      "zero_mass_probability": 0.2
+    },
+    "effective_mass_kg": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "evaluation_enabled": true,
+    "evaluation_mass_kg": 0.0,
+    "forbidden_phase_nonzero_samples": 0,
+    "left_share": [
+      0.5,
+      0.5,
+      0.5,
+      0.5,
+      0.5,
+      0.5,
+      0.5,
+      0.5,
+      0.5,
+      0.5,
+      0.5,
+      0.5,
+      0.5,
+      0.5,
+      0.5,
+      0.5,
+      0.5,
+      0.5,
+      0.5,
+      0.5,
+      0.5,
+      0.5,
+      0.5,
+      0.5
+    ],
+    "load_entry_pose_gate_latched": true,
+    "no_force_writes_outside_physics_scope": true,
+    "phase_metrics": {
+      "APPROACH": {
+        "max_total_downward_force_N": 0.0,
+        "nonzero_environment_physics_samples": 0,
+        "nonzero_environment_policy_samples": 0,
+        "summed_environment_impulse_Ns": 0.0
+      },
+      "CLOSE_SEAT": {
+        "max_total_downward_force_N": 0.0,
+        "nonzero_environment_physics_samples": 0,
+        "nonzero_environment_policy_samples": 0,
+        "summed_environment_impulse_Ns": 0.0
+      },
+      "HOLD_HIGHER": {
+        "max_total_downward_force_N": 0.0,
+        "nonzero_environment_physics_samples": 0,
+        "nonzero_environment_policy_samples": 0,
+        "summed_environment_impulse_Ns": 0.0
+      },
+      "HOLD_PROBE": {
+        "max_total_downward_force_N": 0.0,
+        "nonzero_environment_physics_samples": 0,
+        "nonzero_environment_policy_samples": 0,
+        "summed_environment_impulse_Ns": 0.0
+      },
+      "HOME": {
+        "max_total_downward_force_N": 0.0,
+        "nonzero_environment_physics_samples": 0,
+        "nonzero_environment_policy_samples": 0,
+        "summed_environment_impulse_Ns": 0.0
+      },
+      "LIFT_HIGHER": {
+        "max_total_downward_force_N": 0.0,
+        "nonzero_environment_physics_samples": 0,
+        "nonzero_environment_policy_samples": 0,
+        "summed_environment_impulse_Ns": 0.0
+      },
+      "LOWER": {
+        "max_total_downward_force_N": 0.0,
+        "nonzero_environment_physics_samples": 0,
+        "nonzero_environment_policy_samples": 0,
+        "summed_environment_impulse_Ns": 0.0
+      },
+      "OPEN": {
+        "max_total_downward_force_N": 0.0,
+        "nonzero_environment_physics_samples": 0,
+        "nonzero_environment_policy_samples": 0,
+        "summed_environment_impulse_Ns": 0.0
+      },
+      "PROBE_LIFT": {
+        "max_total_downward_force_N": 0.0,
+        "nonzero_environment_physics_samples": 0,
+        "nonzero_environment_policy_samples": 0,
+        "summed_environment_impulse_Ns": 0.0
+      },
+      "READY": {
+        "max_total_downward_force_N": 0.0,
+        "nonzero_environment_physics_samples": 0,
+        "nonzero_environment_policy_samples": 0,
+        "summed_environment_impulse_Ns": 0.0
+      },
+      "RETRACT": {
+        "max_total_downward_force_N": 0.0,
+        "nonzero_environment_physics_samples": 0,
+        "nonzero_environment_policy_samples": 0,
+        "summed_environment_impulse_Ns": 0.0
+      },
+      "SAFE_WAIT": {
+        "max_total_downward_force_N": 0.0,
+        "nonzero_environment_physics_samples": 0,
+        "nonzero_environment_policy_samples": 0,
+        "summed_environment_impulse_Ns": 0.0
+      },
+      "SETTLE": {
+        "max_total_downward_force_N": 0.0,
+        "nonzero_environment_physics_samples": 0,
+        "nonzero_environment_policy_samples": 0,
+        "summed_environment_impulse_Ns": 0.0
+      },
+      "STAND": {
+        "max_total_downward_force_N": -0.0,
+        "nonzero_environment_physics_samples": 0,
+        "nonzero_environment_policy_samples": 0,
+        "summed_environment_impulse_Ns": 0.0
+      },
+      "START_HOLD": {
+        "max_total_downward_force_N": 0.0,
+        "nonzero_environment_physics_samples": 0,
+        "nonzero_environment_policy_samples": 0,
+        "summed_environment_impulse_Ns": 0.0
+      },
+      "TABLE_SETTLE": {
+        "max_total_downward_force_N": 0.0,
+        "nonzero_environment_physics_samples": 0,
+        "nonzero_environment_policy_samples": 0,
+        "summed_environment_impulse_Ns": 0.0
+      }
+    },
+    "physics_step_calls": 20420,
+    "policy_update_calls": 1021,
+    "rehearsal_nonzero_samples": 0,
+    "sampled_mass_kg": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sampled_segments_per_environment": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "scope": "external downward gravity-equivalent payload only; no physical crate/inertia/contact/offset torque",
+    "total_weight_is_shared_not_applied_twice": true
+  },
+  "payload_model": "world downward force at each wrist-body CoM; no crate inertia/contact/moment model",
+  "payload_near_nominal_weight_phases": [],
+  "payload_neighborhood_offsets_rpy_rad": [
+    [
+      0.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      0.0
+    ]
+  ],
+  "payload_neighborhood_offsets_xyz_m": [
+    [
+      0.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      0.0
+    ]
+  ],
+  "payload_neighborhood_ramp": "CLOSE_SEAT shared rigid smoothstep; fixed for probe/higher/hold",
+  "payload_neighborhood_seed": 210993,
+  "payload_observed_phases": [],
+  "payload_phase_exposure_definition": "phase had measured peak >=90% of requested weight; NOT a loaded precision or grasp success",
+  "payload_phase_exposure_fraction": null,
+  "payload_position_bound_m": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "payload_requested_mass_kg": 0.0,
+  "payload_rpy_bound_rad": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "per_case_coarse_success": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+  ],
+  "per_case_first_stop_s": [
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    2.299999952316284,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    2.1600000858306885,
+    null,
+    null,
+    2.2200000286102295,
+    null,
+    null
+  ],
+  "per_case_strict_success": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+  ],
+  "per_case_success": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+  ],
+  "per_case_survived": [
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    false,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    false,
+    true,
+    true,
+    false,
+    true,
+    true
+  ],
+  "phase_coverage": 1.0,
+  "phase_reports": [
+    {
+      "cases": 24,
+      "coarse_success_rate": 0.0,
+      "current_success_rate": 0.0,
+      "duration_s": 20.0,
+      "eligible_stationary_samples": 21268,
+      "mean_alive": {
+        "left": {
+          "angular_speed_radps": 0.061904024332761765,
+          "orientation_rad": 0.018790125846862793,
+          "position_m": 0.00898672454059124,
+          "speed_mps": 0.024855509400367737
+        },
+        "right": {
+          "angular_speed_radps": 0.06807586550712585,
+          "orientation_rad": 0.018397916108369827,
+          "position_m": 0.005285440944135189,
+          "speed_mps": 0.022877763956785202
+        }
+      },
+      "per_case_coarse_success": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "per_case_current_success": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "per_case_strict_success": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "per_case_success": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "phase": "STAND",
+      "planned_duration_s": 20.0,
+      "playback_completed": true,
+      "sampled_cases": 24,
+      "strict_success_rate": 0.0,
+      "success_rate": 0.0,
+      "surviving_cases": 21,
+      "surviving_tail_mean": {
+        "left": {
+          "angular_speed_radps": 0.0002726585662458092,
+          "orientation_rad": 0.014330069534480572,
+          "position_m": 0.0023395938333123922,
+          "speed_mps": 0.00015905000327620655
+        },
+        "right": {
+          "angular_speed_radps": 0.0003344329306855798,
+          "orientation_rad": 0.008005238138139248,
+          "position_m": 0.0017414356116205454,
+          "speed_mps": 0.00020257044525351375
+        }
+      },
+      "tail_mean": {
+        "left": {
+          "angular_speed_radps": 0.0002726585662458092,
+          "orientation_rad": 0.014330069534480572,
+          "position_m": 0.0023395938333123922,
+          "speed_mps": 0.00015905000327620655
+        },
+        "right": {
+          "angular_speed_radps": 0.0003344329306855798,
+          "orientation_rad": 0.008005238138139248,
+          "position_m": 0.0017414356116205454,
+          "speed_mps": 0.00020257044525351375
+        }
+      },
+      "tail_mean_includes_failed_reset_cases": false,
+      "valid_alive_samples": 21268
+    }
+  ],
+  "physical_table_crate": false,
+  "playback_completion_is_accuracy_success": false,
+  "position_tolerance_m": 0.02,
+  "prefix_only": false,
+  "reference_batching": "one prevalidated desired-goal batch per phase; no physical step skipping",
+  "requested_payload_mass_kg": 0.0,
+  "scene_offset_scope": "fixed once per case; both wrists and all phases share one scene transform",
+  "scene_transform_ramped_during_safe_wait": true,
+  "scene_translation_offsets_m": [
+    [
+      0.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      0.0
+    ]
+  ],
+  "scene_yaw_offsets_rad": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+  ],
+  "scheduled_target_duration_s": 20.0,
+  "scope": "actor-driven high-wrist Reach with phase-gated equivalent gravity payload; NOT real crate grasping",
+  "seed": 1234,
+  "settling_duration_s": 0.42,
+  "shared_scene_pose_across_phases": true,
+  "source_phase_settle_holds_duplicated": false,
+  "stage": 0,
+  "strict_success_rate": 0.0,
+  "strict_tolerance": {
+    "orientation_rad": 0.05235987755982989,
+    "position_m": 0.005
+  },
+  "success_rate": 0.0,
+  "survival_rate": 0.875,
+  "timestamp": "2026-10-25T04:45:14.547611+00:00"
+}

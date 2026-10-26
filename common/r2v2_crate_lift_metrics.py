@@ -29,7 +29,7 @@ def _descendant(model, body, ancestor):
 
 
 def _geom_minimum_z(model, data, geom):
-    """Exact lowest collision point for the crate's boxes/convex mesh geoms."""
+    """Exact lowest point of boxes, finite cylinders and convex mesh geoms."""
     rotation_z = data.geom_xmat[geom].reshape(3, 3)[2]
     center_z = float(data.geom_xpos[geom, 2])
     kind = model.geom_type[geom]
@@ -37,6 +37,10 @@ def _geom_minimum_z(model, data, geom):
         # Equivalent to testing all eight oriented corners, without an AABB
         # approximation in body coordinates or a fixed upright height.
         return center_z-float(np.abs(rotation_z) @ model.geom_size[geom])
+    if kind == mujoco.mjtGeom.mjGEOM_CYLINDER:
+        radius, half_length = model.geom_size[geom, :2]
+        return center_z-float(half_length*abs(rotation_z[2])
+                             + radius*np.linalg.norm(rotation_z[:2]))
     if kind == mujoco.mjtGeom.mjGEOM_MESH:
         mesh = model.geom_dataid[geom]
         start, count = model.mesh_vertadr[mesh], model.mesh_vertnum[mesh]
@@ -208,7 +212,7 @@ def measure_crate_lift(model, data, table_top_m, *, virtual_props=False):
             "crate_quaternion_wxyz": quaternion.tolist(), "crate_tilt_rad": tilt,
             "crate_tilt_deg": float(np.rad2deg(tilt)), "bottom_height_m": bottom,
             "clearance_m": bottom-float(table_top_m),
-            "bottom_height_method": "minimum over every collision box's rotated corners and every convex-mesh vertex",
+            "bottom_height_method": "exact minimum over collision boxes, finite cylinders and convex-mesh vertices",
             "crate_linear_velocity_world_m_s": linear.tolist(), "crate_angular_velocity_world_rad_s": angular.tolist(),
             "crate_linear_speed_m_s": float(np.linalg.norm(linear)), "crate_angular_speed_rad_s": float(np.linalg.norm(angular)),
             "crate_mass_kg": float(model.body_mass[crate]),

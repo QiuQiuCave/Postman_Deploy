@@ -1,0 +1,399 @@
+{
+  "schema": "three_bottle_resources_v1",
+  "duration_s": 901.8,
+  "frequency_hz": 50,
+  "files": {
+    "assets/three_bottle/DATA_SCHEMA.json": {
+      "bytes": 9701,
+      "sha256": "053ae0a5e67e4b452c40275a228c9b34508ffef2169585054bb0c37b29b679de"
+    },
+    "assets/three_bottle/box_return_anchor.npz": {
+      "bytes": 938,
+      "sha256": "66999895868161604f4bd25a81f7220d8027e19788947d406627f4a0eee4b3cb"
+    },
+    "assets/three_bottle/demonstration_50hz.npz": {
+      "bytes": 96735680,
+      "sha256": "9e8b300eee11944f249156eb2d7a17d82727a07a73c8bb8e6bf5bba6392ec84d"
+    },
+    "assets/three_bottle/meshes/base_link.STL": {
+      "bytes": 1740284,
+      "sha256": "d183cc569ceba95ca6f43af84a963eb36763f8300111328af56a635e11513466"
+    },
+    "assets/three_bottle/meshes/head_pitch_link.STL": {
+      "bytes": 1041784,
+      "sha256": "87764eb28ba69a31897c7976f40867a89369755bf1e5bf96290790db4fc221ce"
+    },
+    "assets/three_bottle/meshes/head_yaw_link.STL": {
+      "bytes": 368184,
+      "sha256": "2cdb8ad5a4927fe26c7ea73ad2601db22e14181a6e840c2eb3eb23a7c22e3053"
+    },
+    "assets/three_bottle/meshes/left_ankle_pitch_link.STL": {
+      "bytes": 104384,
+      "sha256": "807e0db4c097e218a133526df157bb04005ddfe611ec40ddd459f0e5ccf39768"
+    },
+    "assets/three_bottle/meshes/left_ankle_roll_link.STL": {
+      "bytes": 231184,
+      "sha256": "639ee4702270790e73a1daf8617a8ebea4577c56725278d75397f9d564affe5a"
+    },
+    "assets/three_bottle/meshes/left_arm_pitch_link.STL": {
+      "bytes": 705484,
+      "sha256": "3007807a1abe2b8fe9e1d5f0622e0e33c57fc3b5b49d4590f9354226ff19b1c4"
+    },
+    "assets/three_bottle/meshes/left_base_link.STL": {
+      "bytes": 2368784,
+      "sha256": "340401f796bbac762cf85d53e6db4be02cce2f06b66fcf8d6ecb5ba883f06afd"
+    },
+    "assets/three_bottle/meshes/left_base_visual_link.STL": {
+      "bytes": 252684,
+      "sha256": "d9d2558da8369d2f0993e46eed3d1e2a11b4927ab2b8c1731d460b72fea04e9e"
+    },
+    "assets/three_bottle/meshes/left_hand_roll_link.STL": {
+      "bytes": 1023984,
+      "sha256": "6dffd04d26249cc79f748bd3ad27fd65505c8f89782f0bb07fe95b1cbe58d1f6"
+    },
+    "assets/three_bottle/meshes/left_hip_pitch_link.STL": {
+      "bytes": 295984,
+      "sha256": "5af61e9de646c97b06f3472b1bd275face7425fc4171f17277dca557a480c32b"
+    },
+    "assets/three_bottle/meshes/left_hip_roll_link.STL": {
+      "bytes": 599084,
+      "sha256": "5be0630908c786bc63cc7456bf0dd688835fd554204823c152b2a8976cf01cb0"
+    },
+    "assets/three_bottle/meshes/left_hip_yaw_link.STL": {
+      "bytes": 671784,
+      "sha256": "9606f0cce46db12e46f51901aaebc7c7cc319e5956c532897bea657670950961"
+    },
+    "assets/three_bottle/meshes/left_index_distal_link.STL": {
+      "bytes": 408284,
+      "sha256": "634d5c569628c3c2dbc92932065748ed830fb17ccf933959a5834b2759ab8acd"
+    },
+    "assets/three_bottle/meshes/left_index_proximal_link.STL": {
+      "bytes": 339884,
+      "sha256": "1fed32c1a8451282b314579eed3903a288a62524dc7d8b08464fb559261bb580"
+    },
+    "assets/three_bottle/meshes/left_index_touch_link.STL": {
+      "bytes": 99984,
+      "sha256": "821249c18a0cf66c87aa4029de1f0ce532f03e7a173c951a5121f2df3b301b52"
+    },
+    "assets/three_bottle/meshes/left_knee_pitch_link.STL": {
+      "bytes": 2252984,
+      "sha256": "bced3ce135b0a97dff6fbd7eac13835f1d461fa21f22acd305b160c69f05a1cf"
+    },
+    "assets/three_bottle/meshes/left_middle_distal_link.STL": {
+      "bytes": 406584,
+      "sha256": "e0ff6f648bbb7712bbc7f06bacdd3a574cac2e1bc2398383b57da2d76c88932a"
+    },
+    "assets/three_bottle/meshes/left_middle_proximal_link.STL": {
+      "bytes": 334284,
+      "sha256": "50122ebf6e75698ba2c469efd58e07ad3f82b1a002728cd15802f1c435d54c0c"
+    },
+    "assets/three_bottle/meshes/left_middle_touch_link.STL": {
+      "bytes": 69884,
+      "sha256": "c91b30341a816ac079ec1268c8427ca3a010356002a30b6847b2853a0edf1e6b"
+    },
+    "assets/three_bottle/meshes/left_pinky_distal_link.STL": {
+      "bytes": 554484,
+      "sha256": "d52822897dcc0de60fff7f2652a7d12a342b47905eff7555eaabcc1bcfcaeac4"
+    },
+    "assets/three_bottle/meshes/left_pinky_proximal_link.STL": {
+      "bytes": 346784,
+      "sha256": "9f1408568638fbbec4cf32507d4b233fbd8cdb9c862e07cc7da6cd826497caa6"
+    },
+    "assets/three_bottle/meshes/left_pinky_touch_link.STL": {
+      "bytes": 68584,
+      "sha256": "850ad4ad9daf4188aa17f96588fe5541fb0c70be10d714930b3cb816748258a0"
+    },
+    "assets/three_bottle/meshes/left_ring_distal_link.STL": {
+      "bytes": 529784,
+      "sha256": "c59b62ef04c9cb436f6a6bac5ae9be985eca0d538bc58380c40c00d16079d580"
+    },
+    "assets/three_bottle/meshes/left_ring_proximal_link.STL": {
+      "bytes": 281184,
+      "sha256": "77220c07d5bbc119cb828af89f35cb4cef755bbc98a1cae2dda846268ff59501"
+    },
+    "assets/three_bottle/meshes/left_ring_touch_link.STL": {
+      "bytes": 71584,
+      "sha256": "c2fb7d2c4fb0df91209ab7158d5f17ab59a7aa56522a9e91a3c3884a35ac6ae0"
+    },
+    "assets/three_bottle/meshes/left_shoulder_pitch_link.STL": {
+      "bytes": 371784,
+      "sha256": "c31b947741e52c45d24b3f2a7972d734dbae4653bc9274ed141ef4286e5cf396"
+    },
+    "assets/three_bottle/meshes/left_shoulder_roll_l_link.STL": {
+      "bytes": 602584,
+      "sha256": "4de89ed8ecb5c47b29691ae521f262c5c6d0ae3c759080ec17732e3509a7bb7a"
+    },
+    "assets/three_bottle/meshes/left_shoulder_yaw_link.STL": {
+      "bytes": 620884,
+      "sha256": "b5dc00330bdc644754814613316c3067f1e7ee7d03196faf287bceb71ae570bf"
+    },
+    "assets/three_bottle/meshes/left_thumb_distal_link.STL": {
+      "bytes": 96284,
+      "sha256": "99300669452dc8e34d5f62caf31c9c769077af45e0127511cd0c56967fe691a6"
+    },
+    "assets/three_bottle/meshes/left_thumb_metacarpal_link.STL": {
+      "bytes": 290384,
+      "sha256": "415a75193e7773572b0df8a80fa4e1d187a67901a5ff381a89ee5b7df64735ea"
+    },
+    "assets/three_bottle/meshes/left_thumb_proximal_link.STL": {
+      "bytes": 620384,
+      "sha256": "ccffe779ed683ec5c2f24e3776c11a127e341743142ddd8f275bfded76938da8"
+    },
+    "assets/three_bottle/meshes/left_thumb_proximal_visual_link.STL": {
+      "bytes": 771684,
+      "sha256": "bcd5279fb8a4d8ba4b06b3d302caa567fde9add81b057943cc6a445abb9e27b5"
+    },
+    "assets/three_bottle/meshes/left_thumb_touch_link.STL": {
+      "bytes": 125084,
+      "sha256": "e31a6aa8faf2be8a6bfc3f222ebe7cf59fb5266487d1d98b86a55a7a2524fc20"
+    },
+    "assets/three_bottle/meshes/left_wrist_pitch_link.STL": {
+      "bytes": 619884,
+      "sha256": "8fdfe4e5c7799afc78b37d5c0460135a7783d7fd79a29d01ca5fc5666c9ff7ad"
+    },
+    "assets/three_bottle/meshes/left_wrist_yaw_link.STL": {
+      "bytes": 419084,
+      "sha256": "bf7aa7ad3d73c8d81a2549465b68444262282444d45933b2d1aecc319321e045"
+    },
+    "assets/three_bottle/meshes/right_ankle_pitch_link.STL": {
+      "bytes": 104384,
+      "sha256": "a3edc23466b1cdb580744cd53fec2b7e37948e2773f8d148c62d799c68f30568"
+    },
+    "assets/three_bottle/meshes/right_ankle_roll_link.STL": {
+      "bytes": 231184,
+      "sha256": "accc1696a269be113b62b7607f4ec4fb8bb8243125f467a58e48ffc73141b958"
+    },
+    "assets/three_bottle/meshes/right_arm_pitch_link.STL": {
+      "bytes": 707484,
+      "sha256": "bb3953af12978793180c26d048c59847a2074cf6006b48531d18c40799de6d3e"
+    },
+    "assets/three_bottle/meshes/right_base_link.STL": {
+      "bytes": 2364184,
+      "sha256": "2754b59a9132a04a28cf5725d5478599218c9f7dd4b2e13329147e824211ec44"
+    },
+    "assets/three_bottle/meshes/right_base_visual_link.STL": {
+      "bytes": 130584,
+      "sha256": "7357830cda11d9749adc1e796aa0e493f8001ac2c21815d40fdc1406a3b3457c"
+    },
+    "assets/three_bottle/meshes/right_hand_roll_link.STL": {
+      "bytes": 1018284,
+      "sha256": "9a5ff0dd2c55dcc59832d55086d4120790feb835d36623ac76819b2a256b1192"
+    },
+    "assets/three_bottle/meshes/right_hip_pitch_link.STL": {
+      "bytes": 296184,
+      "sha256": "6f50eb3dfc40d6046a425611a961226c46568ae554d4ba4b4b9dd67cbb83df6b"
+    },
+    "assets/three_bottle/meshes/right_hip_roll_link.STL": {
+      "bytes": 600284,
+      "sha256": "513f742993571cbeaa47a4233e3ad16a353c09b55922abdbd4c110656bcd3fc4"
+    },
+    "assets/three_bottle/meshes/right_hip_yaw_link.STL": {
+      "bytes": 671384,
+      "sha256": "bcd119039d907114df1deee6d4308657623ad0977d4a170c1e213e568576e5d4"
+    },
+    "assets/three_bottle/meshes/right_index_distal_link.STL": {
+      "bytes": 411284,
+      "sha256": "44d4b12f55e85baf77685443aa1f38ae521130a58f0b742920f2a99abc1a1efb"
+    },
+    "assets/three_bottle/meshes/right_index_proximal_link.STL": {
+      "bytes": 339884,
+      "sha256": "94fdff414f1c29940495d1f0264a50621340cfc30f9b5365b3490d39ae367f2f"
+    },
+    "assets/three_bottle/meshes/right_index_touch_link.STL": {
+      "bytes": 99984,
+      "sha256": "a7f7b054539a858173b3e002be2df5ebc60a3e3d8bdf38e32f490a1475809251"
+    },
+    "assets/three_bottle/meshes/right_knee_pitch_link.STL": {
+      "bytes": 2252184,
+      "sha256": "9fd03f470862f8d09b16bb1758a99cd886b4e13cc34fa368024b2713aa8e12b5"
+    },
+    "assets/three_bottle/meshes/right_middle_distal_link.STL": {
+      "bytes": 408584,
+      "sha256": "8f11ee9addab1a1eab40fd765c21389e6f98397166ae5899dc83ddf66f871b3b"
+    },
+    "assets/three_bottle/meshes/right_middle_proximal_link.STL": {
+      "bytes": 333384,
+      "sha256": "56d9f019bad093daf93a736596ab4e7d9b17fb3c79e2be4181d909958cf76a37"
+    },
+    "assets/three_bottle/meshes/right_middle_touch_link.STL": {
+      "bytes": 69884,
+      "sha256": "1fdd83c56c7eccb38b1af2d75742f1681d6a4dff93e9f15a37173e22117fecf0"
+    },
+    "assets/three_bottle/meshes/right_pinky_distal_link.STL": {
+      "bytes": 554084,
+      "sha256": "14c25fb57059978594ea518860522ae401e3a3602d6a39297c52807620e30bac"
+    },
+    "assets/three_bottle/meshes/right_pinky_proximal_link.STL": {
+      "bytes": 343284,
+      "sha256": "1a4ba525880efd4da2bcdfd5d2d69a684a02f8c7c01f8e185adf23f47469d0f4"
+    },
+    "assets/three_bottle/meshes/right_pinky_touch_link.STL": {
+      "bytes": 68584,
+      "sha256": "96ed796046634fead6ac789be979e3b013c3a6d32ba866a31ea92f7c3ebf19ee"
+    },
+    "assets/three_bottle/meshes/right_ring_distal_link.STL": {
+      "bytes": 529684,
+      "sha256": "40acf67de96d432bbbc0a3eda7bbb292cbd2ea0c5f0c78a9b299cf360f3a9f07"
+    },
+    "assets/three_bottle/meshes/right_ring_proximal_link.STL": {
+      "bytes": 281484,
+      "sha256": "89c64252e891bc91567241b74de18d986e20e4e57d74cd10289d7171f6c57dc6"
+    },
+    "assets/three_bottle/meshes/right_ring_touch_link.STL": {
+      "bytes": 71584,
+      "sha256": "f9c0ac36994b014d25b7d5c292cbd39192e5146c8961ded1e8a9702e2d4e62c2"
+    },
+    "assets/three_bottle/meshes/right_shoulder_pitch_link.STL": {
+      "bytes": 371784,
+      "sha256": "bd65b9a1c92f04c2562de935f26cea16806c6f1f50a1af9bc2501f1642da6bee"
+    },
+    "assets/three_bottle/meshes/right_shoulder_roll_l_link.STL": {
+      "bytes": 599484,
+      "sha256": "e2dd90b0c0c6e93a287bec62b80d2bf4b81d920140aa327012d5983543b24740"
+    },
+    "assets/three_bottle/meshes/right_shoulder_yaw_link.STL": {
+      "bytes": 617984,
+      "sha256": "b1fbb097ba2819ee8fdce263e961ea0bfecc33ea5be3ea31c2ed09446e02de4d"
+    },
+    "assets/three_bottle/meshes/right_thumb_distal_link.STL": {
+      "bytes": 95834,
+      "sha256": "f489da4e47935510ffba42016052318f123ef07360fdbbfaadcb0f7d8ddbe28f"
+    },
+    "assets/three_bottle/meshes/right_thumb_metacarpal_link.STL": {
+      "bytes": 289584,
+      "sha256": "15464fa122dddc49a56462898777e9e407f22b81abb03d10aba0d95f8fefc83a"
+    },
+    "assets/three_bottle/meshes/right_thumb_proximal_link.STL": {
+      "bytes": 620984,
+      "sha256": "17d6f8575ffdc49fd0c8a4525650180a6806ee3fc0a6485f0610040010aeed34"
+    },
+    "assets/three_bottle/meshes/right_thumb_proximal_visual_link.STL": {
+      "bytes": 735284,
+      "sha256": "0c415499f0b28609062d1364cd2500cd801a5f4e6a8a2083ae82b8a870404495"
+    },
+    "assets/three_bottle/meshes/right_thumb_touch_link.STL": {
+      "bytes": 123084,
+      "sha256": "184c29c27b46ea21df210a13af795c49569fcc1b36cd8b8ebe5aa66b4a0f5612"
+    },
+    "assets/three_bottle/meshes/right_wrist_pitch_link.STL": {
+      "bytes": 622484,
+      "sha256": "235b733cf22f1992b6f018a7d0789c673c787f6c7f88e7f7dc9eafc83472ae8f"
+    },
+    "assets/three_bottle/meshes/right_wrist_yaw_link.STL": {
+      "bytes": 424584,
+      "sha256": "8e2653e7f02dd3d4b1e829c98279cf34ae6429c88711644c00e753e45cafc11e"
+    },
+    "assets/three_bottle/meshes/waist_pitch_link.STL": {
+      "bytes": 1529284,
+      "sha256": "0c971d35f23862fbdffc349671b92c3c567b242023a12af64d21df9b545f9f8b"
+    },
+    "assets/three_bottle/meshes/waist_pitch_link_collision.STL": {
+      "bytes": 2916684,
+      "sha256": "1e350379a14f8ede3a269207444dc98cfddd595c8f007fbc2c03a12e134d6444"
+    },
+    "assets/three_bottle/meshes/waist_yaw_link.STL": {
+      "bytes": 818084,
+      "sha256": "6bec8f019d3bd3dd9cf41d9d8b41516d3b5ccad872eede14c7927689ce579a41"
+    },
+    "assets/three_bottle/models/wrist_reference.onnx": {
+      "bytes": 4555770,
+      "sha256": "093c3bcb0149ee5f8d05af8c362a125c6b4f7c1ca8ec9bfe4281ff031c2e3fb4"
+    },
+    "assets/three_bottle/posture_prior.npz": {
+      "bytes": 469526,
+      "sha256": "720005bb9adfcddf802cec36cbcd5c2158e38b311d79116b4bda1c82f7792f6f"
+    },
+    "assets/three_bottle/reference/program.json": {
+      "bytes": 1839,
+      "sha256": "3d259e68822936e16968459921ac986872e0509883270770fe71a80bd7a8f8c6"
+    },
+    "assets/three_bottle/reference/reference.json": {
+      "bytes": 1109,
+      "sha256": "37bbc78e80bd1fa0cff1aa1780e0af73d0b9b368ec9d86e6d4e8e710fe52261c"
+    },
+    "assets/three_bottle/reference/reference.npz": {
+      "bytes": 119351,
+      "sha256": "5cd55e5f7a0b7f46e227c3688898c600d8e343a1c3a3cb2517d13f4a19a1877b"
+    },
+    "assets/three_bottle/repeat_prior.npz": {
+      "bytes": 638901,
+      "sha256": "db7f3358034a96a385b18a5777ab3f53ccde4b8131371681149a016de227455b"
+    },
+    "assets/three_bottle/scene.xml": {
+      "bytes": 218443,
+      "sha256": "cb88842cc3106c2b966acb7e2febfad18860231845c76cb2088f161f553ed87f"
+    },
+    "assets/three_bottle/station_grasp.npz": {
+      "bytes": 696,
+      "sha256": "ea2fa1af6338b67af86e27e9b47f886a880d0de0303a74dc574cbdba07b63113"
+    },
+    "assets/three_bottle/station_path.npz": {
+      "bytes": 57414,
+      "sha256": "2593ff38fa9e0143a78fd91690d8620d94fce0a9465219433786fe1ffc7b13d4"
+    },
+    "assets/three_bottle/textures/label.png": {
+      "bytes": 1226776,
+      "sha256": "81353285768fb92ea0b6644350e0f3c90f8c410969776ec2ece9e66bfe70c459"
+    },
+    "configs/three_bottle/hands.json": {
+      "bytes": 1600,
+      "sha256": "e9565e477bb2159c1417d7f5fa671944473c71da0e8fcdbcc7ec43d915f566eb"
+    },
+    "configs/three_bottle/return_points.json": {
+      "bytes": 152,
+      "sha256": "14da2bf58c03bee9209be508f317338fc298eea71bd0c7e659b689bcbf8b012f"
+    },
+    "configs/three_bottle/stance.json": {
+      "bytes": 294,
+      "sha256": "a3a12e06a6e3ddb28740833525641fe63d05c25f43c4deb5b16f17f3bf29bd2a"
+    },
+    "configs/three_bottle/station_points.json": {
+      "bytes": 731,
+      "sha256": "353648c5efef606ad3edc666c7c2e6f7511226833f80b470c9d586bd8f0f6332"
+    },
+    "configs/three_bottle/third_wrist.json": {
+      "bytes": 420,
+      "sha256": "694acb59a7a030ca3ad1da1abd5f71c4f35cc3a98e53a5df736c20a1d3e734ee"
+    },
+    "docs/media/three_bottle_4x.mp4": {
+      "bytes": 28587938,
+      "sha256": "33f9eeecff5a4b2ce3f7e916298d391e864d21951fea3e4b5d0695f6232fdc54"
+    },
+    "policy/r2v2_skills/20261026/dual_wrist_vertical_grip_stop4/model_stop_4.pt": {
+      "bytes": 22742681,
+      "sha256": "2a0e2729c945db1e1fd9ca78e80ec674a3cca52ecc5455aa3d7a3e55755cc835"
+    },
+    "policy/r2v2_skills/20261026/dual_wrist_vertical_grip_stop4/path_snapshot/manifest.json": {
+      "bytes": 4929,
+      "sha256": "a389afd8af5ac2e4656d3b7adb0324cca267fe8c73dc7bafc1fd61829811c97d"
+    },
+    "policy/r2v2_skills/20261026/dual_wrist_vertical_grip_stop4/path_snapshot/planned_path.npz": {
+      "bytes": 978433,
+      "sha256": "9b3294cde866e73d49956648aeb93f15ad6f42189cee206afbcdbfc9dac2073c"
+    },
+    "policy/r2v2_skills/20261026/dual_wrist_vertical_grip_stop4/policy_wrist_payload_v2.onnx": {
+      "bytes": 3678968,
+      "sha256": "79cd28d34813fab0b687f287aad7600f18721b296c9f393d0e4bcde32c6c94cc"
+    },
+    "policy/r2v2_skills/20261026/loco_9999/policy.onnx": {
+      "bytes": 1819784,
+      "sha256": "39fdcc23d113e8514bc110790f2a45b0a701755dfef38c8b1e93824d1b3af755"
+    },
+    "policy/r2v2_skills/20261026/manifest.json": {
+      "bytes": 16890,
+      "sha256": "1712ed388bf66c42624dbbfaf6739d717617a65ac04e826f7daff73800085cac"
+    },
+    "r2v2_description/source/r2v2_with_hand/r2v2_with_hand.urdf": {
+      "bytes": 94443,
+      "sha256": "835d73f0dae071321e8ab469390a3a63fd51a2adf02151f05edd0db947ad5eef"
+    },
+    "configs/three_bottle/crate_layout.json": {
+      "bytes": 160,
+      "sha256": "737fc04dfdf242542790f44479a9d24830be7b4db7c1c29b79fc8d3be7315b0a"
+    },
+    "assets/three_bottle/validation.json": {
+      "bytes": 537,
+      "sha256": "0472ddf1a50d13fcb980e52b7015a69f1a511f31687ceb970c14bc644158a396"
+    }
+  }
+}

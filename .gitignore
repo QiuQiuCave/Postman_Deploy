@@ -120,3 +120,10 @@ external/
 !/policy/r2v2_skills/20261026/dual_wrist_vertical_grip_stop4/path_snapshot/planned_path.npz
 !/policy/r2v2_skills/20261026/legacy_dual_reach_12000/model_12000.pt
 !/policy/r2v2_skills/20261026/legacy_dual_reach_12000/policy.onnx
+
+# Complete three-bottle Loco + IK workflow: explicit runtime and demonstration assets.
+!/assets/three_bottle/*.npz
+!/assets/three_bottle/reference/*.npz
+!/assets/three_bottle/models/wrist_reference.onnx
+!/docs/media/three_bottle_4x.mp4
+.venv-three-bottle/

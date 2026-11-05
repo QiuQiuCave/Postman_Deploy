@@ -1,0 +1,112 @@
+{
+  "hand_config": {
+    "simulation_dt": 0.001,
+    "control_dt": 0.01,
+    "channels": [
+      "thumb_metacarpal_joint",
+      "thumb_proximal_joint",
+      "index_proximal_joint",
+      "middle_proximal_joint",
+      "ring_proximal_joint",
+      "pinky_proximal_joint"
+    ],
+    "trajectory": {
+      "max_velocity": [
+        0.7,
+        0.6,
+        0.8,
+        0.8,
+        0.8,
+        0.8
+      ],
+      "max_acceleration": [
+        1.5,
+        1.5,
+        2.0,
+        2.0,
+        2.0,
+        2.0
+      ],
+      "max_jerk": [
+        8.0,
+        8.0,
+        10.0,
+        10.0,
+        10.0,
+        10.0
+      ]
+    },
+    "servo": {
+      "kp": [
+        3.0,
+        3.0,
+        3.0,
+        3.0,
+        3.0,
+        3.0
+      ],
+      "kd": [
+        0.35,
+        0.45,
+        0.45,
+        0.45,
+        0.45,
+        0.45
+      ],
+      "torque_limit": [
+        0.15,
+        0.3,
+        0.35,
+        0.35,
+        0.35,
+        0.35
+      ]
+    },
+    "hands": {
+      "left": {
+        "open": [
+          1.3089969389957472,
+          0.04,
+          0.03,
+          0.03,
+          0.03,
+          0.03
+        ],
+        "closed": [
+          1.3089969389957472,
+          0.6,
+          0.85,
+          0.9,
+          0.9,
+          0.85
+        ]
+      },
+      "right": {
+        "open": [
+          1.3089969389957472,
+          0.04,
+          0.03,
+          0.03,
+          0.03,
+          0.03
+        ],
+        "closed": [
+          1.3089969389957472,
+          0.6,
+          0.85,
+          0.9,
+          0.9,
+          0.85
+        ]
+      }
+    },
+    "validation": {
+      "max_tracking_error": 0.12,
+      "max_mimic_error": 0.015,
+      "max_limit_violation": 0.01,
+      "max_penetration": 0.003,
+      "physical_velocity_tolerance": 0.1,
+      "settle_tolerance": 0.06
+    }
+  }
+}

@@ -1,0 +1,6 @@
+# Numerical runtime used by the complete 901.80 s demonstration.
+numpy==1.26.4
+mujoco==3.3.7
+onnxruntime==1.29.0
+ruckig==0.12.2
+PyYAML==6.0.2

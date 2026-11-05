@@ -13,10 +13,14 @@
 
 ## Current Deployment-Machine Entry Point
 
+The complete **three-bottle Loco + IK workflow** covers box transport, three bottle
+pickups and shelf placements, two returns, and the final retreat. Code, runtime
+models, the full 901.80-second 50 Hz demonstration, and a 4× video are included in
+Git. Start with [the three-bottle guide](docs/r2v2_three_bottle.md).
+
 Downloadable R2V2 Loco/Reach PT + ONNX weights are now included in
 [the versioned handoff bundle](policy/r2v2_skills/20261026/README.md).
-It separates the cola baseline, experimental dual-wrist candidate and legacy TCP
-reference; the new box policy is not yet an accepted loaded-walking skill.
+It documents the interfaces, provenance, and usage of each model.
 
 The verified **Loco → Reach → cola pickup → carry → second-table placement**
 baseline is documented in [the Loco/Reach guide](docs/r2v2_loco_cola.md).

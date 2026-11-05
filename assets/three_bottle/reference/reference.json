@@ -1,0 +1,20 @@
+{
+  "schema": "contact_reach_reference_v1",
+  "derivation": "lossless_native_target_projection_v1",
+  "program_sha256": "3d259e68822936e16968459921ac986872e0509883270770fe71a80bd7a8f8c6",
+  "data_file": "reference.npz",
+  "data_sha256": "5cd55e5f7a0b7f46e227c3688898c600d8e343a1c3a3cb2517d13f4a19a1877b",
+  "source_data_sha256": "b26805692f2de920525255ee1f3778c9edcdfab0ad45ebda2dd32808d0582b62",
+  "source_manifest_sha256": "b3e9d93d5d2ef4e748ef555c1fb825f465787a7061fccbbbd6600de73b2c0b53",
+  "source_group": "legacy-exit-nominal-seed0",
+  "array_sha256": {
+    "time_s": "3aec2a5a7e6e69b4a32e9cb68cca9d4a4a4258aa466baa3d953c88f667bf2c7f",
+    "wrist_target": "87e59523e2198ba7c3064103a21e92264618630acf193f062440aa5bff05fa75",
+    "phase": "d2323c7da3eb5ded0788e0a4845eb2ef9439c820d0ea5562ef7d165717122776",
+    "phase_elapsed_s": "7c18fe7315f365cf20b8e8825da49b68c0cea19414e83e3c1f520c63c5632a87",
+    "hand_commands": "fdb36d48842cac4dbbd0bd01ab589bb113abbf77ec5d27738417d5205d61621d"
+  },
+  "paired_source_physical_success": true,
+  "body_trajectory_used": false,
+  "expert_action_labels_used": false
+}

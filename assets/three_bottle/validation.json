@@ -1,0 +1,23 @@
+{
+  "schema": "three_bottle_validation_v1",
+  "physical_duration_s": 901.8,
+  "success": true,
+  "terminal_stage": "ALL_THREE_BOTTLES_SHELVED_AND_HANDS_CLEAR",
+  "completed_bottles": [
+    1,
+    2,
+    3
+  ],
+  "compared_samples_50hz": 45090,
+  "max_abs_qpos_difference": 0.0,
+  "max_abs_qvel_difference": 0.0,
+  "runtime": {
+    "python": "3.12",
+    "numpy": "1.26.4",
+    "mujoco": "3.3.7",
+    "onnxruntime": "1.29.0",
+    "ruckig": "0.12.2"
+  },
+  "clean_environment_tests_passed": 3,
+  "tracked_files_only_startup_passed": true
+}

@@ -1,0 +1,35 @@
+[
+  {
+    "bottle": 1,
+    "object_goal_world_xyz_m": [
+      -0.2991128165609521,
+      1.9907819374996465,
+      1.3
+    ],
+    "left_final_reference_heading_rad": 0.5183614203692144
+  },
+  {
+    "bottle": 2,
+    "object_goal_world_xyz_m": [
+      -0.9853749906102364,
+      2.0058233809711523,
+      1.3
+    ],
+    "left_final_reference_heading_rad": 0.7051397353160943
+  },
+  {
+    "bottle": 3,
+    "object_goal_world_xyz_m": [
+      -1.610798357673188,
+      1.8612316607123809,
+      1.3
+    ],
+    "left_final_reference_heading_rad": 0.9579994473366555,
+    "station_base_world_xyz_m": [
+      -1.334236213948362,
+      1.5907443584996364,
+      0.7880832544199219
+    ],
+    "station_base_yaw_rad": 2.119185324024437
+  }
+]
